@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getPosts, getProfiles } from "@/lib/data";
 import { createPost, createProfile } from "./actions";
 
@@ -25,7 +26,7 @@ export default async function Home() {
 
       <section>
         <h2>Create Post</h2>
-        <form action={createPost}>
+        <form action={createPost} encType="multipart/form-data">
           <div>
             <label htmlFor="post-body">Post Text</label>
           </div>
@@ -45,6 +46,17 @@ export default async function Home() {
               ))}
             </select>
           </div>
+          <div>
+            <label htmlFor="post-image">Image (optional)</label>
+          </div>
+          <div>
+            <input
+              id="post-image"
+              name="image"
+              type="file"
+              accept="image/*"
+            />
+          </div>
           <button type="submit">Save Post</button>
         </form>
       </section>
@@ -62,6 +74,17 @@ export default async function Home() {
                   by {post.author_name ?? "Unknown"} on {" "}
                   {new Date(post.posted_at).toLocaleString()}
                 </div>
+                {post.image_url ? (
+                  <div>
+                    <Image
+                      src={post.image_url}
+                      alt="Post image"
+                      width={400}
+                      height={300}
+                      style={{ height: "auto", width: "100%", maxWidth: 400 }}
+                    />
+                  </div>
+                ) : null}
               </li>
             ))}
           </ul>

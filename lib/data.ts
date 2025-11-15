@@ -10,6 +10,7 @@ export type Post = {
   body: string;
   author_name: string | null;
   posted_at: string;
+  image_url: string | null;
 };
 
 export async function getProfiles(): Promise<Profile[]> {
@@ -34,6 +35,7 @@ export async function getPosts(): Promise<Post[]> {
       SELECT posts.id,
              posts.body,
              posts.posted_at,
+             posts.image_url,
              profiles.name AS author_name
       FROM posts
       LEFT JOIN profiles ON profiles.id = posts.profile_id

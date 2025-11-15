@@ -40,8 +40,14 @@ async function createTables() {
       id UUID PRIMARY KEY,
       profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
       body TEXT NOT NULL,
+      image_url TEXT,
       posted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
+  `);
+
+  await query(`
+    ALTER TABLE posts
+    ADD COLUMN IF NOT EXISTS image_url TEXT
   `);
 }
 
