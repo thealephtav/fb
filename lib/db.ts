@@ -7,7 +7,7 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is required to connect to Postgres");
 }
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString,
   ssl: connectionString.includes("sslmode=require")
     ? { rejectUnauthorized: false }
@@ -27,27 +27,59 @@ export async function query<T extends QueryResultRow = QueryResultRow>(
 }
 
 async function createTables() {
+  await query('CREATE EXTENSION IF NOT EXISTS "pgcrypto"');
+
   await query(`
-    CREATE TABLE IF NOT EXISTS profiles (
-      id UUID PRIMARY KEY,
-      name TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+      name TEXT,
+      email TEXT UNIQUE,
+      "emailVerified" TIMESTAMPTZ,
+      image TEXT,
+      handle TEXT UNIQUE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS sessions (
+      id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+      "sessionToken" TEXT UNIQUE NOT NULL,
+      "userId" TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      expires TIMESTAMPTZ NOT NULL
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS verification_token (
+      identifier TEXT NOT NULL,
+      token TEXT NOT NULL,
+      expires TIMESTAMPTZ NOT NULL,
+      PRIMARY KEY (identifier, token)
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS authenticators (
+      "credentialID" TEXT PRIMARY KEY,
+      "userId" TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      provider TEXT NOT NULL,
+      "credentialPublicKey" TEXT NOT NULL,
+      counter BIGINT NOT NULL,
+      "credentialDeviceType" TEXT NOT NULL,
+      "credentialBackedUp" BOOLEAN NOT NULL,
+      transports TEXT
     )
   `);
 
   await query(`
     CREATE TABLE IF NOT EXISTS posts (
       id UUID PRIMARY KEY,
-      profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       body TEXT NOT NULL,
       image_url TEXT,
       posted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
-  `);
-
-  await query(`
-    ALTER TABLE posts
-    ADD COLUMN IF NOT EXISTS image_url TEXT
   `);
 }
 

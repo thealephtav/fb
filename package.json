@@ -6,11 +6,18 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "reset:db": "tsx scripts/reset-db.ts",
+    "reset:storage": "tsx scripts/reset-storage.ts",
+    "reset:all": "npm run reset:db && npm run reset:storage"
   },
   "dependencies": {
+    "@auth/pg-adapter": "^1.11.1",
     "@vercel/blob": "^2.0.0",
+    "dotenv": "^17.2.3",
     "next": "16.0.3",
+    "next-auth": "^5.0.0-beta.30",
+    "nodemailer": "^7.0.10",
     "pg": "^8.16.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"
@@ -24,6 +31,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }

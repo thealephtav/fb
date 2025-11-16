@@ -1,65 +1,95 @@
 import Image from "next/image";
-import { getPosts, getProfiles } from "@/lib/data";
-import { createPost, createProfile } from "./actions";
+import { auth } from "@/auth";
+import { getPosts, getUserById } from "@/lib/data";
+import { createPost, updateUserDetails, signOutUser } from "./actions";
+import { EmailSignInForm } from "@/components/EmailSignInForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [profiles, posts] = await Promise.all([getProfiles(), getPosts()]);
+  const session = await auth();
+  const userId = session?.user?.id ?? null;
+  const [userResult, posts] = await Promise.all([
+    userId ? getUserById(userId) : Promise.resolve(null),
+    getPosts(),
+  ]);
+  const activeUser = userResult?.handle ? userResult : null;
+  const displayName = activeUser ? `@${activeUser.handle}` : "friend";
 
   return (
     <main>
       <h1>Bookface</h1>
+      <p>{session ? `Hello ${displayName}` : "Hello! Please sign in."}</p>
 
-      <section>
-        <h2>Create Profile</h2>
-        <form action={createProfile}>
-          <div>
-            <label htmlFor="profile-name">Name</label>
-          </div>
-          <div>
-            <input id="profile-name" name="name" required />
-          </div>
-          <button type="submit">Save Profile</button>
-        </form>
-      </section>
+      <div>
+        {session ? (
+          <form action={signOutUser}>
+            <button type="submit">Log Out</button>
+          </form>
+        ) : (
+          <EmailSignInForm />
+        )}
+      </div>
 
-      <section>
-        <h2>Create Post</h2>
-        <form action={createPost} encType="multipart/form-data">
-          <div>
-            <label htmlFor="post-body">Post Text</label>
-          </div>
-          <div>
-            <textarea id="post-body" name="body" required rows={4} />
-          </div>
-          <div>
-            <label htmlFor="post-profile">Author</label>
-          </div>
-          <div>
-            <select id="post-profile" name="profileId" required>
-              <option value="">Select a profile</option>
-              {profiles.map((profile) => (
-                <option key={profile.id} value={profile.id}>
-                  {profile.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="post-image">Image (optional)</label>
-          </div>
-          <div>
-            <input
-              id="post-image"
-              name="image"
-              type="file"
-              accept="image/*"
-            />
-          </div>
-          <button type="submit">Save Post</button>
-        </form>
-      </section>
+      {session && (
+        <>
+          {!activeUser ? (
+            <section>
+              <h2>Set Up Your User</h2>
+              <form action={updateUserDetails}>
+                <div>
+                  <label htmlFor="user-name">Name</label>
+                </div>
+                <div>
+                  <input id="user-name" name="name" required />
+                </div>
+                <div>
+                  <label htmlFor="user-handle">Handle</label>
+                </div>
+                <div>
+                  <input
+                    id="user-handle"
+                    name="handle"
+                    required
+                    pattern="[a-z0-9_\-]+"
+                    title="Use lowercase letters, numbers, underscores, or dashes"
+                  />
+                </div>
+                <button type="submit">Save User</button>
+              </form>
+            </section>
+          ) : null}
+
+          <section>
+            <h2>Create Post</h2>
+            {activeUser ? (
+              <form action={createPost}>
+                <p>Posting as @{activeUser.handle}</p>
+                <div>
+                  <label htmlFor="post-body">Post Text</label>
+                </div>
+                <div>
+                  <textarea id="post-body" name="body" required rows={4} />
+                </div>
+                <div>
+                  <label htmlFor="post-image">Image (optional)</label>
+                </div>
+                <div>
+                  <input
+                    id="post-image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                  />
+                </div>
+                <button type="submit">Post</button>
+              </form>
+            ) : (
+              <p>Finish setting up your user before posting.</p>
+            )}
+          </section>
+        </>
+      )}
 
       <section>
         <h2>Posts</h2>
@@ -71,8 +101,7 @@ export default async function Home() {
               <li key={post.id}>
                 <div>{post.body}</div>
                 <div>
-                  by {post.author_name ?? "Unknown"} on {" "}
-                  {new Date(post.posted_at).toLocaleString()}
+                  by {post.author_handle ? `@${post.author_handle}` : post.author_name ?? "Unknown"} on {new Date(post.posted_at).toLocaleString()}
                 </div>
                 {post.image_url ? (
                   <div>
