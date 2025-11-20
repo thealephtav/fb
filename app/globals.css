@@ -1,1 +1,59 @@
+body {
+  margin: 0;
+}
 
+nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+nav > * {
+  justify-self: center;
+}
+nav > :first-child {
+  justify-self: start;
+}
+nav > :last-child {
+  justify-self: end;
+}
+nav > :first-child:last-child {
+  justify-self: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* .post > img {
+  width: 100%;
+  height: auto;
+} */

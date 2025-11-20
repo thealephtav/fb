@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/auth";
 import { getFeedPosts, getUserById } from "@/lib/data";
-import { createPost, updateUserDetails, signOutUser } from "./actions";
+import { createPost, updateUserDetails } from "./actions";
+import { CreatePostForm } from "@/components/CreatePostForm";
+import { PostList } from "@/components/PostList";
 
 export const dynamic = "force-dynamic";
 
@@ -18,19 +18,9 @@ export default async function Home() {
     userId ? getFeedPosts(userId) : Promise.resolve([]),
   ]);
   const activeUser = userResult?.handle ? userResult : null;
-  const displayName = activeUser ? `@${activeUser.handle}` : session?.user?.name ?? "friend";
 
   return (
     <main>
-      <h1>Bookface</h1>
-      <p>Hello {displayName}</p>
-
-      <div>
-        <form action={signOutUser}>
-          <button type="submit">Log Out</button>
-        </form>
-      </div>
-
         {!activeUser ? (
           <section>
             <h2>Set Up Your User</h2>
@@ -58,64 +48,11 @@ export default async function Home() {
           </section>
         ) : null}
 
-        <section>
-          <h2>Create Post</h2>
-          {activeUser ? (
-            <form action={createPost}>
-              <p>Posting as @{activeUser.handle}</p>
-              <div>
-                <label htmlFor="post-body">Post Text</label>
-              </div>
-              <div>
-                <textarea id="post-body" name="body" required rows={4} />
-              </div>
-              <div>
-                <label htmlFor="post-image">Image (optional)</label>
-              </div>
-              <div>
-                <input
-                  id="post-image"
-                  name="image"
-                  type="file"
-                  accept="image/*"
-                />
-              </div>
-              <button type="submit">Post</button>
-            </form>
-          ) : (
-            <p>Finish setting up your user before posting.</p>
-          )}
-        </section>
+        <CreatePostForm canPost={!!activeUser} action={createPost} />
 
       <section>
         <h2>Posts</h2>
-        {posts.length === 0 ? (
-          <p>No posts yet.</p>
-        ) : (
-          <ul>
-            {posts.map((post) => (
-              <li key={post.id}>
-                <div>{post.body}</div>
-                <div>
-                  by {post.author_handle ? (
-                    <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>
-                  ) : post.author_name ?? "Unknown"} on {new Date(post.posted_at).toLocaleString()}
-                </div>
-                {post.image_url ? (
-                  <div>
-                    <Image
-                      src={post.image_url}
-                      alt="Post image"
-                      width={400}
-                      height={300}
-                      style={{ height: "auto", width: "100%", maxWidth: 400 }}
-                    />
-                  </div>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        )}
+        <PostList posts={posts} emptyMessage="No posts yet." />
       </section>
     </main>
   );

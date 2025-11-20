@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getPostsByHandle, getUserProfileByHandle } from "@/lib/data";
 import { followUser, unfollowUser, uploadProfileImage } from "@/app/actions";
+import { PostList } from "@/components/PostList";
 
 export default async function UserProfilePage({ params }: { params: Promise<{ handle: string }> }) {
   const resolvedParams = await params;
@@ -44,11 +45,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main>
-      <div>
-        <h1>@{profile.handle}</h1>
-        {profile.name ? <p>{profile.name}</p> : null}
-      </div>
       {imageContent}
+      <h1>@{profile.handle}</h1>
       <p>
         <Link href={`/u/${profile.handle}/followers`}>
           <strong>{profile.follower_count}</strong> Followers
@@ -71,28 +69,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
       )}
       <section>
         <h2>Posts</h2>
-        {posts.length === 0 ? (
-          <p>No posts yet.</p>
-        ) : (
-          <ul>
-            {posts.map((post) => (
-              <li key={post.id}>
-                <p>{post.body}</p>
-                <small>{new Date(post.posted_at).toLocaleString()}</small>
-                {post.image_url ? (
-                  <div>
-                    <Image
-                      src={post.image_url}
-                      alt="Post image"
-                      width={400}
-                      height={400}
-                    />
-                  </div>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        )}
+        <PostList posts={posts} />
       </section>
     </main>
   );

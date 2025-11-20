@@ -28,6 +28,7 @@ export type Post = {
   body: string;
   author_name: string | null;
   author_handle: string | null;
+  author_pfp: string | null;
   posted_at: string;
   image_url: string | null;
 };
@@ -94,7 +95,8 @@ export async function getPosts(): Promise<Post[]> {
              posts.posted_at,
              posts.image_url,
              users.name AS author_name,
-             users.handle AS author_handle
+             users.handle AS author_handle,
+             users.pfp AS author_pfp
       FROM posts
       LEFT JOIN users ON users.id = posts.user_id
       ORDER BY posts.posted_at DESC
@@ -116,7 +118,8 @@ export async function getFeedPosts(userId: string): Promise<Post[]> {
                posts.posted_at,
                posts.image_url,
                users.name AS author_name,
-               users.handle AS author_handle
+               users.handle AS author_handle,
+               users.pfp AS author_pfp
         FROM posts
         INNER JOIN users ON users.id = posts.user_id
         WHERE EXISTS (
@@ -145,7 +148,8 @@ export async function getPostsByHandle(handle: string): Promise<Post[]> {
                posts.posted_at,
                posts.image_url,
                users.name AS author_name,
-               users.handle AS author_handle
+               users.handle AS author_handle,
+               users.pfp AS author_pfp
         FROM posts
         INNER JOIN users ON users.id = posts.user_id
         WHERE users.handle = $1
