@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getPostsByHandle, getUserProfileByHandle } from "@/lib/data";
-import { followUser, unfollowUser, uploadProfileImage } from "@/app/actions";
+import { followUser, unfollowUser } from "@/app/actions";
 import { PostList } from "@/components/PostList";
 
 export default async function UserProfilePage({ params }: { params: Promise<{ handle: string }> }) {
@@ -34,19 +34,14 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
       <span role="img" aria-label="profile placeholder">
         👤
       </span>
-      {isOwner ? (
-        <form action={uploadProfileImage}>
-          <input type="file" name="pfp" accept="image/*" required />
-          <button type="submit">Upload profile photo</button>
-        </form>
-      ) : null}
     </div>
   );
 
   return (
-    <main>
+    <main className="feed">
       {imageContent}
       <h1>@{profile.handle}</h1>
+      {profile.bio ? <p>{profile.bio}</p> : null}
       <p>
         <Link href={`/u/${profile.handle}/followers`}>
           <strong>{profile.follower_count}</strong> Followers
@@ -57,7 +52,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         </Link>
       </p>
       {isOwner ? (
-        <Link href="/">Edit Profile</Link>
+        <Link href={`/u/${profile.handle}/edit`}>Edit Profile</Link>
       ) : viewerId ? (
         <form action={profile.is_following ? unfollowUser : followUser}>
           <input type="hidden" name="targetUserId" value={profile.id} />

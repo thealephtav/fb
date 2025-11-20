@@ -37,6 +37,7 @@ async function createTables() {
       "emailVerified" TIMESTAMPTZ,
       image TEXT,
       pfp TEXT,
+      bio TEXT,
       handle TEXT UNIQUE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
@@ -46,6 +47,11 @@ async function createTables() {
   await query(`
     ALTER TABLE users
     ADD COLUMN IF NOT EXISTS pfp TEXT
+  `);
+  // TODO delete
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS bio TEXT
   `);
 
   await query(`

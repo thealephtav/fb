@@ -5,6 +5,7 @@ export type User = {
   name: string | null;
   handle: string | null;
   pfp: string | null;
+  bio: string | null;
 };
 
 export type PublicUserProfile = {
@@ -12,6 +13,7 @@ export type PublicUserProfile = {
   name: string | null;
   handle: string | null;
   pfp: string | null;
+  bio: string | null;
   follower_count: number;
   following_count: number;
   is_following: boolean;
@@ -38,7 +40,7 @@ export async function getUserById(userId: string): Promise<User | null> {
     await ensureDb();
     const result = await query<User>(
       `
-        SELECT id, name, handle, pfp
+        SELECT id, name, handle, pfp, bio
         FROM users
         WHERE id = $1
         LIMIT 1
@@ -65,6 +67,7 @@ export async function getUserProfileByHandle(
           users.name,
           users.handle,
           users.pfp,
+          users.bio,
           (SELECT COUNT(*)::int FROM followers WHERE following_id = users.id) AS follower_count,
           (SELECT COUNT(*)::int FROM followers WHERE follower_id = users.id) AS following_count,
           CASE

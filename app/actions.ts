@@ -177,28 +177,50 @@ export async function signOutUser() {
   await signOut({ redirectTo: "/" });
 }
 
-export async function uploadProfileImage(formData: FormData) {
+export async function updateUserProfile(formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) {
     throw new Error("You must be signed in to update your profile.");
   }
-  const file = formData.get("pfp");
-  if (!(file instanceof File) || file.size === 0) {
-    throw new Error("Please select an image to upload.");
-  }
-
-  const buffer = await file.arrayBuffer();
-  const key = `pfp/${randomUUID()}-${file.name}`;
-  const blob = await put(key, buffer, {
-    access: "public",
-    contentType: file.type || "application/octet-stream",
-  });
 
   await ensureDb();
-  await query("UPDATE users SET pfp = $1 WHERE id = $2", [blob.url, session.user.id]);
   const user = await getUserById(session.user.id);
-  if (user?.handle) {
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const bioValue = formData.get("bio");
+  const file = formData.get("pfp");
+  const updates: string[] = [];
+  const params: unknown[] = [];
+
+  if (typeof bioValue === "string") {
+    const trimmed = bioValue.trim();
+    updates.push(`bio = $${updates.length + 1}`);
+    params.push(trimmed.length > 0 ? trimmed : null);
+  }
+
+  if (file instanceof File && file.size > 0) {
+    const buffer = await file.arrayBuffer();
+    const key = `pfp/${randomUUID()}-${file.name}`;
+    const blob = await put(key, buffer, {
+      access: "public",
+      contentType: file.type || "application/octet-stream",
+    });
+    updates.push(`pfp = $${updates.length + 1}`);
+    params.push(blob.url);
+  }
+
+  if (updates.length === 0) {
+    return;
+  }
+
+  params.push(session.user.id);
+  await query(`UPDATE users SET ${updates.join(", ")} WHERE id = $${params.length}`, params);
+
+  if (user.handle) {
     revalidatePath(`/u/${user.handle}`);
+    revalidatePath(`/u/${user.handle}/edit`);
   }
 }
 
