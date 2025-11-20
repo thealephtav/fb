@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getFeedPosts, getPosts, getUserById } from "@/lib/data";
-import { createPost, updateUserDetails } from "./actions";
-import { CreatePostForm } from "@/components/CreatePostForm";
+import { updateUserDetails } from "./actions";
 import { PostList } from "@/components/PostList";
 
 export const dynamic = "force-dynamic";

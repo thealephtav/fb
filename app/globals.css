@@ -24,7 +24,7 @@ nav > :first-child:last-child {
   justify-self: center;
 }
 
-main {
+.feed {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -32,6 +32,22 @@ main {
   max-width: 640px;
   margin: 0 auto;
   padding: 1rem;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-stats {
+  margin: 0;
 }
 
 .post-list {
@@ -42,7 +58,7 @@ main {
   flex-direction: column;
   gap: 1rem;
 }
-.post {
+.post-item {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -53,7 +69,10 @@ main {
   align-items: center;
   gap: 0.5rem;
 }
-/* .post > img {
+.post-meta {
+  font-size: 0.85rem;
+}
+.post-image img {
   width: 100%;
   height: auto;
-} */
+}

@@ -23,35 +23,37 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   }
 
   const isOwner = viewerId === profile.id;
-  const imageContent = profile.pfp ? (
-    <Image
-      src={profile.pfp}
-      alt={`@${profile.handle ?? "user"} profile picture`}
-      width={120}
-      height={120}
-    />
-  ) : (
-    <div>
-      <span role="img" aria-label="profile placeholder">
-        👤
-      </span>
-    </div>
-  );
 
   return (
     <main className="feed">
-      {imageContent}
-      <h1>@{profile.handle}</h1>
-      {profile.bio ? <p>{profile.bio}</p> : null}
-      <p>
-        <Link href={`/u/${profile.handle}/followers`}>
-          <strong>{profile.follower_count}</strong> Followers
-        </Link>{" "}
-        ·{" "}
-        <Link href={`/u/${profile.handle}/following`}>
-          <strong>{profile.following_count}</strong> Following
-        </Link>
-      </p>
+      <article className="profile-card">
+        <div className="profile-info">
+          {profile.pfp ? (
+            <Image
+              src={profile.pfp}
+              alt={`@${profile.handle ?? "user"} profile picture`}
+              width={96}
+              height={96}
+            />
+          ) : (
+            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+          )}
+          <div>
+            <h1>@{profile.handle}</h1>
+            {/* {profile.name ? <p><strong>{profile.name}</strong></p> : null} */}
+            {profile.bio ? <p><i>{profile.bio}</i></p> : null}
+          </div>
+        </div>
+        <p className="profile-stats">
+          <Link href={`/u/${profile.handle}/followers`}>
+            <strong>{profile.follower_count}</strong> Followers
+          </Link>{" "}
+          ·{" "}
+          <Link href={`/u/${profile.handle}/following`}>
+            <strong>{profile.following_count}</strong> Following
+          </Link>
+        </p>
+      </article>
       {isOwner ? (
         <Link href={`/u/${profile.handle}/edit`}>Edit Profile</Link>
       ) : viewerId ? (

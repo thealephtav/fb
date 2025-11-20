@@ -17,16 +17,16 @@ export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
       {posts.map((post) => (
         <li key={post.id} className="post">
           <div className="post-header">
-            {post.author_pfp ? (
-              <Image
-                src={post.author_pfp}
-                alt={post.author_handle ? `@${post.author_handle}` : "Author"}
-                width={48}
-                height={48}
-              />
-            ) : (
-              <span>👤</span>
-            )}
+          {post.author_pfp ? (
+            <Image
+              src={post.author_pfp}
+              alt={post.author_handle ? `@${post.author_handle}` : "Author"}
+              width={48}
+              height={48}
+            />
+          ) : (
+            <Image src="/default-pfp.png" alt="Default profile" width={48} height={48} />
+          )}
             <div>
               {post.author_handle ? (
                 <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>

@@ -23,7 +23,7 @@ export default async function FollowersPage({ params }: { params: Promise<{ hand
         {profile.pfp ? (
           <Image src={profile.pfp} alt={`@${profile.handle ?? "user"}`} width={120} height={120} />
         ) : (
-          <span>👤</span>
+          <Image src="/default-pfp.png" alt="Default profile" width={120} height={120} />
         )}
         <p>{profile.name ?? ""}</p>
       </section>
@@ -38,7 +38,7 @@ export default async function FollowersPage({ params }: { params: Promise<{ hand
                 {user.pfp ? (
                   <Image src={user.pfp} alt={`@${user.handle ?? "user"}`} width={48} height={48} />
                 ) : (
-                  <span>👤</span>
+                  <Image src="/default-pfp.png" alt="Default profile" width={48} height={48} />
                 )}
                 <Link href={`/u/${user.handle}`}>@{user.handle}</Link>
               </li>

@@ -16,7 +16,9 @@ export function CreatePostForm({
   if (!canPost) {
     return (
       <section>
-        <h2>Create Post</h2>
+        <h2>
+          {profileHandle ? `Post on @${profileHandle}'s wall` : "Create Post"}
+        </h2>
         <p>{disabledMessage}</p>
       </section>
     );
@@ -24,7 +26,7 @@ export function CreatePostForm({
 
   return (
     <section>
-      <h2>Create Post</h2>
+      <h2>{profileHandle ? `Post on @${profileHandle}'s wall` : "Create Post"}</h2>
       <form action={action}>
         {profileHandle ? (
           <input type="hidden" name="profileHandle" value={profileHandle} />
