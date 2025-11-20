@@ -89,10 +89,23 @@ async function createTables() {
     CREATE TABLE IF NOT EXISTS posts (
       id UUID PRIMARY KEY,
       user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      profile_user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       body TEXT NOT NULL,
       image_url TEXT,
       posted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
+  `);
+
+  // TODO delete
+  await query(`
+    ALTER TABLE posts
+    ADD COLUMN IF NOT EXISTS profile_user_id TEXT REFERENCES users(id) ON DELETE CASCADE
+  `);
+  // TODO delete
+  await query(`
+    UPDATE posts
+    SET profile_user_id = user_id
+    WHERE profile_user_id IS NULL
   `);
 
   await query(`

@@ -31,6 +31,9 @@ export type Post = {
   author_name: string | null;
   author_handle: string | null;
   author_pfp: string | null;
+  profile_name: string | null;
+  profile_handle: string | null;
+  profile_pfp: string | null;
   posted_at: string;
   image_url: string | null;
 };
@@ -89,6 +92,25 @@ export async function getUserProfileByHandle(
   }
 }
 
+export async function getUserByHandle(handle: string): Promise<User | null> {
+  try {
+    await ensureDb();
+    const result = await query<User>(
+      `
+        SELECT id, name, handle, pfp, bio
+        FROM users
+        WHERE handle = $1
+        LIMIT 1
+      `,
+      [handle],
+    );
+    return result.rows[0] ?? null;
+  } catch (error) {
+    console.error("Failed to load user by handle", error);
+    return null;
+  }
+}
+
 export async function getPosts(): Promise<Post[]> {
   try {
     await ensureDb();
@@ -97,11 +119,15 @@ export async function getPosts(): Promise<Post[]> {
              posts.body,
              posts.posted_at,
              posts.image_url,
-             users.name AS author_name,
-             users.handle AS author_handle,
-             users.pfp AS author_pfp
+             authors.name AS author_name,
+             authors.handle AS author_handle,
+             authors.pfp AS author_pfp,
+             wall.name AS profile_name,
+             wall.handle AS profile_handle,
+             wall.pfp AS profile_pfp
       FROM posts
-      LEFT JOIN users ON users.id = posts.user_id
+      INNER JOIN users AS authors ON authors.id = posts.user_id
+      INNER JOIN users AS wall ON wall.id = posts.profile_user_id
       ORDER BY posts.posted_at DESC
     `);
     return result.rows;
@@ -120,16 +146,21 @@ export async function getFeedPosts(userId: string): Promise<Post[]> {
                posts.body,
                posts.posted_at,
                posts.image_url,
-               users.name AS author_name,
-               users.handle AS author_handle,
-               users.pfp AS author_pfp
+               authors.name AS author_name,
+               authors.handle AS author_handle,
+               authors.pfp AS author_pfp,
+               wall.name AS profile_name,
+               wall.handle AS profile_handle,
+               wall.pfp AS profile_pfp
         FROM posts
-        INNER JOIN users ON users.id = posts.user_id
-        WHERE EXISTS (
-          SELECT 1 FROM followers
-          WHERE followers.follower_id = $1
-            AND followers.following_id = posts.user_id
-        )
+        INNER JOIN users AS authors ON authors.id = posts.user_id
+        INNER JOIN users AS wall ON wall.id = posts.profile_user_id
+        WHERE wall.id = $1
+           OR EXISTS (
+             SELECT 1 FROM followers
+             WHERE followers.follower_id = $1
+               AND followers.following_id = wall.id
+           )
         ORDER BY posts.posted_at DESC
       `,
       [userId],
@@ -150,12 +181,16 @@ export async function getPostsByHandle(handle: string): Promise<Post[]> {
                posts.body,
                posts.posted_at,
                posts.image_url,
-               users.name AS author_name,
-               users.handle AS author_handle,
-               users.pfp AS author_pfp
+               authors.name AS author_name,
+               authors.handle AS author_handle,
+               authors.pfp AS author_pfp,
+               wall.name AS profile_name,
+               wall.handle AS profile_handle,
+               wall.pfp AS profile_pfp
         FROM posts
-        INNER JOIN users ON users.id = posts.user_id
-        WHERE users.handle = $1
+        INNER JOIN users AS authors ON authors.id = posts.user_id
+        INNER JOIN users AS wall ON wall.id = posts.profile_user_id
+        WHERE wall.handle = $1
         ORDER BY posts.posted_at DESC
       `,
       [handle],

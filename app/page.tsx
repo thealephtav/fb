@@ -57,9 +57,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </form>
           </section>
         ) : null}
-
-        <CreatePostForm canPost={!!activeUser} action={createPost} />
-
       <section>
         <h2>Feed</h2>
         <form>

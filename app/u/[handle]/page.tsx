@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getPostsByHandle, getUserProfileByHandle } from "@/lib/data";
-import { followUser, unfollowUser } from "@/app/actions";
+import { followUser, unfollowUser, createPost } from "@/app/actions";
 import { PostList } from "@/components/PostList";
+import { CreatePostForm } from "@/components/CreatePostForm";
 
 export default async function UserProfilePage({ params }: { params: Promise<{ handle: string }> }) {
   const resolvedParams = await params;
@@ -62,6 +63,12 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
       ) : (
         <Link href="/welcome">Join to follow</Link>
       )}
+      <CreatePostForm
+        canPost={!!viewerId}
+        action={createPost}
+        profileHandle={profile.handle ?? undefined}
+        disabledMessage="Join to post on this profile."
+      />
       <section>
         <h2>Posts</h2>
         <PostList posts={posts} />

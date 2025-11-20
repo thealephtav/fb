@@ -34,11 +34,16 @@ export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
                 <span>{post.author_name ?? "Unknown"}</span>
               )}
               <small>{new Date(post.posted_at).toLocaleString()}</small>
+              {post.profile_handle ? (
+                <div>
+                  on <Link href={`/u/${post.profile_handle}`}>@{post.profile_handle}</Link>
+                </div>
+              ) : null}
             </div>
           </div>
           <p>{post.body}</p>
           {post.image_url ? (
-            <Image src={post.image_url} alt="Post image" width={100} height={100} />
+            <Image src={post.image_url} alt="Post image" width={400} height={400} />
           ) : null}
         </li>
       ))}

@@ -3,14 +3,21 @@
 type Props = {
   canPost: boolean;
   action?: (formData: FormData) => Promise<void>;
+  profileHandle?: string | null;
+  disabledMessage?: string;
 };
 
-export function CreatePostForm({ canPost, action }: Props) {
+export function CreatePostForm({
+  canPost,
+  action,
+  profileHandle,
+  disabledMessage = "Finish setting up your user before posting.",
+}: Props) {
   if (!canPost) {
     return (
       <section>
         <h2>Create Post</h2>
-        <p>Finish setting up your user before posting.</p>
+        <p>{disabledMessage}</p>
       </section>
     );
   }
@@ -19,6 +26,9 @@ export function CreatePostForm({ canPost, action }: Props) {
     <section>
       <h2>Create Post</h2>
       <form action={action}>
+        {profileHandle ? (
+          <input type="hidden" name="profileHandle" value={profileHandle} />
+        ) : null}
         <div>
           <label htmlFor="post-body">Post Text</label>
         </div>

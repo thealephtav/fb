@@ -3,7 +3,7 @@
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { ensureDb, query } from "@/lib/db";
-import { getUserById } from "@/lib/data";
+import { getUserByHandle, getUserById } from "@/lib/data";
 import { auth, signIn, signOut } from "@/auth";
 import { put } from "@vercel/blob";
 
@@ -53,6 +53,7 @@ export async function createPost(formData: FormData) {
 
   const body = formData.get("body");
   const imageFile = formData.get("image");
+  const profileHandleInput = formData.get("profileHandle");
 
   if (typeof body !== "string" || !body.trim()) {
     throw new Error("Post text is required");
@@ -75,11 +76,24 @@ export async function createPost(formData: FormData) {
     throw new Error("You need to finish setting up your user before posting.");
   }
 
+  let targetProfile = user;
+  if (typeof profileHandleInput === "string" && profileHandleInput.trim()) {
+    const normalizedHandle = profileHandleInput.trim().toLowerCase();
+    const fetchedProfile = await getUserByHandle(normalizedHandle);
+    if (!fetchedProfile) {
+      throw new Error("Profile not found");
+    }
+    targetProfile = fetchedProfile;
+  }
+
   await ensureDb();
   await query(
-    "INSERT INTO posts (id, body, user_id, image_url) VALUES ($1, $2, $3, $4)",
-    [randomUUID(), body.trim(), user.id, imageUrl],
+    "INSERT INTO posts (id, body, user_id, profile_user_id, image_url) VALUES ($1, $2, $3, $4, $5)",
+    [randomUUID(), body.trim(), user.id, targetProfile.id, imageUrl],
   );
+  if (targetProfile.handle) {
+    revalidatePath(`/u/${targetProfile.handle}`);
+  }
   revalidatePath("/");
 }
 
