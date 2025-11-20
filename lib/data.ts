@@ -17,6 +17,12 @@ export type PublicUserProfile = {
   is_following: boolean;
 };
 
+export type SimpleUser = {
+  id: string;
+  handle: string | null;
+  pfp: string | null;
+};
+
 export type Post = {
   id: string;
   body: string;
@@ -100,6 +106,35 @@ export async function getPosts(): Promise<Post[]> {
   }
 }
 
+export async function getFeedPosts(userId: string): Promise<Post[]> {
+  try {
+    await ensureDb();
+    const result = await query<Post>(
+      `
+        SELECT posts.id,
+               posts.body,
+               posts.posted_at,
+               posts.image_url,
+               users.name AS author_name,
+               users.handle AS author_handle
+        FROM posts
+        INNER JOIN users ON users.id = posts.user_id
+        WHERE EXISTS (
+          SELECT 1 FROM followers
+          WHERE followers.follower_id = $1
+            AND followers.following_id = posts.user_id
+        )
+        ORDER BY posts.posted_at DESC
+      `,
+      [userId],
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Failed to load feed posts", error);
+    return [];
+  }
+}
+
 export async function getPostsByHandle(handle: string): Promise<Post[]> {
   try {
     await ensureDb();
@@ -121,6 +156,48 @@ export async function getPostsByHandle(handle: string): Promise<Post[]> {
     return result.rows;
   } catch (error) {
     console.error("Failed to load posts for handle", error);
+    return [];
+  }
+}
+
+export async function getFollowersByHandle(handle: string): Promise<SimpleUser[]> {
+  try {
+    await ensureDb();
+    const result = await query<SimpleUser>(
+      `
+        SELECT users.id, users.handle, users.pfp
+        FROM followers
+        INNER JOIN users ON users.id = followers.follower_id
+        INNER JOIN users AS followed ON followed.id = followers.following_id
+        WHERE followed.handle = $1
+        ORDER BY followers.created_at DESC
+      `,
+      [handle],
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Failed to load followers", error);
+    return [];
+  }
+}
+
+export async function getFollowingByHandle(handle: string): Promise<SimpleUser[]> {
+  try {
+    await ensureDb();
+    const result = await query<SimpleUser>(
+      `
+        SELECT users.id, users.handle, users.pfp
+        FROM followers
+        INNER JOIN users ON users.id = followers.following_id
+        INNER JOIN users AS follower ON follower.id = followers.follower_id
+        WHERE follower.handle = $1
+        ORDER BY followers.created_at DESC
+      `,
+      [handle],
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Failed to load following", error);
     return [];
   }
 }

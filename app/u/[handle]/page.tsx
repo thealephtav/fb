@@ -34,7 +34,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         👤
       </span>
       {isOwner ? (
-        <form action={uploadProfileImage} encType="multipart/form-data">
+        <form action={uploadProfileImage}>
           <input type="file" name="pfp" accept="image/*" required />
           <button type="submit">Upload profile photo</button>
         </form>
@@ -50,20 +50,21 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
       </div>
       {imageContent}
       <p>
-        <strong>{profile.follower_count}</strong> Followers · {" "}
-        <strong>{profile.following_count}</strong> Following
+        <Link href={`/u/${profile.handle}/followers`}>
+          <strong>{profile.follower_count}</strong> Followers
+        </Link>{" "}
+        ·{" "}
+        <Link href={`/u/${profile.handle}/following`}>
+          <strong>{profile.following_count}</strong> Following
+        </Link>
       </p>
       {isOwner ? (
         <Link href="/">Edit Profile</Link>
       ) : viewerId ? (
-        <form
-          action={profile.is_following ? unfollowUser : followUser}
-        >
+        <form action={profile.is_following ? unfollowUser : followUser}>
           <input type="hidden" name="targetUserId" value={profile.id} />
           <input type="hidden" name="targetHandle" value={profile.handle ?? ""} />
-          <button type="submit">
-            {profile.is_following ? "Unfollow" : "Follow"}
-          </button>
+          <button type="submit">{profile.is_following ? "Unfollow" : "Follow"}</button>
         </form>
       ) : (
         <Link href="/welcome">Join to follow</Link>

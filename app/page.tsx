@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { auth } from "@/auth";
-import { getPosts, getUserById } from "@/lib/data";
+import { getFeedPosts, getUserById } from "@/lib/data";
 import { createPost, updateUserDetails, signOutUser } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function Home() {
   const userId = session?.user?.id ?? null;
   const [userResult, posts] = await Promise.all([
     userId ? getUserById(userId) : Promise.resolve(null),
-    getPosts(),
+    userId ? getFeedPosts(userId) : Promise.resolve([]),
   ]);
   const activeUser = userResult?.handle ? userResult : null;
   const displayName = activeUser ? `@${activeUser.handle}` : session?.user?.name ?? "friend";
@@ -96,7 +97,9 @@ export default async function Home() {
               <li key={post.id}>
                 <div>{post.body}</div>
                 <div>
-                  by {post.author_handle ? `@${post.author_handle}` : post.author_name ?? "Unknown"} on {new Date(post.posted_at).toLocaleString()}
+                  by {post.author_handle ? (
+                    <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>
+                  ) : post.author_name ?? "Unknown"} on {new Date(post.posted_at).toLocaleString()}
                 </div>
                 {post.image_url ? (
                   <div>
