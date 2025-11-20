@@ -88,6 +88,68 @@ export type EmailSignInState = {
   message?: string;
 };
 
+export async function signUpWithHandle(
+  _prevState: EmailSignInState,
+  formData: FormData,
+): Promise<EmailSignInState> {
+  const email = formData.get("email");
+  const handle = formData.get("handle");
+  if (typeof email !== "string" || !email.trim()) {
+    return { status: "error", message: "Email is required" };
+  }
+  if (typeof handle !== "string" || !handle.trim()) {
+    return { status: "error", message: "Username is required" };
+  }
+
+  const trimmedEmail = email.trim();
+  const normalizedHandle = handle.trim().toLowerCase();
+
+  await ensureDb();
+
+  const existingUserResult = await query<{ id: string; handle: string | null }>(
+    `SELECT id, handle FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1`,
+    [trimmedEmail],
+  );
+  const existingUser = existingUserResult.rows[0] ?? null;
+
+  const handleOwner = await query<{ id: string }>(
+    `SELECT id FROM users WHERE handle = $1 LIMIT 1`,
+    [normalizedHandle],
+  );
+  const handleTakenByOther = handleOwner.rows[0] && handleOwner.rows[0].id !== existingUser?.id;
+  if (handleTakenByOther) {
+    return { status: "error", message: "Username already taken" };
+  }
+
+  if (existingUser) {
+    if (!existingUser.handle) {
+      await query("UPDATE users SET handle = $1 WHERE id = $2", [normalizedHandle, existingUser.id]);
+    }
+  } else {
+    await query(
+      "INSERT INTO users (email, handle) VALUES ($1, $2)",
+      [trimmedEmail, normalizedHandle],
+    );
+  }
+
+  try {
+    await signIn("email", {
+      email: trimmedEmail,
+      redirectTo: "/",
+      redirect: false,
+    });
+    return {
+      status: "sent",
+      message: existingUser
+        ? "Email sent! Check your inbox."
+        : "Email sent! Check your inbox.",
+    };
+  } catch (error) {
+    console.error("Failed to send email", error);
+    return { status: "error", message: "Failed to send email" };
+  }
+}
+
 export async function signInWithEmail(
   _prevState: EmailSignInState,
   formData: FormData,

@@ -15,7 +15,7 @@ export function EmailSignInForm({
   label = "Email",
   layout = "stacked",
 }: Props) {
-  const [state, formAction] = useActionState<EmailSignInState, FormData>(
+  const [state, handleAction] = useActionState<EmailSignInState, FormData>(
     signInWithEmail,
     { status: "idle" },
   );
@@ -42,7 +42,7 @@ export function EmailSignInForm({
 
   return (
     <form
-      action={formAction}
+      action={handleAction}
       onSubmit={() => {
         setSubmitState("pending");
       }}
@@ -50,21 +50,21 @@ export function EmailSignInForm({
       <div>
         <label htmlFor="email">{label}</label>
       </div>
-          {layout === "inline" ? (
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              {input}
-              <button type="submit" disabled={pending || submitState === "pending"}>
-                {submitState === "pending" ? "Sending..." : buttonText}
-              </button>
-            </div>
-          ) : (
-            <>
-              <div>{input}</div>
-              <button type="submit" disabled={pending || submitState === "pending"}>
-                {submitState === "pending" ? "Sending..." : buttonText}
-              </button>
-            </>
-          )}
+      {layout === "inline" ? (
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          {input}
+          <button type="submit" disabled={pending || submitState === "pending"}>
+            {submitState === "pending" ? "Sending..." : buttonText}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div>{input}</div>
+          <button type="submit" disabled={pending || submitState === "pending"}>
+            {submitState === "pending" ? "Sending..." : buttonText}
+          </button>
+        </>
+      )}
       {submitState === "pending" ? (
         <p>Sending magic link...</p>
       ) : state.status === "sent" ? (
