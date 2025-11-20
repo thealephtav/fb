@@ -36,9 +36,16 @@ async function createTables() {
       email TEXT UNIQUE,
       "emailVerified" TIMESTAMPTZ,
       image TEXT,
+      pfp TEXT,
       handle TEXT UNIQUE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
+  `);
+
+  // TODO delete
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS pfp TEXT
   `);
 
   await query(`
@@ -79,6 +86,15 @@ async function createTables() {
       body TEXT NOT NULL,
       image_url TEXT,
       posted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS followers (
+      follower_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      following_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      PRIMARY KEY (follower_id, following_id)
     )
   `);
 }

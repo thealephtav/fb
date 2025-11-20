@@ -3,6 +3,7 @@ import { pool, ensureDb } from "../lib/db";
 
 const tables = [
   "posts",
+  "followers",
   "authenticators",
   "sessions",
   "verification_token",

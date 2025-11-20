@@ -176,3 +176,78 @@ export async function signInWithEmail(
 export async function signOutUser() {
   await signOut({ redirectTo: "/" });
 }
+
+export async function uploadProfileImage(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("You must be signed in to update your profile.");
+  }
+  const file = formData.get("pfp");
+  if (!(file instanceof File) || file.size === 0) {
+    throw new Error("Please select an image to upload.");
+  }
+
+  const buffer = await file.arrayBuffer();
+  const key = `pfp/${randomUUID()}-${file.name}`;
+  const blob = await put(key, buffer, {
+    access: "public",
+    contentType: file.type || "application/octet-stream",
+  });
+
+  await ensureDb();
+  await query("UPDATE users SET pfp = $1 WHERE id = $2", [blob.url, session.user.id]);
+  const user = await getUserById(session.user.id);
+  if (user?.handle) {
+    revalidatePath(`/u/${user.handle}`);
+  }
+}
+
+export async function followUser(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("You must be signed in to follow users.");
+  }
+  const targetUserId = formData.get("targetUserId");
+  const targetHandle = formData.get("targetHandle");
+  if (typeof targetUserId !== "string" || !targetUserId) {
+    throw new Error("Invalid target user");
+  }
+  if (targetUserId === session.user.id) {
+    throw new Error("You cannot follow yourself.");
+  }
+
+  await ensureDb();
+  await query(
+    `INSERT INTO followers (follower_id, following_id)
+     VALUES ($1, $2)
+     ON CONFLICT DO NOTHING`,
+    [session.user.id, targetUserId],
+  );
+  if (typeof targetHandle === "string" && targetHandle) {
+    revalidatePath(`/u/${targetHandle}`);
+  }
+}
+
+export async function unfollowUser(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("You must be signed in to unfollow users.");
+  }
+  const targetUserId = formData.get("targetUserId");
+  const targetHandle = formData.get("targetHandle");
+  if (typeof targetUserId !== "string" || !targetUserId) {
+    throw new Error("Invalid target user");
+  }
+  if (targetUserId === session.user.id) {
+    throw new Error("You cannot unfollow yourself.");
+  }
+
+  await ensureDb();
+  await query(`DELETE FROM followers WHERE follower_id = $1 AND following_id = $2`, [
+    session.user.id,
+    targetUserId,
+  ]);
+  if (typeof targetHandle === "string" && targetHandle) {
+    revalidatePath(`/u/${targetHandle}`);
+  }
+}
