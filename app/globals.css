@@ -79,6 +79,37 @@ nav > :first-child:last-child {
   word-break: break-all;
 }
 
+.link-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.link-editor-row {
+  border: 1px solid black;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.link-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.5rem;
+}
+
+.link-fields input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.link-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .profile-stats {
   margin: 0;
 }

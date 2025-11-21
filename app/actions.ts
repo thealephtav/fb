@@ -215,30 +215,22 @@ export async function updateUserProfile(formData: FormData) {
     params.push(trimmedName.length > 0 ? trimmedName : null);
   }
 
-  const linksValue = formData.get("links");
-  const parsedLinks =
-    typeof linksValue === "string"
-      ? linksValue
-          .split("\n")
-          .map((line) => line.trim())
-          .filter(Boolean)
-          .map((line) => {
-            const [rawLabel = "", rawUri = ""] = line.split("|").map((part) => part.trim());
-            let label = rawLabel;
-            let uri = rawUri || rawLabel;
-            if (!uri) {
-              return null;
-            }
-            if (!label) {
-              label = uri;
-            }
-            if (!/^https?:\/\//i.test(uri)) {
-              uri = `https://${uri}`;
-            }
-            return { label, uri };
-          })
-          .filter((link): link is { label: string; uri: string } => !!link)
-      : [];
+  const linkLabels = formData.getAll("linkLabel").map((value) =>
+    typeof value === "string" ? value.trim() : "",
+  );
+  const linkUrls = formData.getAll("linkUrl").map((value) =>
+    typeof value === "string" ? value.trim() : "",
+  );
+
+  const parsedLinks = linkLabels.reduce<{ label: string; uri: string }[]>((acc, label, idx) => {
+    const uri = linkUrls[idx] ?? "";
+    if (!label || !uri) {
+      return acc;
+    }
+    const normalizedUri = /^https?:\/\//i.test(uri) ? uri : `https://${uri}`;
+    acc.push({ label, uri: normalizedUri });
+    return acc;
+  }, []);
 
   if (typeof bioValue === "string") {
     const trimmed = bioValue.trim();

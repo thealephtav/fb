@@ -67,9 +67,9 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             <ul className="profile-links">
               {normalizedProfileLinks.map((link) => (
                 <li key={link.id}>
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  <Link href={link.href} target="_blank" rel="noopener noreferrer">
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

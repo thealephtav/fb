@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getProfileLinksByUserId, getUserProfileByHandle } from "@/lib/data";
 import { updateUserProfile } from "@/app/actions";
+import { ProfileLinksEditor } from "@/components/ProfileLinksEditor";
 
 export default async function EditProfilePage({ params }: { params: Promise<{ handle: string }> }) {
   const resolvedParams = await params;
@@ -19,10 +20,6 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
     notFound();
   }
   const profileLinks = await getProfileLinksByUserId(profile.id);
-  const linksValue =
-    profileLinks.length > 0
-      ? profileLinks.map((link) => `${link.label} | ${link.uri}`).join("\n")
-      : "";
 
   return (
     <main className="feed">
@@ -47,17 +44,9 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
           <textarea id="bio" name="bio" rows={4} defaultValue={profile.bio ?? ""} />
         </div>
         <div>
-          <label htmlFor="links">Links (one per line)</label>
+          <label>Links</label>
         </div>
-        <div>
-          <textarea
-            id="links"
-            name="links"
-            rows={4}
-            defaultValue={linksValue}
-            placeholder="Label | https://example.com"
-          />
-        </div>
+        <ProfileLinksEditor initialLinks={profileLinks} />
         <div>
           <label htmlFor="pfp">Profile photo</label>
         </div>
