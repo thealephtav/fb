@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
 import "./globals.css";
-import { auth } from "@/auth";
-import { getUserById } from "@/lib/data";
-import { signOutUser } from "./actions";
 
 export const metadata: Metadata = {
   title: "T H E  A L E P H",
@@ -20,46 +15,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  const currentUser = session?.user?.id ? await getUserById(session.user.id) : null;
-
   return (
     <html lang="en">
       <body className="antialiased">
-        <header>
-          <nav className="navbar">
-            {currentUser && (
-              <div>
-                {currentUser.pfp ? (
-                  <Image
-                    src={currentUser.pfp}
-                    alt="Profile"
-                    width={40}
-                    height={40}
-                  />
-                ) : (
-                  <Image src="/default-pfp.png" alt="Default profile" width={40} height={40} />
-                )}
-                {currentUser.handle ? (
-                  <Link href={`/${currentUser.handle}`}>
-                    {currentUser.name?.trim() || `@${currentUser.handle}`}
-                  </Link>
-                ) : null}
-              </div>
-            )}
-            <Link href="/">THE ALEPH</Link>
-            {currentUser && (
-              <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-                <Link href={`/${currentUser.handle}/edit`}>
-                  <button>Edit Profile</button>
-                </Link>
-                <form action={signOutUser}>
-                  <button type="submit">Sign Out</button>
-                </form>
-              </div>
-            )}
-          </nav>
-        </header>
         <div>{children}</div>
       </body>
     </html>

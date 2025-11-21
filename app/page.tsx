@@ -1,7 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getFeedPosts, getPosts, getUserById } from "@/lib/data";
-import { updateUserDetails } from "./actions";
+import { signOutUser, updateUserDetails } from "./actions";
 import { PostList } from "@/components/PostList";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +32,39 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main>
+      <header>
+        <nav className="navbar">
+          {activeUser && (
+            <div>
+              {activeUser.pfp ? (
+                <Image
+                  src={activeUser.pfp}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                />
+              ) : (
+                <Image src="/default-pfp.png" alt="Default profile" width={40} height={40} />
+              )}
+              <Link href={`/${activeUser.handle}`}>
+                {activeUser.name?.trim() || `@${activeUser.handle}`}
+              </Link>
+            </div>
+          )}
+          <Link href="/">THE ALEPH</Link>
+          {activeUser && (
+            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+              <Link href={`/${activeUser.handle}/edit`}>
+                <button>Edit Profile</button>
+              </Link>
+              <form action={signOutUser}>
+                <button type="submit">Sign Out</button>
+              </form>
+            </div>
+          )}
+        </nav>
+      </header>
+
         {!activeUser ? (
           <section>
             <h2>Set Up Your User</h2>
