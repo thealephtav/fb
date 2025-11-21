@@ -29,9 +29,12 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
     .map((link) => {
       const label = link.label?.trim() || link.uri;
       const href = /^https?:\/\//i.test(link.uri) ? link.uri : `https://${link.uri}`;
-      return { ...link, href, label };
+      if (!href || !label) {
+        return null;
+      }
+      return { id: link.id, href, label };
     })
-    .filter((link): link is { id: number; href: string; label: string } => !!link.href && !!link.label);
+    .filter((link): link is { id: number; href: string; label: string } => link !== null);
   const statusPost = posts.find(
     (post) => post.author_handle === profile.handle && post.profile_handle === profile.handle,
   );

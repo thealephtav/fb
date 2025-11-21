@@ -1,24 +1,31 @@
 import { Pool } from "pg";
 import type { QueryResult, QueryResultRow } from "pg";
 
-const connectionString = process.env.DATABASE_URL;
+let pool: Pool | null = null;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL is required to connect to Postgres");
+export function getPool() {
+  if (pool) {
+    return pool;
+  }
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is required to connect to Postgres");
+  }
+
+  pool = new Pool({
+    connectionString,
+    ssl: connectionString.includes("sslmode=require")
+      ? { rejectUnauthorized: false }
+      : undefined,
+  });
+  return pool;
 }
-
-export const pool = new Pool({
-  connectionString,
-  ssl: connectionString.includes("sslmode=require")
-    ? { rejectUnauthorized: false }
-    : undefined,
-});
 
 export async function query<T extends QueryResultRow = QueryResultRow>(
   text: string,
   params?: unknown[],
 ): Promise<QueryResult<T>> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   try {
     return await client.query<T>(text, params);
   } finally {

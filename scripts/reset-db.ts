@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { pool, ensureDb } from "../lib/db";
+import { ensureDb, getPool } from "../lib/db";
 
 const tables = [
   "posts",
@@ -12,7 +12,7 @@ const tables = [
 ];
 
 async function main() {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   try {
     await client.query("BEGIN");
     for (const table of tables) {
@@ -37,5 +37,6 @@ main()
     process.exit(1);
   })
   .finally(async () => {
+    const pool = getPool();
     await pool.end();
   });

@@ -22,7 +22,8 @@ export function JoinForm() {
     setSubmitState("pending");
     const result = await formAction(formData);
     setSubmitState("idle");
-    if (result?.status === "sent") {
+    const status = (result as EmailSignInState | null | undefined)?.status;
+    if (status === "sent") {
       setEmail("");
       setHandle("");
     }

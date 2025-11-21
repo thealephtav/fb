@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import PostgresAdapter from "@auth/pg-adapter";
-import { pool, ensureDb } from "@/lib/db";
+import { getPool } from "@/lib/db";
 
 const authSecret = process.env.AUTH_SECRET;
 const emailServer = process.env.EMAIL_SERVER;
@@ -15,10 +15,8 @@ if (!emailServer || !emailFrom) {
   throw new Error("EMAIL_SERVER and EMAIL_FROM must be configured for email auth");
 }
 
-await ensureDb();
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PostgresAdapter(pool),
+  adapter: PostgresAdapter(getPool()),
   session: {
     strategy: "database",
   },

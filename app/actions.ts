@@ -2,7 +2,8 @@
 
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { ensureDb, query, pool } from "@/lib/db";
+import { ensureDb, query } from "@/lib/db";
+import { getPool } from "@/lib/db";
 import { getUserByHandle, getUserById } from "@/lib/data";
 import { auth, signIn, signOut } from "@/auth";
 import { put } from "@vercel/blob";
@@ -244,7 +245,7 @@ export async function updateUserProfile(formData: FormData) {
 
   params.push(session.user.id);
 
-  const client = await pool.connect();
+  const client = await getPool().connect();
   try {
     await client.query("BEGIN");
     if (updates.length > 0) {
