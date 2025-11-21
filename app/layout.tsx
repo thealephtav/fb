@@ -41,7 +41,9 @@ export default async function RootLayout({
                   <Image src="/default-pfp.png" alt="Default profile" width={40} height={40} />
                 )}
                 {currentUser.handle ? (
-                  <Link href={`/u/${currentUser.handle}`}>@{currentUser.handle}</Link>
+                  <Link href={`/${currentUser.handle}`}>
+                    {currentUser.name?.trim() || `@${currentUser.handle}`}
+                  </Link>
                 ) : null}
               </div>
             )}

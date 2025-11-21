@@ -14,10 +14,11 @@ export default async function FollowingPage({ params }: { params: Promise<{ hand
     notFound();
   }
   const following = await getFollowingByHandle(handle);
+  const profileDisplayName = profile.name?.trim() || `@${profile.handle}`;
 
   return (
     <main>
-      <h1>@{profile.handle} is following</h1>
+      <h1>{profileDisplayName} is following</h1>
       <section>
         <h2>Profile</h2>
         {profile.pfp ? (
@@ -40,7 +41,9 @@ export default async function FollowingPage({ params }: { params: Promise<{ hand
                 ) : (
                   <Image src="/default-pfp.png" alt="Default profile" width={48} height={48} />
                 )}
-                <Link href={`/u/${user.handle}`}>@{user.handle}</Link>
+                <Link href={`/${user.handle}`}>
+                  {user.name?.trim() || `@${user.handle ?? "user"}`}
+                </Link>
               </li>
             ))}
           </ul>

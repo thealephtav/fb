@@ -22,40 +22,44 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
     notFound();
   }
 
+  const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
   const isOwner = viewerId === profile.id;
 
   return (
     <main className="feed">
       <article className="profile-card">
-        <div className="profile-info">
-          {profile.pfp ? (
-            <Image
-              src={profile.pfp}
-              alt={`@${profile.handle ?? "user"} profile picture`}
-              width={96}
-              height={96}
-            />
-          ) : (
-            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
-          )}
-          <div>
-            <h1>@{profile.handle}</h1>
-            {/* {profile.name ? <p><strong>{profile.name}</strong></p> : null} */}
-            {profile.bio ? <p><i>{profile.bio}</i></p> : null}
+        <div className="profile-hero">
+          <div className="profile-avatar">
+            {profile.pfp ? (
+              <Image
+                src={profile.pfp}
+                alt={`@${profile.handle ?? "user"} profile picture`}
+                width={96}
+                height={96}
+              />
+            ) : (
+              <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+            )}
           </div>
+          <h1 className="profile-handle">{displayName}</h1>
+          {profile.bio ? (
+            <p className="profile-bio">
+              <i>{profile.bio}</i>
+            </p>
+          ) : null}
         </div>
         <p className="profile-stats">
-          <Link href={`/u/${profile.handle}/followers`}>
+          <Link href={`/${profile.handle}/followers`}>
             <strong>{profile.follower_count}</strong> Followers
           </Link>{" "}
           ·{" "}
-          <Link href={`/u/${profile.handle}/following`}>
+          <Link href={`/${profile.handle}/following`}>
             <strong>{profile.following_count}</strong> Following
           </Link>
         </p>
       </article>
       {isOwner ? (
-        <Link href={`/u/${profile.handle}/edit`}>Edit Profile</Link>
+        <Link href={`/${profile.handle}/edit`}>Edit Profile</Link>
       ) : viewerId ? (
         <form action={profile.is_following ? unfollowUser : followUser}>
           <input type="hidden" name="targetUserId" value={profile.id} />

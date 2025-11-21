@@ -24,6 +24,18 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
       <h1>Edit Profile</h1>
       <form action={updateUserProfile}>
         <div>
+          <label htmlFor="displayName">Display name</label>
+        </div>
+        <div>
+          <input
+            id="displayName"
+            name="displayName"
+            type="text"
+            defaultValue={profile.name ?? ""}
+            placeholder="How should we show your name?"
+          />
+        </div>
+        <div>
           <label htmlFor="bio">Bio</label>
         </div>
         <div>
@@ -38,7 +50,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         <button type="submit">Save</button>
       </form>
       <p>
-        <Link href={`/u/${profile.handle}`}>Back to profile</Link>
+        <Link href={`/${profile.handle}`}>Back to profile</Link>
       </p>
     </main>
   );

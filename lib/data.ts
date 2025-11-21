@@ -21,6 +21,7 @@ export type PublicUserProfile = {
 
 export type SimpleUser = {
   id: string;
+  name: string | null;
   handle: string | null;
   pfp: string | null;
 };
@@ -207,7 +208,7 @@ export async function getFollowersByHandle(handle: string): Promise<SimpleUser[]
     await ensureDb();
     const result = await query<SimpleUser>(
       `
-        SELECT users.id, users.handle, users.pfp
+        SELECT users.id, users.name, users.handle, users.pfp
         FROM followers
         INNER JOIN users ON users.id = followers.follower_id
         INNER JOIN users AS followed ON followed.id = followers.following_id
@@ -228,7 +229,7 @@ export async function getFollowingByHandle(handle: string): Promise<SimpleUser[]
     await ensureDb();
     const result = await query<SimpleUser>(
       `
-        SELECT users.id, users.handle, users.pfp
+        SELECT users.id, users.name, users.handle, users.pfp
         FROM followers
         INNER JOIN users ON users.id = followers.following_id
         INNER JOIN users AS follower ON follower.id = followers.follower_id

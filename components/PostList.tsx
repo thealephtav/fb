@@ -69,15 +69,17 @@ export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
                     <p>
                       <strong>
                         {post.author_handle ? (
-                          <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>
+                          <Link href={`/${post.author_handle}`}>
+                            {post.author_name?.trim() || `@${post.author_handle}`}
+                          </Link>
                         ) : (
-                          post.author_name ?? "Unknown"
+                          post.author_name?.trim() || "Unknown"
                         )}
                       </strong> wrote at {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
                     </p>
                     <p>{post.body}</p>
                     {/* <small>
-                      <Link href={`/u/${post.author_handle ?? ""}`}>
+                      <Link href={`/${post.author_handle ?? ""}`}>
                         {`Write on @${post.author_handle ?? "this"}'s wall`}
                       </Link>
                     </small> */}

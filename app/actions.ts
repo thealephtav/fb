@@ -92,7 +92,7 @@ export async function createPost(formData: FormData) {
     [randomUUID(), body.trim(), user.id, targetProfile.id, imageUrl],
   );
   if (targetProfile.handle) {
-    revalidatePath(`/u/${targetProfile.handle}`);
+    revalidatePath(`/${targetProfile.handle}`);
   }
   revalidatePath("/");
 }
@@ -208,6 +208,13 @@ export async function updateUserProfile(formData: FormData) {
   const updates: string[] = [];
   const params: unknown[] = [];
 
+  const displayNameValue = formData.get("displayName");
+  if (typeof displayNameValue === "string") {
+    const trimmedName = displayNameValue.trim();
+    updates.push(`name = $${updates.length + 1}`);
+    params.push(trimmedName.length > 0 ? trimmedName : null);
+  }
+
   if (typeof bioValue === "string") {
     const trimmed = bioValue.trim();
     updates.push(`bio = $${updates.length + 1}`);
@@ -233,8 +240,8 @@ export async function updateUserProfile(formData: FormData) {
   await query(`UPDATE users SET ${updates.join(", ")} WHERE id = $${params.length}`, params);
 
   if (user.handle) {
-    revalidatePath(`/u/${user.handle}`);
-    revalidatePath(`/u/${user.handle}/edit`);
+    revalidatePath(`/${user.handle}`);
+    revalidatePath(`/${user.handle}/edit`);
   }
 }
 
@@ -260,7 +267,7 @@ export async function followUser(formData: FormData) {
     [session.user.id, targetUserId],
   );
   if (typeof targetHandle === "string" && targetHandle) {
-    revalidatePath(`/u/${targetHandle}`);
+    revalidatePath(`/${targetHandle}`);
   }
 }
 
@@ -284,6 +291,6 @@ export async function unfollowUser(formData: FormData) {
     targetUserId,
   ]);
   if (typeof targetHandle === "string" && targetHandle) {
-    revalidatePath(`/u/${targetHandle}`);
+    revalidatePath(`/${targetHandle}`);
   }
 }
