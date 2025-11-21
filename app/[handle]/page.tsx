@@ -39,7 +39,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main className="feed">
-      <article className="profile-card">
+      <section className="profile-hero-section">
         <div className="profile-hero">
           <div className="profile-avatar">
             {profile.pfp ? (
@@ -73,35 +73,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             </div>
           ) : null}
         </div>
-        {/* TODO I think we remove this with "connections" */}
-        {/* <p className="profile-stats">
-          <Link href={`/${profile.handle}/followers`}>
-            <strong>{profile.follower_count}</strong> Followers
-          </Link>{" "}
-          ·{" "}
-          <Link href={`/${profile.handle}/following`}>
-            <strong>{profile.following_count}</strong> Following
-          </Link>
-        </p> */}
-      </article>
-      {/* TODO I think we remove this with "connections" */}
-      {/* {isOwner ? null : viewerId ? (
-        <form action={profile.is_following ? unfollowUser : followUser}>
-          <input type="hidden" name="targetUserId" value={profile.id} />
-          <input type="hidden" name="targetHandle" value={profile.handle ?? ""} />
-          <button type="submit">{profile.is_following ? "Unfollow" : "Follow"}</button>
-        </form>
-      ) : (
-        <Link href="/welcome">Join to follow</Link>
-      )} */}
-      <CreatePostForm
-        canPost={!!viewerId}
-        action={createPost}
-        profileHandle={profile.handle ?? undefined}
-        isOwner={isOwner}
-        disabledMessage="Join to post on this profile."
-      />
-      <section>
+      </section>
+
+      <section className="profile-content">
+        <CreatePostForm
+          canPost={!!viewerId}
+          action={createPost}
+          profileHandle={profile.handle ?? undefined}
+          isOwner={isOwner}
+          disabledMessage="Join to post on this profile."
+        />
         <PostList posts={posts} statusHandle={profile.handle ?? undefined} />
       </section>
     </main>

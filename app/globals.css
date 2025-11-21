@@ -34,10 +34,20 @@ nav > :first-child:last-child {
   padding: 1rem;
 }
 
-.profile-card {
+.profile-hero-section {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.75rem;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
 }
 
 .profile-hero {
@@ -46,6 +56,7 @@ nav > :first-child:last-child {
   align-items: center;
   gap: 0.5rem;
   text-align: center;
+  padding: 2rem 0 3rem;
 }
 
 .profile-avatar img {
