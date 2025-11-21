@@ -8,6 +8,14 @@ import { getUserByHandle, getUserById } from "@/lib/data";
 import { auth, signIn, signOut } from "@/auth";
 import { put } from "@vercel/blob";
 
+const RESERVED_HANDLES = new Set(["edit", "admin", "sign-in", "api", "not-found"]);
+
+function assertHandleAllowed(handle: string) {
+  if (RESERVED_HANDLES.has(handle)) {
+    throw new Error("That username is not available.");
+  }
+}
+
 export async function updateUserDetails(formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -23,6 +31,7 @@ export async function updateUserDetails(formData: FormData) {
     throw new Error("Handle is required");
   }
   const normalizedHandle = handle.trim().toLowerCase();
+  assertHandleAllowed(normalizedHandle);
 
   const existingHandle = await query<{ exists: boolean }>(
     "SELECT EXISTS (SELECT 1 FROM users WHERE handle = $1 AND id <> $2) AS exists",
@@ -118,6 +127,9 @@ export async function signUpWithHandle(
 
   const trimmedEmail = email.trim();
   const normalizedHandle = handle.trim().toLowerCase();
+  if (RESERVED_HANDLES.has(normalizedHandle)) {
+    return { status: "error", message: "Username is not available" };
+  }
 
   await ensureDb();
 
