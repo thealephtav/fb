@@ -4,42 +4,56 @@ type Props = {
   canPost: boolean;
   action?: (formData: FormData) => Promise<void>;
   profileHandle?: string | null;
-  disabledMessage?: string;
+  profileDisplayName?: string | null;
+  disabledMessage?: React.ReactNode;
   isOwner?: boolean;
 };
+
+const WAITLIST_URL = "https://thealeph.typeform.com/to/DXE6CRZ0";
 
 export function CreatePostForm({
   canPost,
   action,
   profileHandle,
-  disabledMessage = "Finish setting up your user before posting.",
+  profileDisplayName,
+  disabledMessage,
   isOwner = false,
 }: Props) {
-  const heading = isOwner
-    ? "Update status"
-    : profileHandle
-      ? `Write on @${profileHandle}'s wall`
-      : "Create Post";
+  const headerText =
+    disabledMessage ??
+    (
+      <>
+        <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
+          Get on the waitlist
+        </a>{" "}
+        or <a href="/sign-in">sign in</a> to post on this profile.
+      </>
+    );
 
   if (!canPost) {
     return (
       <section>
-        <h2>{heading}</h2>
-        <p>{disabledMessage}</p>
+        <p>
+          <strong>{headerText}</strong>
+        </p>
       </section>
     );
   }
 
   return (
     <section>
-      <h2>{heading}</h2>
       <form action={action} className="post-form">
         {profileHandle ? (
           <input type="hidden" name="profileHandle" value={profileHandle} />
         ) : null}
-        <label htmlFor="post-body">Message</label>
         <div className="post-form-row">
-          <input id="post-body" name="body" required className="post-input" />
+          <input
+            id="post-body"
+            name="body"
+            required
+            className="post-input"
+            placeholder={isOwner ? "Update status" : "Write a post"}
+          />
           <button type="submit">Post</button>
         </div>
         {/* TODO eliminating images from posts for now */}

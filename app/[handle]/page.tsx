@@ -83,8 +83,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           canPost={!!viewerId}
           action={createPost}
           profileHandle={profile.handle ?? undefined}
+          profileDisplayName={displayName}
           isOwner={isOwner}
-          disabledMessage="Join to post on this profile."
         />
         <PostList posts={posts} statusHandle={profile.handle ?? undefined} />
       </section>
