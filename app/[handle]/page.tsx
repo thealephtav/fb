@@ -25,20 +25,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   const [profileLinks] = await Promise.all([getProfileLinksByUserId(profile.id)]);
 
   const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
-  const normalizeLink = (link: string) => {
-    const trimmed = link.trim();
-    if (!trimmed) return "";
-    if (/^https?:\/\//i.test(trimmed)) return trimmed;
-    return `https://${trimmed}`;
-  };
   const normalizedProfileLinks = profileLinks
     .map((link) => {
-      const href = normalizeLink(link.uri);
-      if (!href) return null;
       const label = link.label?.trim() || link.uri;
+      const href = /^https?:\/\//i.test(link.uri) ? link.uri : `https://${link.uri}`;
       return { ...link, href, label };
     })
-    .filter((link): link is { id: number; href: string; label: string } => !!link);
+    .filter((link): link is { id: number; href: string; label: string } => !!link.href && !!link.label);
+  const statusPost = posts.find(
+    (post) => post.author_handle === profile.handle && post.profile_handle === profile.handle,
+  );
   const isOwner = viewerId === profile.id;
 
   return (
@@ -58,10 +54,14 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             )}
           </div>
           <h1 className="profile-handle">{displayName}</h1>
-          {profile.bio ? (
-            <p className="profile-bio">
-              <i>{profile.bio}</i>
-            </p>
+          {statusPost ? (
+            <div className="profile-status">
+              <p className="profile-status-body">{statusPost.body}</p>
+              <p className="profile-status-label">
+                Status updated at{" "}
+                {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+              </p>
+            </div>
           ) : null}
           {normalizedProfileLinks.length > 0 ? (
             <div className="profile-links">
@@ -73,7 +73,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             </div>
           ) : null}
         </div>
-        <p className="profile-stats">
+        {/* TODO I think we remove this with "connections" */}
+        {/* <p className="profile-stats">
           <Link href={`/${profile.handle}/followers`}>
             <strong>{profile.follower_count}</strong> Followers
           </Link>{" "}
@@ -81,11 +82,10 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           <Link href={`/${profile.handle}/following`}>
             <strong>{profile.following_count}</strong> Following
           </Link>
-        </p>
+        </p> */}
       </article>
-      {isOwner ? (
-        <Link href={`/${profile.handle}/edit`}>Edit Profile</Link>
-      ) : viewerId ? (
+      {/* TODO I think we remove this with "connections" */}
+      {/* {isOwner ? null : viewerId ? (
         <form action={profile.is_following ? unfollowUser : followUser}>
           <input type="hidden" name="targetUserId" value={profile.id} />
           <input type="hidden" name="targetHandle" value={profile.handle ?? ""} />
@@ -93,16 +93,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         </form>
       ) : (
         <Link href="/welcome">Join to follow</Link>
-      )}
+      )} */}
       <CreatePostForm
         canPost={!!viewerId}
         action={createPost}
         profileHandle={profile.handle ?? undefined}
+        isOwner={isOwner}
         disabledMessage="Join to post on this profile."
       />
       <section>
-        <h2>Wall</h2>
-        <PostList posts={posts} />
+        <PostList posts={posts} statusHandle={profile.handle ?? undefined} />
       </section>
     </main>
   );

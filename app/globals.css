@@ -59,9 +59,25 @@ nav > :first-child:last-child {
   margin: 0;
 }
 
-.profile-bio {
-  margin: 0;
+.profile-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
   max-width: 30rem;
+}
+
+.profile-status-label {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.profile-status-body {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  word-break: break-word;
 }
 
 .profile-links {

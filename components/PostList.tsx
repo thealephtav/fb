@@ -5,6 +5,7 @@ import type { Post } from "@/lib/data";
 type Props = {
   posts: Post[];
   emptyMessage?: string;
+  statusHandle?: string;
 };
 
 function formatDayLabel(date: Date) {
@@ -28,7 +29,7 @@ function formatDayLabel(date: Date) {
   });
 }
 
-export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
+export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }: Props) {
   if (posts.length === 0) {
     return <p>{emptyMessage}</p>;
   }
@@ -75,7 +76,13 @@ export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
                         ) : (
                           post.author_name?.trim() || "Unknown"
                         )}
-                      </strong> wrote at {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      </strong>{" "}
+                      {statusHandle &&
+                      post.author_handle === statusHandle &&
+                      post.profile_handle === statusHandle
+                        ? "updated their status at"
+                        : "wrote at"}{" "}
+                      {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
                     </p>
                     <p>{post.body}</p>
                     {/* <small>

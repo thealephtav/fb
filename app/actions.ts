@@ -203,7 +203,6 @@ export async function updateUserProfile(formData: FormData) {
     throw new Error("User not found");
   }
 
-  const bioValue = formData.get("bio");
   const file = formData.get("pfp");
   const updates: string[] = [];
   const params: unknown[] = [];
@@ -231,12 +230,6 @@ export async function updateUserProfile(formData: FormData) {
     acc.push({ label, uri: normalizedUri });
     return acc;
   }, []);
-
-  if (typeof bioValue === "string") {
-    const trimmed = bioValue.trim();
-    updates.push(`bio = $${updates.length + 1}`);
-    params.push(trimmed.length > 0 ? trimmed : null);
-  }
 
   if (file instanceof File && file.size > 0) {
     const buffer = await file.arrayBuffer();

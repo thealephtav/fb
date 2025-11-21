@@ -38,12 +38,6 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
           />
         </div>
         <div>
-          <label htmlFor="bio">Bio</label>
-        </div>
-        <div>
-          <textarea id="bio" name="bio" rows={4} defaultValue={profile.bio ?? ""} />
-        </div>
-        <div>
           <label>Links</label>
         </div>
         <ProfileLinksEditor initialLinks={profileLinks} />

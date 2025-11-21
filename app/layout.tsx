@@ -49,9 +49,14 @@ export default async function RootLayout({
             )}
             <Link href="/">THE ALEPH</Link>
             {currentUser && (
-              <form action={signOutUser}>
-                <button type="submit">Sign Out</button>
-              </form>
+              <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                <Link href={`/${currentUser.handle}/edit`}>
+                  <button>Edit Profile</button>
+                </Link>
+                <form action={signOutUser}>
+                  <button type="submit">Sign Out</button>
+                </form>
+              </div>
             )}
           </nav>
         </header>
