@@ -64,15 +64,13 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             </p>
           ) : null}
           {normalizedProfileLinks.length > 0 ? (
-            <ul className="profile-links">
+            <div className="profile-links">
               {normalizedProfileLinks.map((link) => (
-                <li key={link.id}>
-                  <Link href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                  </Link>
-                </li>
+                <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </Link>
               ))}
-            </ul>
+            </div>
           ) : null}
         </div>
         <p className="profile-stats">

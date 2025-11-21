@@ -65,17 +65,20 @@ nav > :first-child:last-child {
 }
 
 .profile-links {
-  list-style: none;
-  padding: 0;
-  margin: 0.25rem 0 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  align-items: center;
+  width: 100%;
 }
 
 .profile-links a {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #000;
   color: inherit;
-  text-decoration: underline;
   word-break: break-all;
 }
 
