@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 
 nav {
@@ -28,8 +29,8 @@ nav > :first-child:last-child {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 100%;
-  max-width: 640px;
+  width: min(100%, 640px);
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -103,6 +104,7 @@ nav > :first-child:last-child {
 .profile-links a {
   display: block;
   width: 100%;
+  box-sizing: border-box;
   padding: 0.75rem 1rem;
   border: 1px solid #000;
   color: inherit;
