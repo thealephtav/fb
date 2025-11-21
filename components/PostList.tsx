@@ -7,46 +7,87 @@ type Props = {
   emptyMessage?: string;
 };
 
+function formatDayLabel(date: Date) {
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  const isToday = date.toDateString() === today.toDateString();
+  const isYesterday = date.toDateString() === yesterday.toDateString();
+
+  if (isToday) {
+    return "Today";
+  }
+  if (isYesterday) {
+    return "Yesterday";
+  }
+  return date.toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric",
+    year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
+  });
+}
+
 export function PostList({ posts, emptyMessage = "No posts yet." }: Props) {
   if (posts.length === 0) {
     return <p>{emptyMessage}</p>;
   }
 
+  const postsByDay = posts.reduce<Record<string, Post[]>>((acc, post) => {
+    const label = formatDayLabel(new Date(post.posted_at));
+    acc[label] = acc[label] ? [...acc[label], post] : [post];
+    return acc;
+  }, {});
+
+  const orderedLabels = posts.reduce<string[]>((labels, post) => {
+    const label = formatDayLabel(new Date(post.posted_at));
+    if (!labels.includes(label)) {
+      labels.push(label);
+    }
+    return labels;
+  }, []);
+
   return (
-    <ul className="post-list">
-      {posts.map((post) => (
-        <li key={post.id} className="post">
-          <div className="post-header">
-          {post.author_pfp ? (
-            <Image
-              src={post.author_pfp}
-              alt={post.author_handle ? `@${post.author_handle}` : "Author"}
-              width={48}
-              height={48}
-            />
-          ) : (
-            <Image src="/default-pfp.png" alt="Default profile" width={48} height={48} />
-          )}
-            <div>
-              {post.author_handle ? (
-                <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>
-              ) : (
-                <span>{post.author_name ?? "Unknown"}</span>
-              )}
-              <small>{new Date(post.posted_at).toLocaleString()}</small>
-              {post.profile_handle ? (
-                <div>
-                  on <Link href={`/u/${post.profile_handle}`}>@{post.profile_handle}</Link>
+    <div>
+      {orderedLabels.map((label, index) => (
+        <section key={label} className="post-day">
+          {index > 0 ? <hr /> : null}
+          <h3>{label}</h3>
+          <ul className="post-list">
+            {postsByDay[label].map((post) => (
+              <li key={post.id} className="post-item">
+                <div className="post-horizontal">
+                  <div className="post-avatar">
+                    <Image
+                      src={post.author_pfp ?? "/default-pfp.png"}
+                      alt="Profile"
+                      width={64}
+                      height={64}
+                    />
+                  </div>
+                  <div>
+                    <p>
+                      <strong>
+                        {post.author_handle ? (
+                          <Link href={`/u/${post.author_handle}`}>@{post.author_handle}</Link>
+                        ) : (
+                          post.author_name ?? "Unknown"
+                        )}
+                      </strong> wrote at {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                    </p>
+                    <p>{post.body}</p>
+                    {/* <small>
+                      <Link href={`/u/${post.author_handle ?? ""}`}>
+                        {`Write on @${post.author_handle ?? "this"}'s wall`}
+                      </Link>
+                    </small> */}
+                  </div>
                 </div>
-              ) : null}
-            </div>
-          </div>
-          <p>{post.body}</p>
-          {post.image_url ? (
-            <Image src={post.image_url} alt="Post image" width={400} height={400} />
-          ) : null}
-        </li>
+              </li>
+            ))}
+          </ul>
+        </section>
       ))}
-    </ul>
+    </div>
   );
 }

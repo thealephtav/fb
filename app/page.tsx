@@ -69,7 +69,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       </section>
 
       <section>
-        <h2>Posts</h2>
+        <h2>Wall</h2>
         <PostList
           posts={posts}
           emptyMessage={algorithm === "all" ? "No posts yet." : "No posts from people you follow."}

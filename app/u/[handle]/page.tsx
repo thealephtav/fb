@@ -72,7 +72,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         disabledMessage="Join to post on this profile."
       />
       <section>
-        <h2>Posts</h2>
+        <h2>Wall</h2>
         <PostList posts={posts} />
       </section>
     </main>
