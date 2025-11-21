@@ -64,6 +64,21 @@ nav > :first-child:last-child {
   max-width: 30rem;
 }
 
+.profile-links {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.profile-links a {
+  color: inherit;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
 .profile-stats {
   margin: 0;
 }

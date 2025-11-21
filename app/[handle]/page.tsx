@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { getPostsByHandle, getUserProfileByHandle } from "@/lib/data";
+import { getPostsByHandle, getUserProfileByHandle, getProfileLinksByUserId } from "@/lib/data";
 import { followUser, unfollowUser, createPost } from "@/app/actions";
 import { PostList } from "@/components/PostList";
 import { CreatePostForm } from "@/components/CreatePostForm";
@@ -22,7 +22,23 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
     notFound();
   }
 
+  const [profileLinks] = await Promise.all([getProfileLinksByUserId(profile.id)]);
+
   const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
+  const normalizeLink = (link: string) => {
+    const trimmed = link.trim();
+    if (!trimmed) return "";
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+  };
+  const normalizedProfileLinks = profileLinks
+    .map((link) => {
+      const href = normalizeLink(link.uri);
+      if (!href) return null;
+      const label = link.label?.trim() || link.uri;
+      return { ...link, href, label };
+    })
+    .filter((link): link is { id: number; href: string; label: string } => !!link);
   const isOwner = viewerId === profile.id;
 
   return (
@@ -46,6 +62,17 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
             <p className="profile-bio">
               <i>{profile.bio}</i>
             </p>
+          ) : null}
+          {normalizedProfileLinks.length > 0 ? (
+            <ul className="profile-links">
+              {normalizedProfileLinks.map((link) => (
+                <li key={link.id}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           ) : null}
         </div>
         <p className="profile-stats">

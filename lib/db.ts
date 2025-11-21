@@ -55,6 +55,16 @@ async function createTables() {
   `);
 
   await query(`
+    CREATE TABLE IF NOT EXISTS links (
+      id BIGSERIAL PRIMARY KEY,
+      profile_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      label TEXT NOT NULL,
+      uri TEXT NOT NULL,
+      click_count INT NOT NULL DEFAULT 0
+    )
+  `);
+
+  await query(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
       "sessionToken" TEXT UNIQUE NOT NULL,

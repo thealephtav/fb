@@ -19,6 +19,14 @@ export type PublicUserProfile = {
   is_following: boolean;
 };
 
+export type ProfileLink = {
+  id: number;
+  profile_id: string;
+  label: string;
+  uri: string;
+  click_count: number;
+};
+
 export type SimpleUser = {
   id: string;
   name: string | null;
@@ -241,6 +249,25 @@ export async function getFollowingByHandle(handle: string): Promise<SimpleUser[]
     return result.rows;
   } catch (error) {
     console.error("Failed to load following", error);
+    return [];
+  }
+}
+
+export async function getProfileLinksByUserId(userId: string): Promise<ProfileLink[]> {
+  try {
+    await ensureDb();
+    const result = await query<ProfileLink>(
+      `
+        SELECT id, profile_id, label, uri, click_count
+        FROM links
+        WHERE profile_id = $1
+        ORDER BY id ASC
+      `,
+      [userId],
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Failed to load profile links", error);
     return [];
   }
 }

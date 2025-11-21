@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getUserProfileByHandle } from "@/lib/data";
+import { getProfileLinksByUserId, getUserProfileByHandle } from "@/lib/data";
 import { updateUserProfile } from "@/app/actions";
 
 export default async function EditProfilePage({ params }: { params: Promise<{ handle: string }> }) {
@@ -18,6 +18,11 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   if (!profile || profile.id !== viewerId) {
     notFound();
   }
+  const profileLinks = await getProfileLinksByUserId(profile.id);
+  const linksValue =
+    profileLinks.length > 0
+      ? profileLinks.map((link) => `${link.label} | ${link.uri}`).join("\n")
+      : "";
 
   return (
     <main className="feed">
@@ -40,6 +45,18 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         </div>
         <div>
           <textarea id="bio" name="bio" rows={4} defaultValue={profile.bio ?? ""} />
+        </div>
+        <div>
+          <label htmlFor="links">Links (one per line)</label>
+        </div>
+        <div>
+          <textarea
+            id="links"
+            name="links"
+            rows={4}
+            defaultValue={linksValue}
+            placeholder="Label | https://example.com"
+          />
         </div>
         <div>
           <label htmlFor="pfp">Profile photo</label>

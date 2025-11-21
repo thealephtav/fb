@@ -2,7 +2,7 @@
 
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { ensureDb, query } from "@/lib/db";
+import { ensureDb, query, pool } from "@/lib/db";
 import { getUserByHandle, getUserById } from "@/lib/data";
 import { auth, signIn, signOut } from "@/auth";
 import { put } from "@vercel/blob";
@@ -215,6 +215,31 @@ export async function updateUserProfile(formData: FormData) {
     params.push(trimmedName.length > 0 ? trimmedName : null);
   }
 
+  const linksValue = formData.get("links");
+  const parsedLinks =
+    typeof linksValue === "string"
+      ? linksValue
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .map((line) => {
+            const [rawLabel = "", rawUri = ""] = line.split("|").map((part) => part.trim());
+            let label = rawLabel;
+            let uri = rawUri || rawLabel;
+            if (!uri) {
+              return null;
+            }
+            if (!label) {
+              label = uri;
+            }
+            if (!/^https?:\/\//i.test(uri)) {
+              uri = `https://${uri}`;
+            }
+            return { label, uri };
+          })
+          .filter((link): link is { label: string; uri: string } => !!link)
+      : [];
+
   if (typeof bioValue === "string") {
     const trimmed = bioValue.trim();
     updates.push(`bio = $${updates.length + 1}`);
@@ -232,12 +257,28 @@ export async function updateUserProfile(formData: FormData) {
     params.push(blob.url);
   }
 
-  if (updates.length === 0) {
-    return;
-  }
-
   params.push(session.user.id);
-  await query(`UPDATE users SET ${updates.join(", ")} WHERE id = $${params.length}`, params);
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    if (updates.length > 0) {
+      await client.query(`UPDATE users SET ${updates.join(", ")} WHERE id = $${params.length}`, params);
+    }
+    await client.query(`DELETE FROM links WHERE profile_id = $1`, [session.user.id]);
+    for (const link of parsedLinks) {
+      await client.query(
+        `INSERT INTO links (profile_id, label, uri) VALUES ($1, $2, $3)`,
+        [session.user.id, link.label, link.uri],
+      );
+    }
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 
   if (user.handle) {
     revalidatePath(`/${user.handle}`);
