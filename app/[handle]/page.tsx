@@ -61,7 +61,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   const isOwner = viewerId === profile.id;
 
   return (
-    <main className="feed">
+    <main>
       <section className="profile-hero-section">
         <div className="profile-avatar lifted">
           {profile.pfp ? (
@@ -88,8 +88,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         {normalizedProfileLinks.length > 0 ? (
           <div className="profile-links">
             {normalizedProfileLinks.map((link) => (
-              <Link className="lifted emboss" key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
-                {link.label}
+              <Link className="lifted" key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
+                <button className="deboss">{link.label}</button>
               </Link>
             ))}
           </div>

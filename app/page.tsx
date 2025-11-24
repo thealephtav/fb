@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { getUserById } from "@/lib/data";
 import { signOutUser } from "./actions";
 import { JoinForm } from "@/components/JoinForm";
+import { WAITLIST_URL, BLOG_URL } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main>
-      <header>
+      {/* <header>
         <nav className="navbar">
           {activeUser && (
             <div>
@@ -40,36 +41,44 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
               </Link>
             </div>
           )}
-          <Link href="/">THE ALEPH</Link>
-          {activeUser && (
-            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-              <Link href={`/${activeUser.handle}/edit`}>
-                <button>Edit Profile</button>
-              </Link>
-              <form action={signOutUser}>
-                <button type="submit">Sign Out</button>
-              </form>
-            </div>
-          )}
+
         </nav>
-      </header>
+      </header> */}
+
+      <Image className="seal" src="/stamp.png" alt="Aleph" width={300} height={200} />
+      <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
       {!activeUser ? (
-        <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <JoinForm />
+        <>
+          <Link href={WAITLIST_URL} target="_blank">
+            <button className="emboss lifted">GET ON THE LIST</button>
+          </Link>
+          <Link href={BLOG_URL} target="_blank">
+            <button className="emboss lifted">WRITING</button>
+          </Link>
+          {/* TODO move join form */}
+          {/* <JoinForm /> */}
           <p>
             Already have an account? <Link href="/sign-in">Sign in</Link>
           </p>
-        </section>
+        </>
       ) : (
-        <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <h1>Welcome back, {activeUser.name?.trim() || `@${activeUser.handle}`}</h1>
-          <p>
-            Head to your profile to update your status:{" "}
-            <Link href={`/${activeUser.handle}`}>View your page</Link>
-          </p>
-        </section>
+        <>
+          <p>Welcome back, {activeUser.name?.trim() || `@${activeUser.handle}`}</p>
+          <Link href={`/${activeUser.handle}`}><button className="emboss lifted">VIEW PAGE</button></Link>
+          <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">EDIT PAGE</button></Link>
+          <form action={signOutUser}>
+            <button className="emboss lifted" type="submit">SIGN OUT</button>
+          </form>
+          <hr/>
+          <Link href={BLOG_URL} target="_blank">
+            <button className="emboss lifted">WRITING</button>
+          </Link>
+        </>
       )}
+
+      </section>
+
     </main>
   );
 }
