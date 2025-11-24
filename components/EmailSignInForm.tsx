@@ -33,17 +33,19 @@ export function EmailSignInForm({
       onSubmit={() => {
         setSubmitState("pending");
       }}
+      className="post-form join-form"
     >
       <label htmlFor="email">{label}</label>
       <input
-        className="post-input lifted emboss"
+        className="post-input"
         id="email"
         name="email"
         type="email"
         required
-        style={{ 
+        style={{
+          width: "100%",
           marginBottom: "var(--space-sm)",
-          width: "calc(100% - calc(var(--space-sm) * 2))",
+          boxSizing: "border-box",
         }}
       />
       <button
@@ -56,6 +58,9 @@ export function EmailSignInForm({
           state.status === "error" ? "Error" :
         "Send magic link"}
       </button>
+      {state.status === "error" && state.message ? (
+        <p style={{ color: "var(--color-text-primary)", marginTop: "var(--space-xs)" }}>{state.message}</p>
+      ) : null}
     </form>
   );
 }

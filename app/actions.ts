@@ -143,21 +143,18 @@ export async function signUpWithHandle(
     `SELECT id FROM users WHERE handle = $1 LIMIT 1`,
     [normalizedHandle],
   );
-  const handleTakenByOther = handleOwner.rows[0] && handleOwner.rows[0].id !== existingUser?.id;
-  if (handleTakenByOther) {
+  if (handleOwner.rows[0]) {
     return { status: "error", message: "Username already taken" };
   }
 
   if (existingUser) {
-    if (!existingUser.handle) {
-      await query("UPDATE users SET handle = $1 WHERE id = $2", [normalizedHandle, existingUser.id]);
-    }
-  } else {
-    await query(
-      "INSERT INTO users (email, handle) VALUES ($1, $2)",
-      [trimmedEmail, normalizedHandle],
-    );
+    return { status: "error", message: "That email already has an account. Please sign in instead." };
   }
+
+  await query(
+    "INSERT INTO users (email, handle) VALUES ($1, $2)",
+    [trimmedEmail, normalizedHandle],
+  );
 
   try {
     await signIn("email", {
@@ -187,6 +184,13 @@ export async function signInWithEmail(
   }
 
   await ensureDb();
+  const userResult = await query<{ id: string }>(
+    `SELECT id FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1`,
+    [email.trim()],
+  );
+  if (!userResult.rows[0]) {
+    return { status: "error", message: "No account found for that email. Try joining first." };
+  }
   try {
     await signIn("email", {
       email: email.trim(),
