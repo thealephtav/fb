@@ -217,10 +217,6 @@ nav > :first-child:last-child {
   background: linear-gradient(145deg, var(--gradient-light), var(--gradient-dark));
 }
 
-.post-day h3 {
-  margin-bottom: var(--space-xs);
-}
-
 .post-list {
   list-style: none;
   margin: var(--space-0);

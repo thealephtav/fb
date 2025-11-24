@@ -77,12 +77,14 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                           post.author_name?.trim() || "Unknown"
                         )}
                       </strong>{" "}
-                      {statusHandle &&
-                      post.author_handle === statusHandle &&
-                      post.profile_handle === statusHandle
-                        ? "updated their status at"
-                        : "wrote at"}{" "}
-                      {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      <small>
+                        {statusHandle &&
+                        post.author_handle === statusHandle &&
+                        post.profile_handle === statusHandle
+                          ? "updated their status at"
+                          : "wrote at"}{" "}
+                        {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      </small>
                     </p>
                     <p className="post-body">{post.body}</p>
                     {/* <small>
