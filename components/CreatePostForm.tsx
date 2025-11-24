@@ -54,7 +54,7 @@ export function CreatePostForm({
             className="post-input lifted emboss"
             placeholder={isOwner ? "Update status" : "Write a post"}
           />
-          <button type="submit" className="emboss">Post</button>
+          <button type="submit" className="emboss floating">Post</button>
         </div>
         {/* TODO eliminating images from posts for now */}
         {/* <label htmlFor="post-image">Image (optional)</label>

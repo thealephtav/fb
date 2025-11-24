@@ -69,13 +69,13 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
           </div>
           <div className="link-meta">
             {/* <span>Hits: {link.click_count ?? 0}</span> */}
-            <button className="emboss" type="button" onClick={() => removeLink(link.key)}>
+            <button className="emboss sunken" type="button" onClick={() => removeLink(link.key)}>
               Delete
             </button>
           </div>
         </div>
       ))}
-      <button type="button" onClick={addLink} className="link-add-button">
+      <button type="button" onClick={addLink} className="link-add-button emboss floating">
         + Add
       </button>
     </div>

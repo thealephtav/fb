@@ -121,8 +121,11 @@ nav > :first-child:last-child {
   font-size: var(--font-size-sm);
   letter-spacing: var(--letter-spacing-medium);
   text-transform: uppercase;
-  box-shadow: var(--shadow-raised);
   cursor: pointer;
+}
+
+.floating {
+  box-shadow: var(--shadow-raised);
 }
 
 .profile-avatar {
@@ -357,6 +360,10 @@ nav > :first-child:last-child {
 
 .lifted {
   box-shadow: var(--shadow-raised);
+}
+
+.sunken {
+  box-shadow: var(--shadow-sunken);
 }
 
 .deboss {
