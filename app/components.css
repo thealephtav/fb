@@ -209,6 +209,8 @@ nav > :first-child:last-child {
   font-weight: var(--weight-semibold);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .profile-links {
@@ -284,6 +286,8 @@ nav > :first-child:last-child {
 
 .post-body {
   margin: var(--space-xxs) var(--space-0) var(--space-0);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .post-avatar img {

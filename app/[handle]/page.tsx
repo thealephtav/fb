@@ -43,23 +43,22 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   return (
     <main className="feed">
       <section className="profile-hero-section">
-        <div className="profile-avatar">
+        <div className="profile-avatar lifted">
           {profile.pfp ? (
             <Image
-              className="lifted"
               src={profile.pfp}
               alt={`@${profile.handle ?? "user"} profile picture`}
               width={96}
               height={96}
             />
           ) : (
-            <Image className="lifted" src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
           )}
         </div>
         <h1 className="profile-handle deboss">{displayName}</h1>
         {statusPost ? (
           <div className="profile-status">
-            <p className="profile-status-body">{statusPost.body}</p>
+            <p className="profile-status-body emboss">{statusPost.body}</p>
             <small className="profile-status-label">
               Status updated at{" "}
               {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
