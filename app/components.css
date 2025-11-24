@@ -146,6 +146,26 @@ nav > :first-child:last-child {
   object-fit: cover;
 }
 
+.profile-name-input {
+  width: 100%;
+  max-width: var(--size-main-max);
+  margin: var(--space-sm) auto var(--space-md);
+  padding: var(--space-sm);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  letter-spacing: var(--letter-spacing-medium);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-shadow: var(--text-shadow-deboss);
+}
+
+.profile-name-input::placeholder {
+  color: var(--color-text-muted);
+}
+
 .profile-avatar .pfp-overlay {
   position: absolute;
   inset: 0;
@@ -186,7 +206,7 @@ nav > :first-child:last-child {
   margin: var(--space-0);
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
-  color: var(--color-surface);
+  color: var(--color-text-primary);
   letter-spacing: var(--letter-spacing-medium);
 }
 

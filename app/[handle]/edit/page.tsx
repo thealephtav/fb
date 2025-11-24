@@ -25,7 +25,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   return (
     <main className="feed">
       <h1>Edit Profile</h1>
-      <form action={updateUserProfile} encType="multipart/form-data" className="post-form profile-content">
+      <form action={updateUserProfile} encType="multipart/form-data" className="post-form">
         <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
           <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
             <Image
@@ -39,14 +39,13 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
           <input id="pfp" name="pfp" type="file" accept="image/*" className="visually-hidden" />
         </div>
         <div className="profile-edit-field">
-          <label htmlFor="displayName">Display name</label>
           <input
             id="displayName"
             name="displayName"
             type="text"
             defaultValue={profile.name ?? ""}
-            placeholder="How should we show your name?"
-            className="post-input"
+            placeholder="Display name"
+            className="profile-name-input"
           />
         </div>
         <div>

@@ -72,7 +72,7 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
             </div>
           </div>
           <div className="link-meta">
-            <span>Hits: {link.click_count ?? 0}</span>
+            {/* <span>Hits: {link.click_count ?? 0}</span> */}
             <button type="button" onClick={() => removeLink(link.key)}>
               Delete
             </button>

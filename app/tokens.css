@@ -2,9 +2,9 @@
   color-scheme: light;
 
   /* Typography */
-  --font-display: var(--font-cormorant-garamond), serif;
-  --font-serif: var(--font-crimson-text), serif;
-  --font-sans: var(--font-montserrat), sans-serif;
+  --font-display: var(--font-cormorant-garamond, "Cormorant Garamond"), serif;
+  --font-serif: var(--font-crimson-text, "Crimson Text"), serif;
+  --font-sans: var(--font-montserrat, "Montserrat"), sans-serif;
   --font-size-xxl: 3.75rem;
   --font-size-xl: 2.5rem;
   --font-size-lg: 1.25rem;
