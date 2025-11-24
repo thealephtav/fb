@@ -73,6 +73,7 @@
   --color-text-muted: rgba(0, 0, 0, 0.7);
   --color-text-subtle: rgba(0, 0, 0, 0.6);
   --color-button-text: rgba(0, 0, 0, 0.4);
+  --color-link: #6d262b;
   --color-border: rgba(0, 0, 0, 0.1);
   --gradient-light: rgba(255, 255, 255, 0.25);
   --gradient-dark: rgba(0, 0, 0, 0.05);
@@ -99,6 +100,8 @@
   --color-text-muted: rgba(255, 255, 255, 0.55);
   --color-text-subtle: rgba(255, 255, 255, 0.45);
   --color-button-text: rgba(255, 255, 255, 0.64);
+  /* TODO choose a better color */
+  --color-link: #d7d1c4;
   --color-border: rgba(255, 255, 255, 0.1);
   --gradient-light: rgba(255, 255, 255, 0.035);
   --gradient-dark: rgba(0, 0, 0, 0.55);

@@ -47,6 +47,16 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
     <div className="link-editor">
       {links.map((link, index) => (
         <div key={link.key} className="link-editor-row lifted">
+          <div className="link-row-top">
+            <button
+              className="link-delete-button emboss"
+              type="button"
+              onClick={() => removeLink(link.key)}
+              aria-label="Delete link"
+            >
+              ×
+            </button>
+          </div>
           <div className="link-fields">
             <input
               id={`link-label-${index}`}
@@ -67,15 +77,9 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
               className="profile-link-input input-unstyled"
             />
           </div>
-          <div className="link-meta">
-            {/* <span>Hits: {link.click_count ?? 0}</span> */}
-            <button className="emboss sunken" type="button" onClick={() => removeLink(link.key)}>
-              Delete
-            </button>
-          </div>
         </div>
       ))}
-      <button type="button" onClick={addLink} className="link-add-button emboss floating">
+      <button type="button" onClick={addLink} className="emboss floating">
         + Add
       </button>
     </div>

@@ -23,7 +23,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   const profileLinks = await getProfileLinksByUserId(profile.id);
 
   return (
-    <main className="feed">
+    <main>
       <h1 className="deboss edit-page-title">Edit Profile</h1>
       <form action={updateUserProfile} encType="multipart/form-data" className="post-form">
         <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
@@ -55,7 +55,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         <button type="submit" className="floating">Save</button>
       </form>
       <p>
-        <Link href={`/${profile.handle}`}>Back to profile</Link>
+        <Link href={`/${profile.handle}`}>&larr; Profile</Link>
       </p>
     </main>
   );

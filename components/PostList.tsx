@@ -79,7 +79,7 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                   </div>
                   <div>
                     <p className="post-meta">
-                      <strong>
+                      <strong className="emboss">
                         {post.author_handle ? (
                           <Link href={`/${post.author_handle}`}>
                             {post.author_name?.trim() || `@${post.author_handle}`}
