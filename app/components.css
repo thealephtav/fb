@@ -24,6 +24,11 @@ main {
   overflow-x: hidden;
 }
 
+.centered-vert {
+  min-height: 100vh;
+  justify-content: center;
+}
+
 a {
   color: var(--color-link);
   text-decoration: none;

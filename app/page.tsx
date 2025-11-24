@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
   const activeUser = userResult?.handle ? userResult : null;
 
   return (
-    <main>
+    <main className="centered-vert">
       {/* <header>
         <nav className="navbar">
           {activeUser && (
@@ -72,7 +72,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <form action={signOutUser}>
             <button className="emboss lifted" type="submit">SIGN OUT</button>
           </form>
-          <hr/>
+          <hr style={{ width: "100%" }}/>
           <Link href={BLOG_URL} target="_blank">
             <button className="emboss lifted">WRITING</button>
           </Link>
