@@ -326,6 +326,13 @@ button {
   box-sizing: border-box;
 }
 
+.home-greeting {
+  margin: var(--space-0);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-align: center;
+}
+
 .post-list {
   list-style: none;
   margin: var(--space-0);

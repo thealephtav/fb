@@ -64,7 +64,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         </>
       ) : (
         <>
-          <p>Welcome back, {activeUser.name?.trim() || `@${activeUser.handle}`}</p>
+          <p className="home-greeting emboss">
+            Hello {activeUser.name?.trim() || `@${activeUser.handle}`}
+          </p>
           <Link href={`/${activeUser.handle}`}><button className="emboss lifted">VIEW PAGE</button></Link>
           <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">EDIT PAGE</button></Link>
           <form action={signOutUser}>
