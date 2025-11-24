@@ -35,8 +35,9 @@ export function JoinForm() {
       onSubmit={() => {
         setSubmitState("pending");
       }}
+      className="post-form join-form"
     >
-      <label htmlFor="join-email">Email</label>
+      <label htmlFor="join-email" className="deboss">Email</label>
       <input
         id="join-email"
         name="email"
@@ -44,8 +45,9 @@ export function JoinForm() {
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
+        className="post-input"
       />
-      <label htmlFor="join-handle">Username</label>
+      <label htmlFor="join-handle" className="deboss">Username</label>
       <input
         id="join-handle"
         name="handle"
@@ -54,8 +56,9 @@ export function JoinForm() {
         title="Use lowercase letters, numbers, underscores, or dashes"
         value={handle}
         onChange={(event) => setHandle(event.target.value)}
+        className="post-input"
       />
-      <button type="submit" disabled={pending || submitState === "pending"}>
+      <button type="submit" className="emboss floating" disabled={pending || submitState === "pending"}>
         {submitState === "pending" ? "Sending..." : "JOIN"}
       </button>
       {submitState === "pending" ? (

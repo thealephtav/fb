@@ -113,6 +113,13 @@ nav > :first-child:last-child {
   color: var(--color-text-muted);
 }
 
+.join-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: var(--size-main-max);
+}
+
 button {
   font-family: var(--font-display);
   font-size: var(--font-size-md);

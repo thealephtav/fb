@@ -22,29 +22,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main className="centered-vert">
-      {/* <header>
-        <nav className="navbar">
-          {activeUser && (
-            <div>
-              {activeUser.pfp ? (
-                <Image
-                  src={activeUser.pfp}
-                  alt="Profile"
-                  width={40}
-                  height={40}
-                />
-              ) : (
-                <Image src="/default-pfp.png" alt="Default profile" width={40} height={40} />
-              )}
-              <Link href={`/${activeUser.handle}`}>
-                {activeUser.name?.trim() || `@${activeUser.handle}`}
-              </Link>
-            </div>
-          )}
-
-        </nav>
-      </header> */}
-
       <Image className="seal" src="/stamp.png" alt="Aleph" width={300} height={200} />
       <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
@@ -56,8 +33,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <Link href={BLOG_URL} target="_blank">
             <button className="emboss lifted">WRITING</button>
           </Link>
-          {/* TODO move join form */}
-          {/* <JoinForm /> */}
           <hr style={{ width: "100%" }}/>
           <p style={{ textAlign: "center", marginTop: "0" }}>
             Already have an account? <Link href="/sign-in">Sign in</Link>
