@@ -54,7 +54,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
                 height={96}
               />
             ) : (
-              <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+              <Image className="lifted" src="/default-pfp.png" alt="Default profile" width={96} height={96} />
             )}
           </div>
           <h1 className="profile-handle deboss">{displayName}</h1>
