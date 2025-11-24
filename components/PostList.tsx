@@ -67,7 +67,7 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                     />
                   </div>
                   <div>
-                    <p>
+                    <p className="post-meta">
                       <strong>
                         {post.author_handle ? (
                           <Link href={`/${post.author_handle}`}>
@@ -84,7 +84,7 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                         : "wrote at"}{" "}
                       {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
                     </p>
-                    <p>{post.body}</p>
+                    <p className="post-body">{post.body}</p>
                     {/* <small>
                       <Link href={`/${post.author_handle ?? ""}`}>
                         {`Write on @${post.author_handle ?? "this"}'s wall`}

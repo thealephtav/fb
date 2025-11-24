@@ -47,6 +47,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           <div className="profile-avatar">
             {profile.pfp ? (
               <Image
+                className="lifted"
                 src={profile.pfp}
                 alt={`@${profile.handle ?? "user"} profile picture`}
                 width={96}
@@ -56,20 +57,20 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
               <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
             )}
           </div>
-          <h1 className="profile-handle">{displayName}</h1>
+          <h1 className="profile-handle deboss">{displayName}</h1>
           {statusPost ? (
             <div className="profile-status">
               <p className="profile-status-body">{statusPost.body}</p>
-              <p className="profile-status-label">
+              <small className="profile-status-label">
                 Status updated at{" "}
                 {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
-              </p>
+              </small>
             </div>
           ) : null}
           {normalizedProfileLinks.length > 0 ? (
             <div className="profile-links">
               {normalizedProfileLinks.map((link) => (
-                <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
+                <Link className="lifted deboss" key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
                   {link.label}
                 </Link>
               ))}

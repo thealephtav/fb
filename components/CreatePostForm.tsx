@@ -51,10 +51,10 @@ export function CreatePostForm({
             id="post-body"
             name="body"
             required
-            className="post-input"
+            className="post-input lifted deboss"
             placeholder={isOwner ? "Update status" : "Write a post"}
           />
-          <button type="submit">Post</button>
+          <button type="submit" className="deboss">Post</button>
         </div>
         {/* TODO eliminating images from posts for now */}
         {/* <label htmlFor="post-image">Image (optional)</label>
