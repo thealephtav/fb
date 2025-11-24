@@ -256,6 +256,14 @@ button {
   color: var(--color-link);
 }
 
+.profile-links a {
+  width: 100%;
+}
+
+.profile-links button {
+  width: 100%;
+}
+
 /* .link-button {
   display: block;
   width: 100%;
