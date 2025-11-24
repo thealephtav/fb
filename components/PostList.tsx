@@ -59,15 +59,26 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
               <li key={post.id} className="post-item">
                 <div className="post-horizontal">
                   <div className="post-avatar">
-                    <Image
-                      src={post.author_pfp ?? "/default-pfp.png"}
-                      alt="Profile"
-                      width={64}
-                      height={64}
-                    />
+                    {post.author_handle ? (
+                      <Link href={`/${post.author_handle}`}>
+                        <Image
+                          src={post.author_pfp ?? "/default-pfp.png"}
+                          alt={`@${post.author_handle} profile picture`}
+                          width={64}
+                          height={64}
+                        />
+                      </Link>
+                    ) : (
+                      <Image
+                        src={post.author_pfp ?? "/default-pfp.png"}
+                        alt="Profile"
+                        width={64}
+                        height={64}
+                      />
+                    )}
                   </div>
                   <div>
-                    <p>
+                    <p className="post-meta">
                       <strong>
                         {post.author_handle ? (
                           <Link href={`/${post.author_handle}`}>
@@ -77,14 +88,16 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                           post.author_name?.trim() || "Unknown"
                         )}
                       </strong>{" "}
-                      {statusHandle &&
-                      post.author_handle === statusHandle &&
-                      post.profile_handle === statusHandle
-                        ? "updated their status at"
-                        : "wrote at"}{" "}
-                      {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      <small>
+                        {statusHandle &&
+                        post.author_handle === statusHandle &&
+                        post.profile_handle === statusHandle
+                          ? "updated their status at"
+                          : "wrote at"}{" "}
+                        {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      </small>
                     </p>
-                    <p>{post.body}</p>
+                    <p className="post-body">{post.body}</p>
                     {/* <small>
                       <Link href={`/${post.author_handle ?? ""}`}>
                         {`Write on @${post.author_handle ?? "this"}'s wall`}

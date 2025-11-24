@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -23,31 +24,35 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main className="feed">
-      <h1>Edit Profile</h1>
-      <form action={updateUserProfile}>
-        <div>
-          <label htmlFor="displayName">Display name</label>
+      <h1 className="deboss edit-page-title">Edit Profile</h1>
+      <form action={updateUserProfile} encType="multipart/form-data" className="post-form">
+        <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
+          <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
+            <Image
+              src={profile.pfp ?? "/default-pfp.png"}
+              alt={`@${profile.handle} profile photo`}
+              width={96}
+              height={96}
+            />
+            <span className="pfp-overlay"></span>
+          </label>
+          <input id="pfp" name="pfp" type="file" accept="image/*" className="visually-hidden" />
         </div>
-        <div>
+        <div className="profile-edit-field">
           <input
             id="displayName"
             name="displayName"
             type="text"
             defaultValue={profile.name ?? ""}
-            placeholder="How should we show your name?"
+            placeholder="Display name"
+            className="profile-name-input input-unstyled"
           />
         </div>
         <div>
           <label>Links</label>
         </div>
         <ProfileLinksEditor initialLinks={profileLinks} />
-        <div>
-          <label htmlFor="pfp">Profile photo</label>
-        </div>
-        <div>
-          <input id="pfp" name="pfp" type="file" accept="image/*" />
-        </div>
-        <button type="submit">Save</button>
+        <button type="submit" className="floating">Save</button>
       </form>
       <p>
         <Link href={`/${profile.handle}`}>Back to profile</Link>

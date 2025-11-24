@@ -43,43 +43,41 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   return (
     <main className="feed">
       <section className="profile-hero-section">
-        <div className="profile-hero">
-          <div className="profile-avatar">
-            {profile.pfp ? (
-              <Image
-                src={profile.pfp}
-                alt={`@${profile.handle ?? "user"} profile picture`}
-                width={96}
-                height={96}
-              />
-            ) : (
-              <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
-            )}
+        <div className="profile-avatar lifted">
+          {profile.pfp ? (
+            <Image
+              src={profile.pfp}
+              alt={`@${profile.handle ?? "user"} profile picture`}
+              width={96}
+              height={96}
+            />
+          ) : (
+            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+          )}
+        </div>
+        <h1 className="profile-handle deboss">{displayName}</h1>
+        {statusPost ? (
+          <div className="profile-status">
+            <p className="profile-status-body emboss">{statusPost.body}</p>
+            <small className="profile-status-label">
+              Status updated at{" "}
+              {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+            </small>
           </div>
-          <h1 className="profile-handle">{displayName}</h1>
-          {statusPost ? (
-            <div className="profile-status">
-              <p className="profile-status-body">{statusPost.body}</p>
-              <p className="profile-status-label">
-                Status updated at{" "}
-                {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
-              </p>
-            </div>
-          ) : null}
-          {normalizedProfileLinks.length > 0 ? (
-            <div className="profile-links">
-              {normalizedProfileLinks.map((link) => (
-                <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ) : null}
-          <div className="waitlist-footer">
-            <Link href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
-              Join The Aleph waitlist
-            </Link>
+        ) : null}
+        {normalizedProfileLinks.length > 0 ? (
+          <div className="profile-links">
+            {normalizedProfileLinks.map((link) => (
+              <Link className="lifted emboss" key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </Link>
+            ))}
           </div>
+        ) : null}
+        <div className="waitlist-footer">
+          <Link href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
+            Join The Aleph waitlist
+          </Link>
         </div>
       </section>
 
