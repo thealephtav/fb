@@ -58,7 +58,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           </Link>
           {/* TODO move join form */}
           {/* <JoinForm /> */}
-          <p>
+          <hr style={{ width: "100%" }}/>
+          <p style={{ textAlign: "center", marginTop: "0" }}>
             Already have an account? <Link href="/sign-in">Sign in</Link>
           </p>
         </>

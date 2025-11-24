@@ -294,6 +294,13 @@ button {
   background: var(--color-surface);
 }
 
+.link-row-top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+}
+
 .link-fields {
   display: flex;
   flex-direction: column;
@@ -305,6 +312,18 @@ button {
   font-size: var(--font-size-sm);
   font-weight: var(--weight-semibold);
   margin-bottom: var(--space-xxs);
+}
+
+.link-delete-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  line-height: 1rem;
 }
 
 .profile-link-input {
