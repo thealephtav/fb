@@ -75,6 +75,11 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
               ))}
             </div>
           ) : null}
+          <div className="waitlist-footer">
+            <Link href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
+              Join The Aleph waitlist
+            </Link>
+          </div>
         </div>
       </section>
 

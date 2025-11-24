@@ -60,6 +60,8 @@ nav > :first-child:last-child {
   gap: 0.5rem;
   text-align: center;
   padding: 2rem 0 3rem;
+  min-height: calc(100vh - 2rem);
+  box-sizing: border-box;
 }
 
 .profile-avatar img {
@@ -111,6 +113,16 @@ nav > :first-child:last-child {
   border: 1px solid #000;
   color: inherit;
   word-break: break-all;
+}
+
+.waitlist-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.waitlist-footer a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 .link-editor {
