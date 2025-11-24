@@ -136,6 +136,7 @@ nav > :first-child:last-child {
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid var(--color-border);
+  cursor: default;
 }
 
 .profile-avatar img {
