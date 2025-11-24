@@ -49,7 +49,6 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
         <div key={link.key} className="link-editor-row lifted">
           <div className="link-fields">
             <div>
-              <label htmlFor={`link-label-${index}`}>Name</label>
               <input
                 id={`link-label-${index}`}
                 name="linkLabel"
@@ -60,7 +59,6 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
               />
             </div>
             <div>
-              <label htmlFor={`link-uri-${index}`}>URL</label>
               <input
                 id={`link-uri-${index}`}
                 name="linkUrl"
