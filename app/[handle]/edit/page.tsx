@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -24,29 +25,34 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   return (
     <main className="feed">
       <h1>Edit Profile</h1>
-      <form action={updateUserProfile}>
-        <div>
-          <label htmlFor="displayName">Display name</label>
+      <form action={updateUserProfile} encType="multipart/form-data" className="post-form profile-content">
+        <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
+          <label htmlFor="pfp" className="profile-avatar lifted">
+            <Image
+              src={profile.pfp ?? "/default-pfp.png"}
+              alt={`@${profile.handle} profile photo`}
+              width={96}
+              height={96}
+            />
+            <span className="pfp-overlay"></span>
+          </label>
+          <input id="pfp" name="pfp" type="file" accept="image/*" className="visually-hidden" />
         </div>
-        <div>
+        <div className="profile-edit-field">
+          <label htmlFor="displayName">Display name</label>
           <input
             id="displayName"
             name="displayName"
             type="text"
             defaultValue={profile.name ?? ""}
             placeholder="How should we show your name?"
+            className="post-input"
           />
         </div>
         <div>
           <label>Links</label>
         </div>
         <ProfileLinksEditor initialLinks={profileLinks} />
-        <div>
-          <label htmlFor="pfp">Profile photo</label>
-        </div>
-        <div>
-          <input id="pfp" name="pfp" type="file" accept="image/*" />
-        </div>
         <button type="submit">Save</button>
       </form>
       <p>

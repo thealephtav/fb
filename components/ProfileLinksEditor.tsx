@@ -46,7 +46,7 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
   return (
     <div className="link-editor">
       {links.map((link, index) => (
-        <div key={link.key} className="link-editor-row">
+        <div key={link.key} className="link-editor-row lifted">
           <div className="link-fields">
             <div>
               <label htmlFor={`link-label-${index}`}>Name</label>

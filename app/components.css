@@ -58,6 +58,12 @@ nav > :first-child:last-child {
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
+  width: 100%;
+  max-width: var(--size-main-max);
+  text-align: center;
+  padding: var(--space-xl) 0 var(--space-xxl);
+  min-height: calc(100vh - var(--space-xl));
+  box-sizing: border-box;
 }
 
 .profile-content {
@@ -91,7 +97,7 @@ nav > :first-child:last-child {
   font-family: var(--font-sans);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
-  background: linear-gradient(180deg, var(--gradient-light), transparent);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
 }
 
@@ -109,7 +115,7 @@ nav > :first-child:last-child {
   min-height: 2.5rem;
   padding: var(--space-xxs) var(--space-sm);
   border: 1px solid var(--color-border);
-  background: radial-gradient(circle at 30% 30%, var(--gradient-light), transparent 45%), var(--color-surface);
+  background: var(--color-surface);
   color: var(--color-text-strong);
   font-family: var(--font-sans);
   font-weight: var(--weight-semibold);
@@ -120,17 +126,16 @@ nav > :first-child:last-child {
   cursor: pointer;
 }
 
-.profile-hero {
-  display: flex;
-  flex-direction: column;
+.profile-avatar {
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
-  width: 100%;
-  max-width: var(--size-main-max);
-  text-align: center;
-  padding: var(--space-xl) 0 var(--space-xxl);
-  min-height: calc(100vh - var(--space-xl));
-  box-sizing: border-box;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
 }
 
 .profile-avatar img {
@@ -138,6 +143,42 @@ nav > :first-child:last-child {
   width: 96px;
   height: 96px;
   object-fit: cover;
+}
+
+.profile-avatar .pfp-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-surface);
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.profile-avatar:hover .pfp-overlay,
+.profile-avatar:focus-within .pfp-overlay {
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 1;
+}
+
+.profile-avatar:hover img,
+.profile-avatar:focus-within img {
+  filter: brightness(0.85);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .profile-handle {
@@ -188,7 +229,7 @@ nav > :first-child:last-child {
   border: 1px solid var(--color-border);
   color: var(--color-text-strong);
   word-break: break-word;
-  background: linear-gradient(135deg, var(--gradient-light), transparent);
+  background: var(--color-surface);
   font-family: var(--font-display);
 }
 
@@ -214,7 +255,7 @@ nav > :first-child:last-child {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  background: linear-gradient(145deg, var(--gradient-light), var(--gradient-dark));
+  background: var(--color-surface);
 }
 
 .post-list {
@@ -255,5 +296,9 @@ nav > :first-child:last-child {
 }
 
 .deboss {
+  text-shadow: var(--text-shadow-deboss);
+}
+
+.emboss {
   text-shadow: var(--text-shadow-emboss);
 }
