@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./tokens.css";
 import "./components.css";
+import { Analytics } from "@vercel/analytics/react";
 import { Cormorant_Garamond, Crimson_Text, Montserrat } from "next/font/google";
 
 const cormorantGaramond = Cormorant_Garamond({
@@ -40,6 +41,7 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <div>{children}</div>
+        <Analytics />
       </body>
     </html>
   );
