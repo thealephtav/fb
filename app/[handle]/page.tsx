@@ -1,11 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getPostsByHandle, getUserProfileByHandle, getProfileLinksByUserId } from "@/lib/data";
-import { followUser, unfollowUser, createPost } from "@/app/actions";
+import { createPost } from "@/app/actions";
 import { PostList } from "@/components/PostList";
 import { CreatePostForm } from "@/components/CreatePostForm";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const handleParam = typeof resolvedParams.handle === "string" ? resolvedParams.handle : "";
+  const normalizedHandle = handleParam.trim().toLowerCase();
+  const profile = await getUserProfileByHandle(normalizedHandle, null);
+  if (!profile) {
+    return { title: "Profile not found | Aleph" };
+  }
+  const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
+  const handleLabel = profile.handle ? `@${profile.handle}` : normalizedHandle;
+  return {
+    title: `${displayName?  displayName: handleLabel} | Aleph`,
+  };
+}
 
 export default async function UserProfilePage({ params }: { params: Promise<{ handle: string }> }) {
   const resolvedParams = await params;
