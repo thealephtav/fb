@@ -48,30 +48,28 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
       {links.map((link, index) => (
         <div key={link.key} className="link-editor-row lifted">
           <div className="link-fields">
-            <div>
-              <input
-                id={`link-label-${index}`}
-                name="linkLabel"
-                type="text"
-                value={link.label}
-                onChange={(event) => updateLink(link.key, "label", event.target.value)}
-                placeholder="My site"
-              />
-            </div>
-            <div>
-              <input
-                id={`link-uri-${index}`}
-                name="linkUrl"
-                type="url"
-                value={link.uri}
-                onChange={(event) => updateLink(link.key, "uri", event.target.value)}
-                placeholder="https://example.com"
-              />
-            </div>
+            <input
+              id={`link-label-${index}`}
+              name="linkLabel"
+              type="text"
+              value={link.label}
+              onChange={(event) => updateLink(link.key, "label", event.target.value)}
+              placeholder="My site"
+              className="profile-link-input input-unstyled"
+            />
+            <input
+              id={`link-uri-${index}`}
+              name="linkUrl"
+              type="url"
+              value={link.uri}
+              onChange={(event) => updateLink(link.key, "uri", event.target.value)}
+              placeholder="https://example.com"
+              className="profile-link-input input-unstyled"
+            />
           </div>
           <div className="link-meta">
             {/* <span>Hits: {link.click_count ?? 0}</span> */}
-            <button type="button" onClick={() => removeLink(link.key)}>
+            <button className="emboss" type="button" onClick={() => removeLink(link.key)}>
               Delete
             </button>
           </div>

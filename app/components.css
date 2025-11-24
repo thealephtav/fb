@@ -94,7 +94,7 @@ nav > :first-child:last-child {
   min-height: 1rem;
   padding: 0 var(--space-sm);
   font-size: var(--font-size-sm);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
   background: var(--color-surface);
@@ -117,7 +117,7 @@ nav > :first-child:last-child {
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text-strong);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-weight: var(--weight-semibold);
   font-size: var(--font-size-sm);
   letter-spacing: var(--letter-spacing-medium);
@@ -161,9 +161,6 @@ nav > :first-child:last-child {
   font-size: var(--font-size-xl);
   letter-spacing: var(--letter-spacing-medium);
   color: var(--color-text-primary);
-  background: transparent;
-  border: none;
-  outline: none;
   text-shadow: var(--text-shadow-deboss);
 }
 
@@ -284,6 +281,43 @@ nav > :first-child:last-child {
   flex-direction: column;
   gap: var(--space-xs);
   background: var(--color-surface);
+}
+
+.link-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.link-input-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-xxs);
+}
+
+.profile-link-input {
+  width: 100%;
+  padding: var(--space-xxs) var(--space-sm);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.profile-link-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.profile-link-input:focus {
+  border-bottom: 1px solid var(--color-text-muted);
+}
+
+.input-unstyled {
+  background: transparent;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
 }
 
 .post-list {
