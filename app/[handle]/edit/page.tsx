@@ -55,7 +55,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         <button type="submit" className="floating">Save</button>
       </form>
       <p>
-        <Link href={`/${profile.handle}`}>Back to profile</Link>
+        <Link href={`/${profile.handle}`}>&larr; Profile</Link>
       </p>
     </main>
   );
