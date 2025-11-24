@@ -111,7 +111,6 @@ nav > :first-child:last-child {
   justify-content: center;
   flex: 0 0 auto;
   min-width: 6.5rem;
-  max-width: 25%;
   min-height: 2.5rem;
   padding: var(--space-xxs) var(--space-sm);
   border: 1px solid var(--color-border);
@@ -272,6 +271,7 @@ nav > :first-child:last-child {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
 }
 
 .link-editor-row {

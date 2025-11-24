@@ -75,11 +75,9 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
           </div>
         </div>
       ))}
-      <div>
-        <button type="button" onClick={addLink}>
-          Add link
-        </button>
-      </div>
+      <button type="button" onClick={addLink} className="link-add-button">
+        + Add
+      </button>
     </div>
   );
 }
