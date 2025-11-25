@@ -52,7 +52,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
           <label>Links</label>
         </div>
         <ProfileLinksEditor initialLinks={profileLinks} />
-        <button type="submit" className="floating">Save</button>
+        <button type="submit" className="floating emboss">Save</button>
       </form>
       <p>
         <Link href={`/${profile.handle}`}>&larr; Profile</Link>
