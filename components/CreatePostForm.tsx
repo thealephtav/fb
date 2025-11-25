@@ -28,7 +28,7 @@ export function CreatePostForm({
   }
 
   return (
-    <section>
+    <section id="post-form" style={{ scrollMarginTop: "96px" }}>
       <form action={action} className="post-form">
         {profileHandle ? (
           <input type="hidden" name="profileHandle" value={profileHandle} />

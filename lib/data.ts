@@ -54,6 +54,14 @@ export type ExploreProfile = {
   latest_status_at: string | null;
 };
 
+export type OnboardingProgress = {
+  has_pfp: boolean;
+  has_display_name: boolean;
+  has_link: boolean;
+  has_status: boolean;
+  has_posted_elsewhere: boolean;
+};
+
 export async function getUserById(userId: string): Promise<User | null> {
   try {
     await ensureDb();
@@ -307,5 +315,29 @@ export async function getExploreProfiles(): Promise<ExploreProfile[]> {
   } catch (error) {
     console.error("Failed to load explore profiles", error);
     return [];
+  }
+}
+
+export async function getOnboardingProgress(userId: string): Promise<OnboardingProgress | null> {
+  try {
+    await ensureDb();
+    const result = await query<OnboardingProgress>(
+      `
+        SELECT
+          users.pfp IS NOT NULL AS has_pfp,
+          (users.name IS NOT NULL AND length(trim(users.name)) > 0) AS has_display_name,
+          EXISTS (SELECT 1 FROM links WHERE profile_id = $1) AS has_link,
+          EXISTS (SELECT 1 FROM posts WHERE user_id = $1 AND profile_user_id = $1) AS has_status,
+          EXISTS (SELECT 1 FROM posts WHERE user_id = $1 AND profile_user_id <> $1) AS has_posted_elsewhere
+        FROM users
+        WHERE users.id = $1
+        LIMIT 1
+      `,
+      [userId],
+    );
+    return result.rows[0] ?? null;
+  } catch (error) {
+    console.error("Failed to load onboarding progress", error);
+    return null;
   }
 }
