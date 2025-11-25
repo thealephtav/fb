@@ -8,7 +8,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   const resolvedParams = await params;
   const session = await auth();
   if (!session?.user?.id) {
-    redirect("/welcome");
+    redirect("/");
   }
   const viewerId = session.user.id;
   const handleParam = typeof resolvedParams.handle === "string" ? resolvedParams.handle : "";
