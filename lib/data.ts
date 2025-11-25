@@ -45,6 +45,15 @@ export type Post = {
   image_url: string | null;
 };
 
+export type ExploreProfile = {
+  id: string;
+  name: string | null;
+  handle: string | null;
+  pfp: string | null;
+  latest_status: string | null;
+  latest_status_at: string | null;
+};
+
 export async function getUserById(userId: string): Promise<User | null> {
   try {
     await ensureDb();
@@ -265,6 +274,39 @@ export async function getProfileLinksByUserId(userId: string): Promise<ProfileLi
     return result.rows;
   } catch (error) {
     console.error("Failed to load profile links", error);
+    return [];
+  }
+}
+
+export async function getExploreProfiles(): Promise<ExploreProfile[]> {
+  try {
+    await ensureDb();
+    const result = await query<ExploreProfile>(
+      `
+        WITH latest_posts AS (
+          SELECT
+            posts.profile_user_id,
+            posts.body,
+            posts.posted_at,
+            ROW_NUMBER() OVER (PARTITION BY posts.profile_user_id ORDER BY posts.posted_at DESC) AS rn
+          FROM posts
+        )
+        SELECT
+          users.id,
+          users.name,
+          users.handle,
+          users.pfp,
+          lp.body AS latest_status,
+          lp.posted_at AS latest_status_at
+        FROM users
+        LEFT JOIN latest_posts lp ON lp.profile_user_id = users.id AND lp.rn = 1
+        WHERE users.handle IS NOT NULL
+        ORDER BY COALESCE(lp.posted_at, users.created_at) DESC
+      `,
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Failed to load explore profiles", error);
     return [];
   }
 }

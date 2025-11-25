@@ -43,14 +43,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <p className="home-greeting emboss">
             Hello {activeUser.name?.trim() || `@${activeUser.handle}`}
           </p>
-          <Link href={`/${activeUser.handle}`}><button className="emboss lifted">VIEW PAGE</button></Link>
-          <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">EDIT PAGE</button></Link>
+          <Link href={`/${activeUser.handle}`}><button className="emboss lifted">View Page</button></Link>
+          <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">Edit Page</button></Link>
           <form action={signOutUser}>
-            <button className="emboss lifted" type="submit">SIGN OUT</button>
+            <button className="emboss lifted" type="submit">Sign Out</button>
           </form>
+          <Link href="/directory"><button className="emboss lifted">Explore</button></Link>
           <hr style={{ width: "100%" }}/>
           <Link href={BLOG_URL} target="_blank">
-            <button className="emboss lifted">WRITING</button>
+            <button className="emboss lifted">Writing</button>
           </Link>
         </>
       )}

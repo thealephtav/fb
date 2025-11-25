@@ -381,6 +381,62 @@ button {
   text-align: center;
 }
 
+/* TODO need to consolidate these styles later, too many classes... */
+.explore-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.explore-item {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.explore-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.explore-avatar {
+  display: inline-flex;
+}
+
+.explore-avatar img {
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  box-shadow: var(--shadow-raised);
+}
+
+.explore-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+
+.explore-handle {
+  font-weight: var(--weight-semibold);
+  font-size: var(--font-size-lg);
+}
+
+.explore-status {
+  margin: 0;
+  font-size: var(--font-size-body);
+  word-break: break-word;
+}
+
+.explore-status-at {
+  color: var(--color-text-muted);
+}
+
 .post-list {
   list-style: none;
   margin: var(--space-0);
