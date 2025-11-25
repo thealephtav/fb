@@ -111,6 +111,7 @@ export async function signUpWithHandle(
 ): Promise<EmailSignInState> {
   const email = formData.get("email");
   const handle = formData.get("handle");
+  const referralCodeValue = formData.get("referralCode");
   if (typeof email !== "string" || !email.trim()) {
     return { status: "error", message: "Email is required" };
   }
@@ -125,6 +126,38 @@ export async function signUpWithHandle(
   }
 
   await ensureDb();
+
+  let referralCodeId: string | null = null;
+  if (typeof referralCodeValue === "string" && referralCodeValue.trim()) {
+    const normalizedCode = referralCodeValue.trim().toLowerCase();
+    const referralResult = await query<{
+      id: string;
+      max_uses: number;
+      uses_count: number;
+      expires_at: string | null;
+      is_active: boolean;
+    }>(
+      `
+        SELECT id, max_uses, uses_count, expires_at, is_active
+        FROM referral_codes
+        WHERE LOWER(code) = LOWER($1)
+        LIMIT 1
+      `,
+      [normalizedCode],
+    );
+    const referral = referralResult.rows[0] ?? null;
+    if (!referral) {
+      return { status: "error", message: "Code not valid" };
+    }
+    const isExpired =
+      !referral.is_active ||
+      (referral.expires_at ? new Date(referral.expires_at) < new Date() : false) ||
+      referral.uses_count >= referral.max_uses;
+    if (isExpired) {
+      return { status: "error", message: "Code expired" };
+    }
+    referralCodeId = referral.id;
+  }
 
   const existingUserResult = await query<{ id: string; handle: string }>(
     `SELECT id, handle FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1`,
@@ -144,10 +177,42 @@ export async function signUpWithHandle(
     return { status: "error", message: "That email already has an account. Please sign in instead." };
   }
 
-  await query(
-    "INSERT INTO users (email, handle) VALUES ($1, $2)",
-    [trimmedEmail, normalizedHandle],
-  );
+  const client = await getPool().connect();
+  try {
+    await client.query("BEGIN");
+
+    if (referralCodeId) {
+      const redeemResult = await client.query(
+        `
+          UPDATE referral_codes
+          SET uses_count = uses_count + 1,
+              is_active = CASE WHEN uses_count + 1 >= max_uses THEN false ELSE is_active END
+          WHERE id = $1
+            AND is_active = TRUE
+            AND (expires_at IS NULL OR expires_at > NOW())
+            AND uses_count < max_uses
+          RETURNING id
+        `,
+        [referralCodeId],
+      );
+      if (!redeemResult.rows[0]) {
+        await client.query("ROLLBACK");
+        return { status: "error", message: "Referral already taken" };
+      }
+    }
+
+    await client.query("INSERT INTO users (email, handle) VALUES ($1, $2)", [
+      trimmedEmail,
+      normalizedHandle,
+    ]);
+
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 
   try {
     await signIn("email", {

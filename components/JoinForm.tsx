@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { EmailSignInState, signUpWithHandle } from "@/app/actions";
 
@@ -21,11 +22,21 @@ export function JoinForm() {
     if (state.status === "sent") {
       setEmail("");
       setHandle("");
+      setReferralCode("");
     }
   }, [state.status, submitState]);
 
   const [email, setEmail] = useState("");
   const [handle, setHandle] = useState("");
+  const [referralCode, setReferralCode] = useState("");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const ref = searchParams.get("ref")?.trim() ?? "";
+    if (ref) {
+      setReferralCode(ref);
+    }
+  }, [searchParams]);
 
   return (
     <form
@@ -56,6 +67,15 @@ export function JoinForm() {
         onChange={(event) => setHandle(event.target.value)}
         className="post-input"
       />
+      <label htmlFor="join-referral-code" className="deboss">Referral Code</label>
+      <input
+        id="join-referral-code"
+        name="referralCode"
+        placeholder="abc123"
+        value={referralCode}
+        onChange={(event) => setReferralCode(event.target.value)}
+        className="post-input"
+      />
       <button
         type="submit"
         className="emboss floating"
@@ -69,6 +89,13 @@ export function JoinForm() {
               ? "Error"
               : "JOIN"}
       </button>
+      {state.status === "sent" ? (
+        <p style={{ textAlign: "center" }} className="emboss">Check your email</p>
+      ) : state.status === "error" && state.message ? (
+        <p style={{ textAlign: "center", color: "var(--color-text-muted)" }} className="emboss">
+          {state.message}
+        </p>
+      ) : null}
     </form>
   );
 }

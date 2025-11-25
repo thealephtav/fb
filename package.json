@@ -10,7 +10,8 @@
     "reset:db": "tsx scripts/reset-db.ts",
     "reset:storage": "tsx scripts/reset-storage.ts",
     "reset:all": "npm run reset:db && npm run reset:storage",
-    "delete:user": "tsx scripts/delete-user.ts"
+    "delete:user": "tsx scripts/delete-user.ts",
+    "generate:referral": "tsx scripts/generate-referral-codes.ts"
   },
   "dependencies": {
     "@auth/pg-adapter": "^1.11.1",

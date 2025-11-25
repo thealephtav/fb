@@ -49,11 +49,6 @@ async function createTables() {
     )
   `);
 
-  // TODO delete
-  await query(`
-    ALTER TABLE users
-    ADD COLUMN IF NOT EXISTS pfp TEXT
-  `);
   await query(`
     CREATE TABLE IF NOT EXISTS links (
       id BIGSERIAL PRIMARY KEY,
@@ -106,24 +101,26 @@ async function createTables() {
     )
   `);
 
-  // TODO delete
-  await query(`
-    ALTER TABLE posts
-    ADD COLUMN IF NOT EXISTS profile_user_id TEXT REFERENCES users(id) ON DELETE CASCADE
-  `);
-  // TODO delete
-  await query(`
-    UPDATE posts
-    SET profile_user_id = user_id
-    WHERE profile_user_id IS NULL
-  `);
-
   await query(`
     CREATE TABLE IF NOT EXISTS followers (
       follower_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       following_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       PRIMARY KEY (follower_id, following_id)
+    )
+  `);
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS referral_codes (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      code TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      created_by_user_id TEXT REFERENCES users(id),
+      max_uses INT NOT NULL DEFAULT 1,
+      uses_count INT NOT NULL DEFAULT 0,
+      expires_at TIMESTAMPTZ,
+      is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      metadata JSONB DEFAULT '{}'::jsonb
     )
   `);
 }
