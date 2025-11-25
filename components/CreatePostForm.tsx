@@ -15,26 +15,13 @@ export function CreatePostForm({
   canPost,
   action,
   profileHandle,
-  profileDisplayName,
-  disabledMessage,
   isOwner = false,
 }: Props) {
-  const headerText =
-    disabledMessage ??
-    (
-      <>
-        <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
-          Get on the waitlist
-        </a>{" "}
-        or <a href="/sign-in">sign in</a> to post on this profile.
-      </>
-    );
-
   if (!canPost) {
     return (
       <section>
-        <p>
-          <strong>{headerText}</strong>
+        <p style={{ textAlign: "center" }} className="emboss">
+        ·:*¨༺ ♱ <a href="/sign-in">Sign in</a> to post on this profile ♱ ༻¨*:·
         </p>
       </section>
     );
