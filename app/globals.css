@@ -392,6 +392,8 @@ textarea:not(:disabled) {
 }
 
 .seal {
+  background: transparent;
+  mix-blend-mode: multiply;
   filter:
     saturate(0.9)
     contrast(0.95)

@@ -50,7 +50,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main className="centered-vert">
-      <Image className="seal" src="/stamp2.png" alt="Aleph" width={300} height={300} />
+      <Image className="seal" src="/stamp4.png" alt="Aleph" width={300} height={300} />
       <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
       {!activeUser ? (
