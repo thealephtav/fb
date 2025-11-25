@@ -99,8 +99,7 @@ nav > :first-child:last-child {
 
 .post-input {
   flex: 1;
-  min-height: 2rem;
-  padding: var(--space-xxs) var(--space-sm);
+  padding: 0 var(--space-sm);
   font-size: var(--font-size-body);
   font-family: var(--font-serif);
   line-height: var(--line-height-body);
@@ -150,8 +149,8 @@ button {
   font-size: var(--font-size-sm);
   letter-spacing: var(--letter-spacing-wide);
   padding: var(--space-xs) var(--space-sm);
-  min-width: 7rem;
-  min-height: 2rem;
+  min-width: 2rem;
+  min-height: 0.5rem;
 }
 
 .floating {
@@ -303,11 +302,6 @@ button {
   padding-top: var(--space-sm);
 }
 
-.waitlist-footer a {
-  color: var(--color-link);
-  text-decoration: underline;
-}
-
 .link-editor {
   display: flex;
   flex-direction: column;
@@ -317,7 +311,7 @@ button {
 
 .link-editor-row {
   border: 1px solid var(--color-border);
-  padding: var(--space-sm);
+  padding: var(--space-xs);
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
@@ -334,7 +328,7 @@ button {
 .link-fields {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xxs);
   width: 100%;
 }
 
@@ -358,7 +352,7 @@ button {
 
 .profile-link-input {
   width: 100%;
-  padding: var(--space-xxs) var(--space-sm);
+  padding: var(--space-xxs) var(--space-xxs);
   font-family: var(--font-serif);
   font-size: var(--font-size-md);
   color: var(--color-text-primary);

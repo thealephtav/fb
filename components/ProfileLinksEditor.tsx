@@ -80,7 +80,7 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
         </div>
       ))}
       <button type="button" onClick={addLink} className="emboss floating">
-        + Add
+        + Add Another Link
       </button>
     </div>
   );

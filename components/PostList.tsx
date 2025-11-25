@@ -53,7 +53,7 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
       {orderedLabels.map((label, index) => (
         <section key={label} className="post-day">
           {index > 0 ? <hr /> : null}
-          <h3>{label}</h3>
+          <h3 className="emboss">{label}</h3>
           <ul className="post-list">
             {postsByDay[label].map((post) => (
               <li key={post.id} className="post-item">
