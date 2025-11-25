@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { EmailSignInState, signUpWithHandle } from "@/app/actions";
 
@@ -14,24 +14,22 @@ export function JoinForm() {
   // should be managed via useFormStatus or a shared toast system in the future.
   const [submitState, setSubmitState] = useState<"idle" | "pending">("idle");
   const { pending } = useFormStatus();
+  useEffect(() => {
+    if (submitState === "pending" && state.status !== "idle") {
+      setSubmitState("idle");
+    }
+    if (state.status === "sent") {
+      setEmail("");
+      setHandle("");
+    }
+  }, [state.status, submitState]);
 
   const [email, setEmail] = useState("");
   const [handle, setHandle] = useState("");
 
-  const handleAction = async (formData: FormData) => {
-    setSubmitState("pending");
-    const result = await formAction(formData);
-    setSubmitState("idle");
-    const status = (result as EmailSignInState | null | undefined)?.status;
-    if (status === "sent") {
-      setEmail("");
-      setHandle("");
-    }
-  };
-
   return (
     <form
-      action={handleAction}
+      action={formAction}
       onSubmit={() => {
         setSubmitState("pending");
       }}
@@ -58,16 +56,19 @@ export function JoinForm() {
         onChange={(event) => setHandle(event.target.value)}
         className="post-input"
       />
-      <button type="submit" className="emboss floating" disabled={pending || submitState === "pending"}>
-        {submitState === "pending" ? "Sending..." : "JOIN"}
+      <button
+        type="submit"
+        className="emboss floating"
+        disabled={pending || submitState === "pending" || state.status === "sent"}
+      >
+        {submitState === "pending"
+          ? "Sending..."
+          : state.status === "sent"
+            ? "Sent!"
+            : state.status === "error"
+              ? "Error"
+              : "JOIN"}
       </button>
-      {submitState === "pending" ? (
-        <p>Sending magic link...</p>
-      ) : state.status === "sent" ? (
-        <p>{state.message ?? "Email sent! Check your inbox."}</p>
-      ) : state.status === "error" ? (
-        <p>{state.message ?? "Something went wrong."}</p>
-      ) : null}
     </form>
   );
 }
