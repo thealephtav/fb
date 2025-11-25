@@ -59,34 +59,21 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
               <li key={post.id} className="post-item">
                 <div className="post-horizontal">
                   <div className="post-avatar">
-                    {post.author_handle ? (
-                      <Link href={`/${post.author_handle}`}>
-                        <Image
-                          src={post.author_pfp ?? "/default-pfp.png"}
-                          alt={`@${post.author_handle} profile picture`}
-                          width={64}
-                          height={64}
-                        />
-                      </Link>
-                    ) : (
+                    <Link href={`/${post.author_handle}`}>
                       <Image
                         src={post.author_pfp ?? "/default-pfp.png"}
-                        alt="Profile"
+                        alt={`@${post.author_handle} profile picture`}
                         width={64}
                         height={64}
                       />
-                    )}
+                    </Link>
                   </div>
                   <div>
                     <p className="post-meta">
                       <strong className="emboss">
-                        {post.author_handle ? (
-                          <Link href={`/${post.author_handle}`}>
-                            {post.author_name?.trim() || `@${post.author_handle}`}
-                          </Link>
-                        ) : (
-                          post.author_name?.trim() || "Unknown"
-                        )}
+                        <Link href={`/${post.author_handle}`}>
+                          {post.author_name?.trim() || `@${post.author_handle}`}
+                        </Link>
                       </strong>{" "}
                       <small>
                         {statusHandle &&
@@ -99,8 +86,8 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
                     </p>
                     <p className="post-body">{post.body}</p>
                     {/* <small>
-                      <Link href={`/${post.author_handle ?? ""}`}>
-                        {`Write on @${post.author_handle ?? "this"}'s wall`}
+                      <Link href={`/${post.author_handle}`}>
+                        {`Write on @${post.author_handle}'s wall`}
                       </Link>
                     </small> */}
                   </div>

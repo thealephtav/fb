@@ -3,7 +3,7 @@
 type Props = {
   canPost: boolean;
   action?: (formData: FormData) => Promise<void>;
-  profileHandle?: string | null;
+  profileHandle?: string;
   profileDisplayName?: string | null;
   disabledMessage?: React.ReactNode;
   isOwner?: boolean;

@@ -22,7 +22,7 @@ export default async function FollowersPage({ params }: { params: Promise<{ hand
       <section>
         <h2>Profile</h2>
         {profile.pfp ? (
-          <Image src={profile.pfp} alt={`@${profile.handle ?? "user"}`} width={120} height={120} />
+          <Image src={profile.pfp} alt={`@${profile.handle}`} width={120} height={120} />
         ) : (
           <Image src="/default-pfp.png" alt="Default profile" width={120} height={120} />
         )}
@@ -37,12 +37,12 @@ export default async function FollowersPage({ params }: { params: Promise<{ hand
             {followers.map((user) => (
               <li key={user.id}>
                 {user.pfp ? (
-                  <Image src={user.pfp} alt={`@${user.handle ?? "user"}`} width={48} height={48} />
+                  <Image src={user.pfp} alt={`@${user.handle}`} width={48} height={48} />
                 ) : (
                   <Image src="/default-pfp.png" alt="Default profile" width={48} height={48} />
                 )}
                 <Link href={`/${user.handle}`}>
-                  {user.name?.trim() || `@${user.handle ?? "user"}`}
+                  {user.name?.trim() || `@${user.handle}`}
                 </Link>
               </li>
             ))}

@@ -18,7 +18,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
   const [userResult] = await Promise.all([
     userId ? getUserById(userId) : Promise.resolve(null),
   ]);
-  const activeUser = userResult?.handle ? userResult : null;
+  const activeUser = userResult ?? null;
 
   return (
     <main className="centered-vert">

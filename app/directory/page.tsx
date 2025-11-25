@@ -21,16 +21,16 @@ export default async function ExplorePage() {
         {profiles.map((profile) => (
           <li key={profile.id} className="explore-item">
             <div className="explore-card">
-              <Link href={`/${profile.handle ?? ""}`} className="explore-avatar" aria-label={`View @${profile.handle ?? "user"}`}>
+              <Link href={`/${profile.handle}`} className="explore-avatar" aria-label={`View @${profile.handle}`}>
                 <Image
                   src={profile.pfp ?? "/default-pfp.png"}
-                  alt={`@${profile.handle ?? "user"} profile picture`}
+                  alt={`@${profile.handle} profile picture`}
                   width={64}
                   height={64}
                 />
               </Link>
               <div className="explore-meta">
-                <Link href={`/${profile.handle ?? ""}`} className="explore-handle emboss">
+                <Link href={`/${profile.handle}`} className="explore-handle emboss">
                   {profile.name?.trim() || `@${profile.handle}`}
                 </Link>
                 <p className="explore-status">

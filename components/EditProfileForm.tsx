@@ -7,7 +7,7 @@ import { ProfileLinksEditor } from "@/components/ProfileLinksEditor";
 
 type Profile = {
   id: string;
-  handle: string | null;
+  handle: string;
   name: string | null;
   pfp: string | null;
 };
@@ -106,9 +106,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         setIsDirty(false);
         await action(formData);
         setIsSaving(false);
-        if (profile.handle) {
-          window.location.href = `/${profile.handle}`;
-        }
+        window.location.href = `/${profile.handle}`;
       }}
     >
       <p className="emboss" style={{ textAlign: "center" }}>Picture</p>
@@ -116,7 +114,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
           <Image
             src={profile.pfp ?? "/default-pfp.png"}
-            alt={`@${profile.handle ?? "user"} profile photo`}
+            alt={`@${profile.handle} profile photo`}
             width={96}
             height={96}
           />
@@ -148,7 +146,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       </p>
       <p style={{ textAlign: "center" }} className="emboss">
         <Link
-          href={`/${profile.handle ?? ""}`}
+          href={`/${profile.handle}`}
           data-skip-dirty-check="true"
           onClick={(event) => {
             if (isDirty) {

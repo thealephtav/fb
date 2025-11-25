@@ -21,9 +21,8 @@ export async function generateMetadata({
     return { title: "Profile not found | Aleph" };
   }
   const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
-  const handleLabel = profile.handle ? `@${profile.handle}` : normalizedHandle;
   return {
-    title: `${displayName?  displayName: handleLabel} | Aleph`,
+    title: `${displayName ? displayName : `@${profile.handle}`} | Aleph`,
   };
 }
 
@@ -67,7 +66,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           {profile.pfp ? (
             <Image
               src={profile.pfp}
-              alt={`@${profile.handle ?? "user"} profile picture`}
+              alt={`@${profile.handle} profile picture`}
               width={96}
               height={96}
             />
@@ -123,11 +122,11 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         <CreatePostForm
           canPost={!!viewerId}
           action={createPost}
-          profileHandle={profile.handle ?? undefined}
+          profileHandle={profile.handle}
           profileDisplayName={displayName}
           isOwner={isOwner}
         />
-        <PostList posts={posts} statusHandle={profile.handle ?? undefined} />
+        <PostList posts={posts} statusHandle={profile.handle} />
       </section>
     </main>
   );

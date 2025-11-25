@@ -42,11 +42,6 @@ export async function updateUserDetails(formData: FormData) {
     throw new Error("Handle is already taken.");
   }
 
-  const existingUser = await getUserById(session.user.id);
-  if (existingUser?.handle) {
-    throw new Error("Your user details are already set up.");
-  }
-
   await ensureDb();
   await query(
     "UPDATE users SET name = $1, handle = $2 WHERE id = $3",
@@ -82,8 +77,8 @@ export async function createPost(formData: FormData) {
   }
 
   const user = await getUserById(session.user.id);
-  if (!user?.handle) {
-    throw new Error("You need to finish setting up your user before posting.");
+  if (!user) {
+    throw new Error("User not found.");
   }
 
   let targetProfile = user;
@@ -101,9 +96,7 @@ export async function createPost(formData: FormData) {
     "INSERT INTO posts (id, body, user_id, profile_user_id, image_url) VALUES ($1, $2, $3, $4, $5)",
     [randomUUID(), body.trim(), user.id, targetProfile.id, imageUrl],
   );
-  if (targetProfile.handle) {
-    revalidatePath(`/${targetProfile.handle}`);
-  }
+  revalidatePath(`/${targetProfile.handle}`);
   revalidatePath("/");
 }
 
@@ -133,7 +126,7 @@ export async function signUpWithHandle(
 
   await ensureDb();
 
-  const existingUserResult = await query<{ id: string; handle: string | null }>(
+  const existingUserResult = await query<{ id: string; handle: string }>(
     `SELECT id, handle FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1`,
     [trimmedEmail],
   );
@@ -282,10 +275,8 @@ export async function updateUserProfile(formData: FormData) {
     client.release();
   }
 
-  if (user.handle) {
-    revalidatePath(`/${user.handle}`);
-    revalidatePath(`/${user.handle}/edit`);
-  }
+  revalidatePath(`/${user.handle}`);
+  revalidatePath(`/${user.handle}/edit`);
 }
 
 export async function followUser(formData: FormData) {

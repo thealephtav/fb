@@ -3,14 +3,14 @@ import { ensureDb, query } from "./db";
 export type User = {
   id: string;
   name: string | null;
-  handle: string | null;
+  handle: string;
   pfp: string | null;
 };
 
 export type PublicUserProfile = {
   id: string;
   name: string | null;
-  handle: string | null;
+  handle: string;
   pfp: string | null;
   follower_count: number;
   following_count: number;
@@ -28,7 +28,7 @@ export type ProfileLink = {
 export type SimpleUser = {
   id: string;
   name: string | null;
-  handle: string | null;
+  handle: string;
   pfp: string | null;
 };
 
@@ -36,10 +36,10 @@ export type Post = {
   id: string;
   body: string;
   author_name: string | null;
-  author_handle: string | null;
+  author_handle: string;
   author_pfp: string | null;
   profile_name: string | null;
-  profile_handle: string | null;
+  profile_handle: string;
   profile_pfp: string | null;
   posted_at: string;
   image_url: string | null;
@@ -48,7 +48,7 @@ export type Post = {
 export type ExploreProfile = {
   id: string;
   name: string | null;
-  handle: string | null;
+  handle: string;
   pfp: string | null;
   latest_status: string | null;
   latest_status_at: string | null;
@@ -300,7 +300,6 @@ export async function getExploreProfiles(): Promise<ExploreProfile[]> {
           lp.posted_at AS latest_status_at
         FROM users
         LEFT JOIN latest_posts lp ON lp.profile_user_id = users.id AND lp.rn = 1
-        WHERE users.handle IS NOT NULL
         ORDER BY COALESCE(lp.posted_at, users.created_at) DESC
       `,
     );
