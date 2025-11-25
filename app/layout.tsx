@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./tokens.css";
+import "./globals.css";
 import "./components.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Cormorant_Garamond, Crimson_Text, Montserrat } from "next/font/google";

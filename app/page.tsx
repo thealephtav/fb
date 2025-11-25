@@ -56,10 +56,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       {!activeUser ? (
         <>
           <Link href={WAITLIST_URL} target="_blank">
-            <button className="emboss lifted">GET ON THE LIST</button>
+            <button className="btn lifted btnLg">GET ON THE LIST</button>
           </Link>
           <Link href={BLOG_URL} target="_blank">
-            <button className="emboss lifted">WRITING</button>
+            <button className="btn lifted btnLg">WRITING</button>
           </Link>
           <hr style={{ width: "100%" }}/>
           <p style={{ textAlign: "center", marginTop: "0" }}>
@@ -92,15 +92,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
               </ul>
             </section>
           ) : null}
-          <Link href={`/${activeUser.handle}`}><button className="emboss lifted">View Page</button></Link>
-          <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">Edit Page</button></Link>
+          <Link href={`/${activeUser.handle}`}><button className="btn lifted btnLg">View Page</button></Link>
+          <Link href={`/${activeUser.handle}/edit`}><button className="btn lifted btnLg">Edit Page</button></Link>
           <form action={signOutUser}>
-            <button className="emboss lifted" type="submit">Sign Out</button>
+            <button className="btn lifted btnLg" type="submit">Sign Out</button>
           </form>
-          <Link href="/directory"><button className="emboss lifted">Explore</button></Link>
+          <Link href="/directory"><button className="btn lifted btnLg">Explore</button></Link>
           <hr style={{ width: "100%" }}/>
           <Link href={BLOG_URL} target="_blank">
-            <button className="emboss lifted">Writing</button>
+            <button className="btn lifted btnLg">Writing</button>
           </Link>
         </>
       )}

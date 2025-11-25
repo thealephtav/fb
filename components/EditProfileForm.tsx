@@ -120,7 +120,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
           />
           <span className="pfp-overlay"></span>
         </label>
-        <input id="pfp" name="pfp" type="file" accept="image/*" className="visually-hidden" />
+        <input id="pfp" name="pfp" type="file" accept="image/*" className="invisible" />
       </div>
       <p className="emboss" style={{ textAlign: "left", marginBottom: "0" }}>Display Name</p>
       <input
@@ -130,13 +130,13 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         defaultValue={profile.name ?? ""}
         placeholder="Display name"
         style={{marginTop: "0"}}
-        className="profile-name-input input-unstyled"
+        className="input textInput"
       />
       <p className="emboss" style={{ textAlign: "left" }}>Links</p>
       <ProfileLinksEditor initialLinks={profileLinks} onEdit={() => setIsDirty(true)} />
       <button
         type="submit"
-        className="button-sm emboss floating"
+        className="btn btnMd lifted"
         disabled={isSaving}
       >
         {isSaving ? "Saving..." : "Save"}

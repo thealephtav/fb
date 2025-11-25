@@ -54,7 +54,7 @@ export function JoinForm() {
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        className="post-input"
+        className="input textInput"
       />
       <label htmlFor="join-handle" className="deboss">Username</label>
       <input
@@ -65,7 +65,7 @@ export function JoinForm() {
         title="Use lowercase letters, numbers, underscores, or dashes"
         value={handle}
         onChange={(event) => setHandle(event.target.value)}
-        className="post-input"
+        className="input textInput"
       />
       <label htmlFor="join-referral-code" className="deboss">Referral Code</label>
       <input
@@ -74,11 +74,11 @@ export function JoinForm() {
         placeholder="abc123"
         value={referralCode}
         onChange={(event) => setReferralCode(event.target.value)}
-        className="post-input"
+        className="input textInput"
       />
       <button
         type="submit"
-        className="emboss floating"
+        className="btn lifted btnLg"
         disabled={pending || submitState === "pending" || state.status === "sent"}
       >
         {submitState === "pending"

@@ -22,7 +22,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main>
-      <h1 className="deboss edit-page-title">Edit Profile</h1>
+      <h1 className="deboss centered">Edit Profile</h1>
       <EditProfileForm profile={profile} profileLinks={profileLinks} action={updateUserProfile} />
     </main>
   );
