@@ -25,7 +25,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
   return (
     <main>
       <h1 className="deboss edit-page-title">Edit Profile</h1>
-      <form action={updateUserProfile} encType="multipart/form-data" className="post-form">
+      <form action={updateUserProfile} className="post-form">
         <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
           <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
             <Image
