@@ -83,9 +83,27 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       onChange={() => setIsDirty(true)}
       onSubmit={async (event) => {
         event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+
+        const labels = formData.getAll("linkLabel").map((v) => (typeof v === "string" ? v.trim() : ""));
+        const urls = formData.getAll("linkUrl").map((v) => (typeof v === "string" ? v.trim() : ""));
+        const isValidUrl = (value: string) => {
+          try {
+            const url = new URL(value.startsWith("http") ? value : `https://${value}`);
+            return !!url.hostname;
+          } catch {
+            return false;
+          }
+        };
+        for (let i = 0; i < Math.max(labels.length, urls.length); i++) {
+          if (!labels[i] || !urls[i] || !isValidUrl(urls[i])) {
+            alert("Each link needs a name and a valid URL before saving.");
+            return;
+          }
+        }
+
         setIsSaving(true);
         setIsDirty(false);
-        const formData = new FormData(event.currentTarget);
         await action(formData);
         setIsSaving(false);
         if (profile.handle) {
@@ -117,7 +135,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         className="profile-name-input input-unstyled"
       />
       <p className="emboss" style={{ textAlign: "left" }}>Links</p>
-      <ProfileLinksEditor initialLinks={profileLinks} />
+      <ProfileLinksEditor initialLinks={profileLinks} onEdit={() => setIsDirty(true)} />
       <button
         type="submit"
         className="button-sm emboss floating"
