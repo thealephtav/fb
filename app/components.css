@@ -99,9 +99,9 @@ nav > :first-child:last-child {
 
 .post-input {
   flex: 1;
-  min-height: 1rem;
-  padding: 0 var(--space-sm);
-  font-size: var(--font-size-sm);
+  min-height: 2rem;
+  padding: var(--space-xxs) var(--space-sm);
+  font-size: var(--font-size-body);
   font-family: var(--font-serif);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
@@ -137,6 +137,14 @@ button {
   align-items: center;
   justify-content: center;
   line-height: var(--line-height-tight);
+}
+
+.button-sm {
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-wide);
+  padding: var(--space-xs) var(--space-sm);
+  min-width: 7rem;
+  min-height: 2rem;
 }
 
 .floating {
