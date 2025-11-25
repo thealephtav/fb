@@ -44,7 +44,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
             name="displayName"
             type="text"
             defaultValue={profile.name ?? ""}
-            placeholder="Display name"
+            placeholder="Insert Display Name"
             className="profile-name-input input-unstyled"
           />
         </div>
