@@ -95,9 +95,27 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           </div>
         ) : null}
         <div className="waitlist-footer">
-          <Link className="emboss" href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
-            Join The Aleph waitlist
-          </Link>
+          {!viewerId ? (
+              <Link className="emboss" href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
+              「 ✦ Join The Aleph Waitlist ✦ 」📢
+              </Link>
+          ) : isOwner ? (
+            <Link
+              href={`/${profile.handle}/edit`}
+              className="emboss"
+              aria-label="Edit profile"
+            >
+              ✎𓂃Edit Profile𓂃
+            </Link>
+          ) :
+            <Link
+              href="/"
+              className="emboss"
+              aria-label="Aleph"
+            >
+              𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓍊  Aleph  𓍊𖡼𖤣𖥧𓋼𖥧𖡼
+            </Link>
+          }
         </div>
       </section>
 

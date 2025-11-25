@@ -11,6 +11,7 @@ type LinkInput = {
 
 type Props = {
   initialLinks: LinkInput[];
+  onEdit?: () => void;
 };
 
 type EditableLink = LinkInput & { key: string };
@@ -19,7 +20,10 @@ function makeKey(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-export function ProfileLinksEditor({ initialLinks }: Props) {
+export function ProfileLinksEditor({ initialLinks, onEdit }: Props) {
+  const markEdit = () => {
+    if (typeof onEdit === "function") onEdit();
+  };
   const seededLinks = useMemo<EditableLink[]>(
     () => initialLinks.map((link) => ({ ...link, key: makeKey("link") })),
     [initialLinks],
@@ -30,10 +34,12 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
     setLinks((prev) =>
       prev.map((link) => (link.key === key ? { ...link, [field]: value } : link)),
     );
+    markEdit();
   };
 
   const removeLink = (key: string) => {
     setLinks((prev) => prev.filter((link) => link.key !== key));
+    markEdit();
   };
 
   const addLink = () => {
@@ -41,6 +47,7 @@ export function ProfileLinksEditor({ initialLinks }: Props) {
       ...prev,
       { key: makeKey("link"), label: "", uri: "", click_count: 0 },
     ]);
+    markEdit();
   };
 
   return (
