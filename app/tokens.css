@@ -46,10 +46,10 @@
     1px 1px 1.5px var(--elevate-shadow-inset),
     -1px -1px 1.5px var(--elevate-highlight-inset);
   --shadow-raised:
-    -1px -1px 2px var(--elevate-highlight-medium),
-    2px 2px 3px var(--elevate-shadow-soft),
-    inset -1px -1px 2px var(--elevate-highlight-inset),
-    inset 1px 1px 2px var(--elevate-shadow-inset);
+    -2px -2px 4px var(--elevate-highlight-strong),
+    2px 2px 3px var(--elevate-shadow-medium),
+    -1px -1px 2px var(--elevate-highlight-inset),
+    1px 1px 3px var(--elevate-shadow-inset);
   --shadow-sunken:
     inset 2px 2px 4px var(--elevate-shadow-medium),
     inset -2px -2px 4px var(--elevate-highlight-medium),
