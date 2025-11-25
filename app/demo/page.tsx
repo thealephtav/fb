@@ -12,7 +12,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default function DemoPage() {
   return (
-    <main className={styles.page}>
+    <main>
       <header className={styles.header}>
         <h1>Component Demo</h1>
         <p>Visual sweep of typography, forms, navigation, and feedback.</p>
@@ -30,73 +30,69 @@ export default function DemoPage() {
           <h3>Heading Three</h3>
           <h3><strong>Heading Three Bold</strong></h3>
           <h3><em>Heading Three Italic</em></h3>
-          <p>Default paragraph with <strong>strong</strong>, <em>emphasis</em>, <code>code</code>, <kbd>⌘K</kbd>, and <Link href="/demo">links</Link>.</p>
-          <small>Small helper text.</small>
-          <p style={{ fontSize: "1.2rem" }}>Large paragraph sizing for emphasis.</p>
-          <blockquote>“Blockquote default styling for pull quotes.”</blockquote>
-          <blockquote>“Blockquote with citation.” <cite>— Someone</cite></blockquote>
-          <ul>
-            <li>Unordered item</li>
-            <li>Another item</li>
-            <li>
-              Nested list
-              <ul>
-                <li>Child item</li>
-              </ul>
-            </li>
-          </ul>
-          <ol>
-            <li>Ordered item</li>
-            <li>Second item</li>
-          </ol>
+          <div className={styles.serif}>
+            <p>Default paragraph with <strong>strong</strong>, <em>emphasis</em>, <code>code</code>, <kbd>⌘K</kbd>, and <Link href="/demo">links</Link>.</p>
+            <small>Small helper text.</small>
+            <p style={{ fontSize: "1.2rem" }}>Large paragraph sizing for emphasis.</p>
+            <blockquote>“Blockquote default styling for pull quotes.”</blockquote>
+            <blockquote>“Blockquote with citation.” <cite>— Someone</cite></blockquote>
+            <ul>
+              <li>Unordered item</li>
+              <li>Another item</li>
+              <li>
+                Nested list
+                <ul>
+                  <li>Child item</li>
+                </ul>
+              </li>
+            </ul>
+            <ol>
+              <li>Ordered item</li>
+              <li>Second item</li>
+            </ol>
+          </div>
         </Section>
 
         <Section title="Color + Tokens">
           <div className={styles.row}>
-            <div className={styles.swatch} style={{ background: "var(--color-primary, #dfe6ff)" }}>Primary</div>
-            <div className={styles.swatch} style={{ background: "var(--color-secondary, #e6dfff)" }}>Secondary</div>
-            <div className={styles.swatch} style={{ background: "#e7f7e9" }}>Success</div>
-            <div className={styles.swatch} style={{ background: "#fff6e5" }}>Warning</div>
-            <div className={styles.swatch} style={{ background: "#fde7e7" }}>Danger</div>
-            <div className={styles.swatch} style={{ background: "#f4f4f4" }}>Neutral</div>
+            <div className={styles.swatch} style={{ background: "var(--color-success)" }}>Success</div>
+            <div className={styles.swatch} style={{ background: "var(--color-warning)" }}>Warning</div>
+            <div className={styles.swatch} style={{ background: "var(--color-danger)" }}>Danger</div>
+            <div className={styles.swatch} style={{ background: "var(--color-info)" }}>Info</div>
           </div>
           <div className={styles.row}>
-            <div className={styles.swatch} style={{ background: "linear-gradient(135deg, #8ec5ff, #5a7bff)" }}>Primary Gradient</div>
-            <div className={styles.swatch} style={{ background: "linear-gradient(135deg, #f8c4ff, #c0a4ff)" }}>Accent Gradient</div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.swatch}>Shadow/Emboss</div>
-            <div className={styles.swatch}>Inset</div>
-          </div>
-          <div className={styles.spacingScale}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <div key={n} className={styles.spacingBox} style={{ padding: `${n * 4}px` }}>
-                {`Spacing ${n}`}
-              </div>
-            ))}
+            <div className={`${styles.swatch} floating`}>Floating</div>
+            <div className={`${styles.swatch} sunken`}>Sunken/Disabled</div>
           </div>
         </Section>
 
         <Section title="Buttons">
           <div className={styles.row}>
-            <button className={`emboss lifted ${styles.btnLg}`}>Enabled</button>
-            <button className={`sunken ${styles.btnLg}`} disabled>Disabled</button>
-            <button className={`${styles.iconButton} emboss lifted ${styles.btnSm}`}>★</button>
+            <button className={`${styles.btn} lifted ${styles.btnLg}`}>Enabled</button>
+            <button className={`${styles.btn} sunken ${styles.btnLg}`} disabled>Disabled</button>
+            <button className={`${styles.btn} ${styles.iconButton} lifted ${styles.btnSm}`}>★</button>
             <div className={styles.buttonGroup}>
-              <button className={`emboss lifted ${styles.btnMd}`}>Left Md</button>
-              <button className={`emboss lifted ${styles.btnMd}`}>Middle Md</button>
-              <button className={`emboss lifted ${styles.btnMd}`}>Right Md</button>
+              <button className={`${styles.btn} lifted ${styles.btnMd}`}>Left Md</button>
+              <button className={`${styles.btn} lifted ${styles.btnMd}`}>Middle Md</button>
+              <button className={`${styles.btn} lifted ${styles.btnMd}`}>Right Md</button>
             </div>
           </div>
         </Section>
 
         <Section title="Inputs">
           <div className={styles.column}>
-            <input className="post-input lifted" placeholder="Text input" />
-            <input className="post-input lifted" placeholder="Invalid input" aria-invalid />
-            <input className="post-input sunken" placeholder="Disabled input" disabled />
-            <textarea className="post-input lifted" rows={2} placeholder="Textarea" />
-            <select className="post-input lifted" defaultValue="one">
+            <input className={`input ${styles.textInput}`} placeholder="Text input" />
+            <input
+              className={`input ${styles.textInput}`}
+              placeholder="Invalid input"
+              aria-invalid
+              required
+              pattern="[A-Z]{3,}"
+              defaultValue="bad"
+            />
+            <input className={`input ${styles.textInput}`} placeholder="Disabled input" disabled />
+            <textarea className={`input ${styles.textInput}`} rows={2} placeholder="Textarea" />
+            <select className={`input ${styles.textInput}`} defaultValue="one">
               <option value="one">Select option</option>
               <option value="two">Another</option>
             </select>
@@ -118,11 +114,11 @@ export default function DemoPage() {
             <input type="range" min="0" max="100" defaultValue="40" className="sunken" />
             <div className="post-form-row">
               <span style={{ padding: "0.5rem" }}>🔍</span>
-              <input className="post-input lifted" placeholder="Search" />
+              <input className="input lifted" placeholder="Search" />
             </div>
             <div className="post-form-row">
               <span style={{ padding: "0.5rem" }}>http://</span>
-              <input className="post-input lifted" placeholder="example.com" />
+              <input className="input lifted" placeholder="example.com" />
               <span style={{ padding: "0.5rem" }}>.com</span>
             </div>
           </div>
@@ -170,9 +166,9 @@ export default function DemoPage() {
               <Link href="#">Item Three</Link>
             </aside>
             <div style={{ display: "flex", gap: "0.35rem" }}>
-              <button className="emboss">Tab 1</button>
-              <button className="emboss">Tab 2</button>
-              <button className="emboss" disabled>Tab 3</button>
+              <button className={styles.btn}>Tab 1</button>
+              <button className={styles.btn}>Tab 2</button>
+              <button className={`${styles.btn} sunken`} disabled>Tab 3</button>
             </div>
           </div>
           <div className={styles.row}>
@@ -210,7 +206,7 @@ export default function DemoPage() {
             <div className={styles.card} style={{ minWidth: "200px" }}>
               <header>Modal Header</header>
               <p>Modal body copy.</p>
-              <footer><button className="emboss">Close</button></footer>
+              <footer><button className={styles.btn}>Close</button></footer>
             </div>
             <div className={styles.drawer} style={{ minWidth: "140px" }}>Drawer content</div>
             <div className={styles.tooltip}>Tooltip</div>

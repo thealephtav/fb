@@ -4,7 +4,6 @@
   /* Typography */
   --font-display: var(--font-cormorant-garamond, "Cormorant Garamond"), serif;
   --font-serif: var(--font-crimson-text, "Crimson Text"), serif;
-  --font-sans: var(--font-montserrat, "Montserrat"), sans-serif;
   --font-size-xxl: 3.75rem;
   --font-size-xl: 2.5rem;
   --font-size-lg: 1.25rem;
@@ -75,6 +74,10 @@
   --color-button-text: rgba(0, 0, 0, 0.4);
   --color-link: #6d262b;
   --color-border: rgba(0, 0, 0, 0.1);
+  --color-success: #e7f7e9;
+  --color-warning: #fff6e5;
+  --color-danger: #fde7e7;
+  --color-info: #e9f2ff;
   --gradient-light: rgba(255, 255, 255, 0.25);
   --gradient-dark: rgba(0, 0, 0, 0.05);
   --elevate-highlight: rgba(255, 255, 255, 1);
