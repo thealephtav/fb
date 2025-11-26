@@ -25,15 +25,6 @@ main {
   overflow-x: hidden;
 }
 
-.centered-vert {
-  min-height: 100vh;
-  justify-content: center;
-}
-
-a {
-  color: var(--color-link);
-  text-decoration: none;
-}
 
 .profile-hero-section {
   min-height: 100vh;
@@ -73,41 +64,6 @@ a {
   width: 100%;
 }
 
-.input {
-  flex: 1;
-  padding: 0 var(--space-sm);
-  font-size: var(--font-size-body);
-  font-family: var(--font-serif);
-  line-height: var(--line-height-body);
-  color: var(--color-text-primary);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-}
-
-.input::placeholder {
-  color: var(--color-text-muted);
-  text-shadow: none;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-text-muted);
-  text-shadow: none;
-}
-
-button:disabled,
-input:disabled,
-select:disabled,
-textarea:disabled {
-  text-shadow: none;
-}
-
-input:not(:disabled),
-select:not(:disabled),
-textarea:not(:disabled) {
-  text-shadow: var(--text-shadow-emboss);
-}
-
 /* todo delete */
 .join-form {
   display: flex;
@@ -138,11 +94,6 @@ textarea:not(:disabled) {
   width: 96px;
   height: 96px;
   object-fit: cover;
-}
-
-.centered {
-  text-align: center;
-  margin: var(--space-md) auto;
 }
 
 .profile-avatar .pfp-overlay {
@@ -249,6 +200,7 @@ textarea:not(:disabled) {
   flex-direction: column;
   gap: var(--space-xs);
   background: var(--color-surface);
+  border-radius: 4px;
 }
 
 .link-row-top {
@@ -269,7 +221,7 @@ textarea:not(:disabled) {
   background: transparent;
   border: none;
   padding: 0;
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-md);
   cursor: pointer;
   min-width: 0;
   min-height: 0;

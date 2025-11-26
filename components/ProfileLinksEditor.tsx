@@ -72,7 +72,7 @@ export function ProfileLinksEditor({ initialLinks, onEdit }: Props) {
               value={link.label}
               onChange={(event) => updateLink(link.key, "label", event.target.value)}
               placeholder="My site"
-              className="input input-raised"
+              className="input"
             />
             <input
               id={`link-uri-${index}`}
@@ -81,7 +81,7 @@ export function ProfileLinksEditor({ initialLinks, onEdit }: Props) {
               value={link.uri}
               onChange={(event) => updateLink(link.key, "uri", event.target.value)}
               placeholder="https://example.com"
-              className="input input-raised"
+              className="input"
             />
           </div>
         </div>
