@@ -56,10 +56,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       {!activeUser ? (
         <>
           <Link href={WAITLIST_URL} target="_blank">
-            <button className="btn lifted btnLg">GET ON THE LIST</button>
+            <button className="btn lifted btnLg">Get on the List</button>
           </Link>
           <Link href={BLOG_URL} target="_blank">
-            <button className="btn lifted btnLg">WRITING</button>
+            <button className="btn lifted btnLg">Writing</button>
           </Link>
           <hr style={{ width: "100%" }}/>
           <p style={{ textAlign: "center", marginTop: "0" }}>
