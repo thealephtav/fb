@@ -39,7 +39,7 @@ export function CreatePostForm({
             name="body"
             required
             className="input input-raised"
-            placeholder={isOwner ? "Update status" : "Write a post"}
+            placeholder="Write a post"
           />
           <button type="submit" className="btn btnMd lifted">Post</button>
         </div>
