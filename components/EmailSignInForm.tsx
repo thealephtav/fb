@@ -37,7 +37,7 @@ export function EmailSignInForm({
     >
       <label htmlFor="email">{label}</label>
       <input
-        className="post-input"
+        className="input input-raised"
         id="email"
         name="email"
         type="email"
@@ -49,7 +49,7 @@ export function EmailSignInForm({
         }}
       />
       <button
-        className="emboss floating"
+        className="btn lifted btnMd"
         type="submit"
         disabled={pending || submitState === "pending" || state.status === "sent"}
       >

@@ -88,7 +88,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           <div className="profile-links">
             {normalizedProfileLinks.map((link) => (
               <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
-                <button className="emboss lifted">{link.label}</button>
+                <button className="btn btnLg emboss lifted">{link.label}</button>
               </Link>
             ))}
           </div>

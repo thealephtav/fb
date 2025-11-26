@@ -50,16 +50,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main className="centered-vert">
-      <Image className="seal" src="/stamp2.png" alt="Aleph" width={300} height={300} />
+      <Image className="seal" src="/stamp4.png" alt="Aleph" width={300} height={300} />
       <section style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
       {!activeUser ? (
         <>
           <Link href={WAITLIST_URL} target="_blank">
-            <button className="emboss lifted">GET ON THE LIST</button>
+            <button className="btn lifted btnLg">Get on the List</button>
           </Link>
           <Link href={BLOG_URL} target="_blank">
-            <button className="emboss lifted">WRITING</button>
+            <button className="btn lifted btnLg">Writing</button>
           </Link>
           <hr style={{ width: "100%" }}/>
           <p style={{ textAlign: "center", marginTop: "0" }}>
@@ -68,21 +68,70 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         </>
       ) : (
         <>
-          <p className="home-greeting emboss">
+          <p className="centered emboss" style={{ margin: "0" }}>
             Hello {activeUser.name?.trim() || `@${activeUser.handle}`}
           </p>
           {showOnboarding ? (
-            <section className="emboss lifted" style={{ padding: "1rem" }}>
-              <p className="deboss" style={{ marginTop: 0, marginBottom: "0.5rem" }}>Onboarding checklist</p>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                {onboardingItems.map((item) => (
-                  <li key={item.label}>
+            <section
+              className="emboss lifted"
+              style={{
+                padding: "1.5rem 1rem 1rem 2.2rem",
+                background: "repeating-linear-gradient(to bottom, var(--color-warning), var(--color-warning) 28px, #fbeec0 28px, #fbeec0 30px)",
+                borderRadius: "4px",
+                border: "2px solid #e4bf64",
+                position: "relative",
+              }}
+            >
+              {/* Simulate notebook margin */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: "1.15rem",
+                  top: "0.9rem",
+                  width: "2px",
+                  height: "calc(100% - 1.8rem)",
+                  background: "rgba(180, 80, 80, 0.32)",
+                  borderRadius: "3px",
+                }}
+              />
+              <h3
+                style={{
+                  marginTop: 0,
+                  marginBottom: "0.5rem",
+                  color: "#5b462c",
+                  textShadow: "none",
+                }}
+              >
+                Onboarding checklist
+              </h3>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {onboardingItems.map((item, idx) => (
+                  <li
+                    key={item.label}
+                    style={{
+                      borderBottom: idx < onboardingItems.length - 1 ? "1.5px dashed #ceb263" : "none",
+                    }}
+                  >
                     <Link
                       href={item.href}
-                      className="emboss"
                       style={{
-                        textDecoration: item.done ? "line-through" : "none",
-                        color: item.done ? "var(--color-text-muted)" : undefined,
+                        textDecoration: item.done
+                          ? "line-through #adadad"
+                          : "none",
+                        textShadow: item.done
+                          ? "none"
+                          : "1px 1px 0 #fffbe7",
+                        cursor: item.done ? "default" : "pointer",
+                        color: item.done ? "var(--color-text-muted)" : "var(--color-link)",
                       }}
                     >
                       {item.label}
@@ -92,15 +141,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
               </ul>
             </section>
           ) : null}
-          <Link href={`/${activeUser.handle}`}><button className="emboss lifted">View Page</button></Link>
-          <Link href={`/${activeUser.handle}/edit`}><button className="emboss lifted">Edit Page</button></Link>
+          <Link href={`/${activeUser.handle}`}><button className="btn lifted btnLg">View Page</button></Link>
+          <Link href={`/${activeUser.handle}/edit`}><button className="btn lifted btnLg">Edit Page</button></Link>
           <form action={signOutUser}>
-            <button className="emboss lifted" type="submit">Sign Out</button>
+            <button className="btn lifted btnLg" type="submit">Sign Out</button>
           </form>
-          <Link href="/directory"><button className="emboss lifted">Explore</button></Link>
+          <Link href="/directory"><button className="btn lifted btnLg">Explore</button></Link>
           <hr style={{ width: "100%" }}/>
           <Link href={BLOG_URL} target="_blank">
-            <button className="emboss lifted">Writing</button>
+            <button className="btn lifted btnLg">Writing</button>
           </Link>
         </>
       )}
