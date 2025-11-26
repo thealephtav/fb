@@ -68,7 +68,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         </>
       ) : (
         <>
-          <p className="home-greeting emboss">
+          <p className="centered emboss" style={{ margin: "0" }}>
             Hello {activeUser.name?.trim() || `@${activeUser.handle}`}
           </p>
           {showOnboarding ? (

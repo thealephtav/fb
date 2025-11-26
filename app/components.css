@@ -376,3 +376,19 @@ textarea:not(:disabled) {
   flex-direction: column;
   gap: var(--space-xxs);
 }
+
+.lifted {
+  box-shadow: var(--shadow-raised);
+}
+
+.sunken {
+  box-shadow: var(--shadow-sunken);
+}
+
+.deboss {
+  text-shadow: var(--text-shadow-deboss);
+}
+
+.emboss {
+  text-shadow: var(--text-shadow-emboss);
+}

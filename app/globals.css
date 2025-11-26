@@ -229,13 +229,6 @@ main {
   line-height: 1rem;
 }
 
-.home-greeting {
-  margin: var(--space-0);
-  font-family: var(--font-display);
-  font-size: var(--font-size-md);
-  text-align: center;
-}
-
 /* TODO need to consolidate these styles later, too many classes... */
 .explore-list {
   list-style: none;
@@ -325,22 +318,6 @@ main {
 .post-avatar img {
   border-radius: 50%;
   box-shadow: var(--shadow-raised);
-}
-
-.lifted {
-  box-shadow: var(--shadow-raised);
-}
-
-.sunken {
-  box-shadow: var(--shadow-sunken);
-}
-
-.deboss {
-  text-shadow: var(--text-shadow-deboss);
-}
-
-.emboss {
-  text-shadow: var(--text-shadow-emboss);
 }
 
 .seal {
