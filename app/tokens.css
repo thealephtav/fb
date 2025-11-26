@@ -40,15 +40,13 @@
     1px 1px 1.5px var(--elevate-highlight-soft),
     -1px -1px 1.5px var(--elevate-shadow-soft);
   --text-shadow-deboss:
-    0.5px 0.5px 0 var(--elevate-shadow),
-    -0.5px -0.5px 0 var(--elevate-highlight-inset),
-    1px 1px 1.5px var(--elevate-shadow-inset),
-    -1px -1px 1.5px var(--elevate-highlight-inset);
+    -2px -2px 2px var(--elevate-highlight),
+    1px 1px 3px var(--elevate-shadow);
   --shadow-raised:
     -2px -2px 4px var(--elevate-highlight-strong),
     2px 2px 3px var(--elevate-shadow-medium),
     -1px -1px 2px var(--elevate-highlight-inset),
-    1px 1px 3px var(--elevate-shadow-inset);
+    2px 2px 3px var(--elevate-shadow-inset);
   --shadow-sunken:
     inset 2px 2px 4px var(--elevate-shadow-medium),
     inset -2px -2px 4px var(--elevate-highlight-medium),
