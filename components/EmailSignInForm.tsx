@@ -37,7 +37,7 @@ export function EmailSignInForm({
     >
       <label htmlFor="email">{label}</label>
       <input
-        className="input textInput"
+        className="input input-raised"
         id="email"
         name="email"
         type="email"

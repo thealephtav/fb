@@ -130,7 +130,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         defaultValue={profile.name ?? ""}
         placeholder="Display name"
         style={{marginTop: "0"}}
-        className="input textInput"
+        className="input input-raised"
       />
       <p className="emboss" style={{ textAlign: "left" }}>Links</p>
       <ProfileLinksEditor initialLinks={profileLinks} onEdit={() => setIsDirty(true)} />

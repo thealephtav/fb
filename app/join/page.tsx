@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 export default function JoinPage() {
   return (
-    <main>
+    <main className="centered-vert">
       <JoinForm />
     </main>
   );
