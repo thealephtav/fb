@@ -289,6 +289,11 @@ export async function updateUserProfile(formData: FormData) {
     params.push(trimmedName.length > 0 ? trimmedName : null);
   }
 
+  const isPrivateValue = formData.get("isPrivate");
+  const isPrivate = isPrivateValue === "on" || isPrivateValue === "true";
+  updates.push(`private = $${updates.length + 1}`);
+  params.push(isPrivate);
+
   const linkLabels = formData.getAll("linkLabel").map((value) =>
     typeof value === "string" ? value.trim() : "",
   );

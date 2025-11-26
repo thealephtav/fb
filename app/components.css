@@ -161,6 +161,22 @@ textarea:disabled {
   box-shadow: var(--shadow-sunken);
 }
 
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  box-shadow: var(--shadow-sunken);
+}
+
+input[type="checkbox"]:checked {
+  box-shadow: var(--shadow-raised);
+  text-shadow: var(--text-shadow-emboss);
+  background: var(--color-link);
+}
+
+input[type="checkbox"]:disabled {
+  text-shadow: var(--text-shadow-emboss);
+}
+
 
 input:not(:disabled),
 select:not(:disabled),

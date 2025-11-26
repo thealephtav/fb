@@ -4,6 +4,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { EmailSignInState, signInWithEmail } from "@/app/actions";
+import { WAITLIST_URL } from "@/lib/constants";
 
 type Props = {
   label?: string;
@@ -58,6 +59,12 @@ export function EmailSignInForm({
           state.status === "error" ? "Error" :
         "Send magic link"}
       </button>
+      <p style={{ marginTop: "var(--space-sm)", textAlign: "center" }}>
+       Not a member? Get on the 
+        <a href={WAITLIST_URL} target="_blank" rel="noreferrer" className="emboss">
+          {" "}waitlist
+        </a>
+      </p>
       {state.status === "error" && state.message ? (
         <p style={{ color: "var(--color-text-primary)", marginTop: "var(--space-xs)" }}>{state.message}</p>
       ) : null}

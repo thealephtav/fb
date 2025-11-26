@@ -45,8 +45,14 @@ async function createTables() {
       image TEXT,
       pfp TEXT,
       handle TEXT UNIQUE,
+      private BOOLEAN NOT NULL DEFAULT FALSE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
+  `);
+  // TODO delete
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS private BOOLEAN NOT NULL DEFAULT FALSE
   `);
 
   await query(`

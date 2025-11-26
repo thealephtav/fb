@@ -80,18 +80,18 @@ export default function DemoPage() {
 
         <Section title="Inputs">
           <div className="column">
-            <input className="textInput" placeholder="Text input" />
+            <input className="input" placeholder="Text input" />
             <input
-              className="textInput"
+              className="input"
               placeholder="Invalid input"
               aria-invalid
               required
               pattern="[A-Z]{3,}"
               defaultValue="bad"
             />
-            <input className="textInput" placeholder="Disabled input" disabled />
-            <textarea className="textInput" rows={2} placeholder="Textarea" />
-            <select className="textInput" defaultValue="one">
+            <input className="input" placeholder="Disabled input" disabled />
+            <textarea className="input" rows={2} placeholder="Textarea" />
+            <select className="input" defaultValue="one">
               <option value="one">Select option</option>
               <option value="two">Another</option>
             </select>

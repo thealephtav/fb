@@ -11,6 +11,7 @@ type Profile = {
   handle: string;
   name: string | null;
   pfp: string | null;
+  private: boolean;
 };
 
 type ProfileLink = {
@@ -167,6 +168,15 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         placeholder="Display name"
         className="input"
       />
+      <label className="row" style={{ alignItems: "center", gap: "0.5rem", marginTop: "1rem" }}>
+        <span className="emboss">Private</span>
+        <input
+          type="checkbox"
+          name="isPrivate"
+          defaultChecked={profile.private}
+          onChange={() => setIsDirty(true)}
+        />
+      </label>
       <p className="emboss" style={{ textAlign: "left" }}>Links</p>
       <ProfileLinksEditor initialLinks={profileLinks} onEdit={() => setIsDirty(true)} />
       <button

@@ -33,16 +33,14 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   const viewerId = session?.user?.id ?? null;
   const handleParam = typeof resolvedParams.handle === "string" ? resolvedParams.handle : "";
   const normalizedHandle = handleParam.trim().toLowerCase();
-  const [profile, posts] = await Promise.all([
-    getUserProfileByHandle(normalizedHandle, viewerId),
-    getPostsByHandle(normalizedHandle),
-  ]);
-
+  const profile = await getUserProfileByHandle(normalizedHandle, viewerId);
   if (!profile) {
     notFound();
   }
 
-  const [profileLinks] = await Promise.all([getProfileLinksByUserId(profile.id)]);
+  const isPrivateView = profile.private && !viewerId;
+  const posts = isPrivateView ? [] : await getPostsByHandle(normalizedHandle);
+  const profileLinks = isPrivateView ? [] : await getProfileLinksByUserId(profile.id);
 
   const displayName = profile.name?.trim() ? profile.name.trim() : `@${profile.handle}`;
   const normalizedProfileLinks = profileLinks
@@ -59,6 +57,29 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
     (post) => post.author_handle === profile.handle && post.profile_handle === profile.handle,
   );
   const isOwner = viewerId === profile.id;
+
+  if (isPrivateView) {
+    return (
+      <main className="centered-vert" style={{ textAlign: "center", gap: "1.5rem" }}>
+        <div className="profile-avatar lifted" style={{ margin: "0 auto" }}>
+          {profile.pfp ? (
+            <Image src={profile.pfp} alt={`@${profile.handle} profile picture`} width={96} height={96} />
+          ) : (
+            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+          )}
+        </div>
+        <h1 className="profile-handle deboss" style={{ marginBottom: 0 }}>
+          {displayName}
+        </h1>
+        <p className="emboss" style={{ marginTop: "0.5rem" }}>
+          Sign in to see this profile.
+        </p>
+        <Link href="/sign-in">
+          <button className="btn btnLg lifted">Sign In</button>
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main>

@@ -10,7 +10,7 @@ export default async function SignInPage() {
 
   return (
     <main className="centered-vert">
-      <h1 className="emboss">Sign in via email</h1>
+      <h1 className="deboss">Sign in via email</h1>
       <EmailSignInForm />
     </main>
   );
