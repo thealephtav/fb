@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProfileLinksEditor } from "@/components/ProfileLinksEditor";
+import { MAX_PFP_SIZE_BYTES } from "@/lib/constants";
 
 type Profile = {
   id: string;
@@ -28,6 +29,8 @@ type Props = {
 export function EditProfileForm({ profile, profileLinks, action }: Props) {
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = (event: BeforeUnloadEvent) => {
@@ -76,6 +79,14 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
     };
   }, [isDirty]);
 
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   return (
     <form
       action={action}
@@ -84,6 +95,13 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       onSubmit={async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
+        setErrorMessage(null);
+
+        const file = formData.get("pfp");
+        if (file instanceof File && file.size > MAX_PFP_SIZE_BYTES) {
+          setErrorMessage("Image is too large. Please upload a photo under 10 MB.");
+          return;
+        }
 
         const labels = formData.getAll("linkLabel").map((v) => (typeof v === "string" ? v.trim() : ""));
         const urls = formData.getAll("linkUrl").map((v) => (typeof v === "string" ? v.trim() : ""));
@@ -113,14 +131,32 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
         <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
           <Image
-            src={profile.pfp ?? "/default-pfp.png"}
+            src={previewUrl ?? profile.pfp ?? "/default-pfp.png"}
             alt={`@${profile.handle} profile photo`}
             width={96}
             height={96}
           />
           <span className="pfp-overlay"></span>
         </label>
-        <input id="pfp" name="pfp" type="file" accept="image/*" className="invisible" />
+        <input
+          id="pfp"
+          name="pfp"
+          type="file"
+          accept="image/*"
+          className="invisible"
+          onChange={(event) => {
+            const file = event.target.files?.[0] ?? null;
+            if (!file) {
+              setPreviewUrl(null);
+              return;
+            }
+            const nextUrl = URL.createObjectURL(file);
+            setPreviewUrl((current) => {
+              if (current) URL.revokeObjectURL(current);
+              return nextUrl;
+            });
+          }}
+        />
       </div>
       <p className="emboss" style={{ textAlign: "left", marginBottom: "0" }}>Display Name</p>
       <input
@@ -141,7 +177,7 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         {isSaving ? "Saving..." : "Save"}
       </button>
       <p style={{ textAlign: "center", color: "var(--color-text-muted)" }}>
-        {isDirty ? "You have unsaved changes." : "All changes saved."}
+        {errorMessage? errorMessage : isDirty ? "You have unsaved changes." : "All changes saved."}
       </p>
       <p style={{ textAlign: "center" }} className="emboss">
         <Link
