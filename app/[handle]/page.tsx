@@ -7,6 +7,7 @@ import { getPostsByHandle, getUserProfileByHandle, getProfileLinksByUserId } fro
 import { createPost } from "@/app/actions";
 import { PostList } from "@/components/PostList";
 import { CreatePostForm } from "@/components/CreatePostForm";
+import { WAITLIST_URL } from "@/lib/constants";
 
 export async function generateMetadata({
   params,
@@ -62,6 +63,34 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   return (
     <main>
       <section className="profile-hero-section">
+        {/* TODO: componentize this */}
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          fontSize: "var(--font-size-lg)",
+          minHeight: "2rem"
+        }}>          
+          <Link
+            href="/"
+            className="emboss badge"
+            aria-label="Home"
+            style={{ textAlign: "left" }}
+          >
+            ⾕
+          </Link>
+          {isOwner ? (
+            <Link
+              href={`/${profile.handle}/edit`}
+              className="emboss badge"
+              aria-label="Edit profile"
+              style={{ marginLeft: "auto", textAlign: "right" }}
+            >
+              ✎
+            </Link>
+          ) : null}
+        </div>
         <div className="profile-avatar lifted">
           {profile.pfp ? (
             <Image
@@ -95,17 +124,9 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
         ) : null}
         <div className="waitlist-footer">
           {!viewerId ? (
-              <Link className="emboss" href="https://thealeph.typeform.com/to/DXE6CRZ0" target="_blank" rel="noopener noreferrer">
+              <Link className="emboss" href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
               「 ✦ Join The Aleph Waitlist ✦ 」📢
               </Link>
-          ) : isOwner ? (
-            <Link
-              href={`/${profile.handle}/edit`}
-              className="emboss"
-              aria-label="Edit profile"
-            >
-              ✎𓂃Edit Profile𓂃
-            </Link>
           ) :
             <Link
               href="/"
