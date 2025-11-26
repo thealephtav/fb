@@ -153,9 +153,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           </Link>
         </>
       )}
-
       </section>
-
     </main>
   );
 }

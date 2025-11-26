@@ -135,8 +135,8 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       <ProfileLinksEditor initialLinks={profileLinks} onEdit={() => setIsDirty(true)} />
       <button
         type="submit"
-        className="btn btnMd lifted"
-        disabled={isSaving}
+        className={`btn btnMd ${isDirty ? "lifted" : "sunken"}`}
+        disabled={!isDirty || isSaving}
       >
         {isSaving ? "Saving..." : "Save"}
       </button>
