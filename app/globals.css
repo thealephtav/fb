@@ -15,7 +15,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-lg);
   max-width: var(--size-main-max);
   margin: var(--space-0) auto;
@@ -23,11 +23,11 @@ main {
   box-sizing: border-box;
   padding: var(--space-md);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 
 .profile-hero-section {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,8 +36,6 @@ main {
   width: 100%;
   max-width: var(--size-main-max);
   text-align: center;
-  padding: var(--space-xl) 0 var(--space-xxl);
-  min-height: calc(100vh - var(--space-xl));
   box-sizing: border-box;
 }
 
@@ -138,6 +136,7 @@ main {
   font-size: var(--font-size-xl);
   color: var(--color-text-primary);
   letter-spacing: var(--letter-spacing-medium);
+  text-align: center;
 }
 
 .profile-status {
@@ -292,10 +291,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-}
-
-.post-item {
-  list-style: none;
 }
 
 .post-horizontal {

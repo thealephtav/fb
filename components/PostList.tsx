@@ -1,6 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { Post } from "@/lib/data";
+import { ProfileRow } from "@/components/ProfileRow";
 
 type Props = {
   posts: Post[];
@@ -56,42 +55,22 @@ export function PostList({ posts, emptyMessage = "No posts yet.", statusHandle }
           <h3 className="emboss">{label}</h3>
           <ul className="post-list">
             {postsByDay[label].map((post) => (
-              <li key={post.id} className="post-item">
-                <div className="post-horizontal">
-                  <div className="post-avatar">
-                    <Link href={`/${post.author_handle}`}>
-                      <Image
-                        src={post.author_pfp ?? "/default-pfp.png"}
-                        alt={`@${post.author_handle} profile picture`}
-                        width={64}
-                        height={64}
-                      />
-                    </Link>
-                  </div>
-                  <div>
-                    <p className="post-meta">
-                      <strong className="emboss">
-                        <Link href={`/${post.author_handle}`}>
-                          {post.author_name?.trim() || `@${post.author_handle}`}
-                        </Link>
-                      </strong>{" "}
-                      <small>
-                        {statusHandle &&
-                        post.author_handle === statusHandle &&
-                        post.profile_handle === statusHandle
-                          ? "updated their status at"
-                          : "wrote at"}{" "}
-                        {new Date(post.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
-                      </small>
-                    </p>
-                    <p className="post-body">{post.body}</p>
-                    {/* <small>
-                      <Link href={`/${post.author_handle}`}>
-                        {`Write on @${post.author_handle}'s wall`}
-                      </Link>
-                    </small> */}
-                  </div>
-                </div>
+              <li key={post.id}>
+                <ProfileRow
+                  href={`/${post.author_handle}`}
+                  name={post.author_name}
+                  handle={post.author_handle}
+                  pfp={post.author_pfp}
+                  body={post.body}
+                  subText={
+                    post.author_handle === statusHandle && post.profile_handle === statusHandle
+                      ? `updated their status at ${new Date(post.posted_at).toLocaleTimeString([], {
+                          hour: "numeric",
+                          minute: "2-digit",
+                        })}`
+                      : undefined
+                  }
+                />
               </li>
             ))}
           </ul>

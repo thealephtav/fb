@@ -1,5 +1,6 @@
 "use client";
 
+// TODO these props are insane
 type Props = {
   canPost: boolean;
   action?: (formData: FormData) => Promise<void>;
@@ -7,15 +8,16 @@ type Props = {
   profileDisplayName?: string | null;
   disabledMessage?: React.ReactNode;
   isOwner?: boolean;
+  buttonText?: string;
+  placeholderText?: string;
 };
-
-const WAITLIST_URL = "https://thealeph.typeform.com/to/DXE6CRZ0";
 
 export function CreatePostForm({
   canPost,
   action,
   profileHandle,
-  isOwner = false,
+  buttonText = "Post",
+  placeholderText = "Write a post",
 }: Props) {
   if (!canPost) {
     return (
@@ -39,13 +41,10 @@ export function CreatePostForm({
             name="body"
             required
             className="input input-raised"
-            placeholder="Write a post"
+            placeholder={placeholderText}
           />
-          <button type="submit" className="btn btnMd lifted">Post</button>
+          <button type="submit" className="btn btnMd lifted">{buttonText}</button>
         </div>
-        {/* TODO eliminating images from posts for now */}
-        {/* <label htmlFor="post-image">Image (optional)</label>
-        <input id="post-image" name="image" type="file" accept="image/*" /> */}
       </form>
     </section>
   );

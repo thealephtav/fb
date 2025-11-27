@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -8,6 +7,8 @@ import { createPost } from "@/app/actions";
 import { PostList } from "@/components/PostList";
 import { CreatePostForm } from "@/components/CreatePostForm";
 import { WAITLIST_URL } from "@/lib/constants";
+import { ProfileHero } from "@/components/ProfileHero";
+import { NavBar } from "@/components/NavBar";
 
 export async function generateMetadata({
   params,
@@ -83,16 +84,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main>
-      <section className="profile-hero-section">
-        {/* TODO: componentize this */}
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+      <div
+        style={{
+          minHeight: "100vh",
           width: "100%",
-          fontSize: "var(--font-size-lg)",
-          minHeight: "2rem"
-        }}>          
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--space-xl)",
+        }}
+      >
+        <NavBar>
           <Link
             href="/"
             className="emboss badge"
@@ -111,54 +112,48 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
               ✎
             </Link>
           ) : null}
-        </div>
-        <div className="profile-avatar lifted">
-          {profile.pfp ? (
-            <Image
-              src={profile.pfp}
-              alt={`@${profile.handle} profile picture`}
-              width={96}
-              height={96}
-            />
-          ) : (
-            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
-          )}
-        </div>
-        <h1 className="profile-handle deboss">{displayName}</h1>
-        {statusPost ? (
-          <div className="profile-status">
-            <p className="profile-status-body emboss">{statusPost.body}</p>
-            <small className="profile-status-label">
-              Status updated at{" "}
-              {new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
-            </small>
-          </div>
-        ) : null}
-        {normalizedProfileLinks.length > 0 ? (
-          <div className="profile-links">
-            {normalizedProfileLinks.map((link) => (
-              <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
-                <button className="btn btnLg emboss lifted">{link.label}</button>
-              </Link>
-            ))}
-          </div>
-        ) : null}
-        <div className="waitlist-footer">
-          {!viewerId ? (
-              <Link className="emboss" href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
-              「 ✦ Join The Aleph Waitlist ✦ 」📢
-              </Link>
-          ) :
-            <Link
-              href="/"
-              className="emboss"
-              aria-label="Aleph"
-            >
-              𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓍊  Aleph  𓍊𖡼𖤣𖥧𓋼𖥧𖡼
-            </Link>
+        </NavBar>
+        <ProfileHero
+          profileHandle={profile.handle}
+          profileName={displayName}
+          profilePfp={profile.pfp}
+          statusText={statusPost?.body ?? null}
+          statusUpdatedAt={
+            statusPost
+              ? new Date(statusPost.posted_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+              : null
           }
-        </div>
-      </section>
+        />
+        <section className="profile-links">
+          {normalizedProfileLinks.length > 0 ? (
+            <div className="profile-links">
+              {normalizedProfileLinks.map((link) => (
+                <Link key={link.id} href={link.href} target="_blank" rel="noopener noreferrer">
+                  <button className="btn btnLg emboss lifted">{link.label}</button>
+                </Link>
+              ))}
+            </div>
+          ) : null}
+        </section>
+
+        <section style={{ marginTop: "auto", width: "100%", textAlign: "center" }}>
+          <div className="waitlist-footer">
+            {!viewerId ? (
+              <Link className="emboss" href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
+                「 ✦ Join The Aleph Waitlist ✦ 」📢
+              </Link>
+            ) : (
+              <Link
+                href="/"
+                className="emboss"
+                aria-label="Aleph"
+              >
+                𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓍊  Aleph  𓍊𖡼𖤣𖥧𓋼𖥧𖡼
+              </Link>
+            )}
+          </div>
+        </section>
+      </div>
 
       <section className="profile-content">
         <CreatePostForm

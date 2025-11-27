@@ -23,10 +23,10 @@ const crimsonText = Crimson_Text({
   variable: '--font-crimson-text'
 })
 export const metadata: Metadata = {
-  title: "T H E  A L E P H",
+  title: "꧁ ALEPH ꧂",
   description: "An exclusive corner of the web",
   openGraph: {
-    title: "T H E  A L E P H",
+    title: "꧁ ALEPH ꧂",
     description: "A private space for artists",
   },
 };

@@ -5,6 +5,8 @@ export type User = {
   name: string | null;
   handle: string;
   pfp: string | null;
+  latest_status?: string | null;
+  latest_status_at?: string | null;
   private: boolean;
 };
 
@@ -70,9 +72,23 @@ export async function getUserById(userId: string): Promise<User | null> {
     await ensureDb();
     const result = await query<User>(
       `
-        SELECT id, name, handle, pfp, private
+        SELECT
+          users.id,
+          users.name,
+          users.handle,
+          users.pfp,
+          users.private,
+          status.latest_status,
+          status.latest_status_at
         FROM users
-        WHERE id = $1
+        LEFT JOIN LATERAL (
+          SELECT body AS latest_status, posted_at AS latest_status_at
+          FROM posts
+          WHERE posts.user_id = users.id AND posts.profile_user_id = users.id
+          ORDER BY posted_at DESC
+          LIMIT 1
+        ) status ON TRUE
+        WHERE users.id = $1
         LIMIT 1
       `,
       [userId],
@@ -124,9 +140,23 @@ export async function getUserByHandle(handle: string): Promise<User | null> {
     await ensureDb();
     const result = await query<User>(
       `
-        SELECT id, name, handle, pfp, private
+        SELECT
+          users.id,
+          users.name,
+          users.handle,
+          users.pfp,
+          users.private,
+          status.latest_status,
+          status.latest_status_at
         FROM users
-        WHERE handle = $1
+        LEFT JOIN LATERAL (
+          SELECT body AS latest_status, posted_at AS latest_status_at
+          FROM posts
+          WHERE posts.user_id = users.id AND posts.profile_user_id = users.id
+          ORDER BY posted_at DESC
+          LIMIT 1
+        ) status ON TRUE
+        WHERE users.handle = $1
         LIMIT 1
       `,
       [handle],
@@ -290,17 +320,17 @@ export async function getProfileLinksByUserId(userId: string): Promise<ProfileLi
   }
 }
 
-export async function getExploreProfiles(): Promise<ExploreProfile[]> {
+export async function getExploreProfiles(excludeUserId?: string): Promise<ExploreProfile[]> {
   try {
     await ensureDb();
     const result = await query<ExploreProfile>(
       `
         WITH latest_posts AS (
           SELECT
-            posts.profile_user_id,
+            posts.user_id,
             posts.body,
             posts.posted_at,
-            ROW_NUMBER() OVER (PARTITION BY posts.profile_user_id ORDER BY posts.posted_at DESC) AS rn
+            ROW_NUMBER() OVER (PARTITION BY posts.user_id ORDER BY posts.posted_at DESC) AS rn
           FROM posts
         )
         SELECT
@@ -311,9 +341,11 @@ export async function getExploreProfiles(): Promise<ExploreProfile[]> {
           lp.body AS latest_status,
           lp.posted_at AS latest_status_at
         FROM users
-        LEFT JOIN latest_posts lp ON lp.profile_user_id = users.id AND lp.rn = 1
+        LEFT JOIN latest_posts lp ON lp.user_id = users.id AND lp.rn = 1
+        WHERE ($1::text IS NULL OR users.id <> $1)
         ORDER BY COALESCE(lp.posted_at, users.created_at) DESC
       `,
+      [excludeUserId ?? null],
     );
     return result.rows;
   } catch (error) {

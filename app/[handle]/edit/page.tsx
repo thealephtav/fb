@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import { getProfileLinksByUserId, getUserProfileByHandle } from "@/lib/data";
 import { updateUserProfile } from "@/app/actions";
 import { EditProfileForm } from "@/components/EditProfileForm";
+import { NavBar } from "@/components/NavBar";
+import Link from "next/link";
 
 export default async function EditProfilePage({ params }: { params: Promise<{ handle: string }> }) {
   const resolvedParams = await params;
@@ -22,6 +24,14 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
 
   return (
     <main>
+      <NavBar>
+        <Link href="/" className="emboss badge" aria-label="Home">
+          ⾕
+        </Link>
+        <Link href={`/${profile.handle}`} className="emboss badge" aria-label="View profile" style={{ marginLeft: "auto" }}>
+          ☻
+        </Link>
+      </NavBar>
       <h1 className="deboss centered">Edit Profile</h1>
       <EditProfileForm profile={profile} profileLinks={profileLinks} action={updateUserProfile} />
     </main>
