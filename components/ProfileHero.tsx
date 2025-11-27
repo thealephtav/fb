@@ -9,6 +9,7 @@ type Props = {
   profilePfp: string | null;
   statusText?: string | null;
   statusUpdatedAt?: string | null;
+  showStatus?: boolean;
   children?: ReactNode;
 };
 
@@ -18,6 +19,7 @@ export function ProfileHero({
   profilePfp,
   statusText,
   statusUpdatedAt,
+  showStatus = true,
   children,
 }: Props) {
   return (
@@ -30,7 +32,7 @@ export function ProfileHero({
         )}
       </div>
       <h1 className="profile-handle deboss">{profileName}</h1>
-      {statusText ? (
+      {showStatus && statusText ? (
         <div className="profile-status">
           <p className="profile-status-body emboss">{statusText}</p>
           {statusUpdatedAt ? (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
@@ -62,16 +63,12 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
   if (isPrivateView) {
     return (
       <main className="centered-vert" style={{ textAlign: "center", gap: "1.5rem" }}>
-        <div className="profile-avatar lifted" style={{ margin: "0 auto" }}>
-          {profile.pfp ? (
-            <Image src={profile.pfp} alt={`@${profile.handle} profile picture`} width={96} height={96} />
-          ) : (
-            <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
-          )}
-        </div>
-        <h1 className="profile-handle deboss" style={{ marginBottom: 0 }}>
-          {displayName}
-        </h1>
+        <ProfileHero
+          profileHandle={profile.handle}
+          profileName={displayName}
+          profilePfp={profile.pfp}
+          showStatus={false}
+        />
         <p className="emboss" style={{ marginTop: "0.5rem" }}>
           Sign in to see this profile.
         </p>
@@ -136,22 +133,21 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           ) : null}
         </section>
 
-        <section style={{ marginTop: "auto", width: "100%", textAlign: "center" }}>
-          <div className="waitlist-footer">
-            {!viewerId ? (
-              <Link className="emboss" href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
-                「 ✦ Join The Aleph Waitlist ✦ 」📢
-              </Link>
-            ) : (
-              <Link
-                href="/"
-                className="emboss"
-                aria-label="Aleph"
-              >
-                𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓍊  Aleph  𓍊𖡼𖤣𖥧𓋼𖥧𖡼
-              </Link>
-            )}
-          </div>
+        <div style={{ flex: 1 }} />
+          <section className="waitlist-footer">
+          {!viewerId ? (
+            <Link className="emboss" href={WAITLIST_URL} target="_blank" rel="noopener noreferrer">
+              「 ✦ Join The Aleph Waitlist ✦ 」📢
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className="emboss"
+              aria-label="Aleph"
+            >
+              𖡼𖤣𖥧𖡼𓋼𖤣𖥧𓍊  Aleph  𓍊𖡼𖤣𖥧𓋼𖥧𖡼
+            </Link>
+          )}
         </section>
       </div>
 
