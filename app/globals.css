@@ -188,7 +188,7 @@ main {
   align-items: center;
   justify-content: center;
   padding: var(--space-md) 0;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-xxl);
 }
 
 .link-editor {
