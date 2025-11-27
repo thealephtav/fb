@@ -37,6 +37,7 @@ main {
   max-width: var(--size-main-max);
   text-align: center;
   box-sizing: border-box;
+  margin-bottom: var(--space-lg)
 }
 
 .profile-content {

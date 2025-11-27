@@ -31,15 +31,17 @@ export function ProfileHero({
           <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
         )}
       </div>
-      <h1 className="profile-handle deboss">{profileName}</h1>
-      {showStatus && statusText ? (
-        <div className="profile-status">
-          <p className="profile-status-body emboss">{statusText}</p>
-          {statusUpdatedAt ? (
-            <small className="profile-status-label">Status updated at {statusUpdatedAt}</small>
-          ) : null}
-        </div>
-      ) : null}
+      <div>
+        <h1 className="profile-handle deboss">{profileName}</h1>
+        {showStatus && statusText ? (
+          <div className="profile-status">
+            <p className="profile-status-body emboss">{statusText}</p>
+            {statusUpdatedAt ? (
+              <small className="profile-status-label">Status updated at {statusUpdatedAt}</small>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
       {children}
     </section>
   );
