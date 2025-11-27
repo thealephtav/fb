@@ -76,6 +76,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
                 border: "none",
                 color: "var(--color-link)",
                 fontFamily: "var(--font-display)",
+                fontSize: "var(--font-size-md)",
               }}
             >
               ✦ Sign Out
