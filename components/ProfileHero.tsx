@@ -1,12 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { ReactNode } from "react";
+import { ProfilePhotoCarousel } from "@/components/ProfilePhotoCarousel";
 
 type Props = {
   profileHandle: string;
   profileName: string;
   profilePfp: string | null;
+  profilePfp2?: string | null;
+  profilePfp3?: string | null;
   statusText?: string | null;
   statusUpdatedAt?: string | null;
   showStatus?: boolean;
@@ -17,6 +19,8 @@ export function ProfileHero({
   profileHandle,
   profileName,
   profilePfp,
+  profilePfp2,
+  profilePfp3,
   statusText,
   statusUpdatedAt,
   showStatus = true,
@@ -24,13 +28,7 @@ export function ProfileHero({
 }: Props) {
   return (
     <section className="profile-hero-section">
-      <div className="profile-avatar lifted">
-        {profilePfp ? (
-          <Image src={profilePfp} alt={`@${profileHandle} profile picture`} width={96} height={96} />
-        ) : (
-          <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
-        )}
-      </div>
+      <ProfilePhotoCarousel photos={[profilePfp, profilePfp2, profilePfp3]} profileHandle={profileHandle} />
       <div>
         <h1 className="profile-handle deboss">{profileName}</h1>
         {showStatus && statusText ? (

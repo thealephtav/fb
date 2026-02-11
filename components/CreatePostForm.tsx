@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 // TODO these props are insane
 type Props = {
   canPost: boolean;
@@ -23,7 +25,7 @@ export function CreatePostForm({
     return (
       <section>
         <p style={{ textAlign: "center" }} className="emboss">
-        ·:*¨༺ ♱ <a href="/sign-in">Sign in</a> to post on this profile ♱ ༻¨*:·
+        ·:*¨༺ ♱ <Link href="/sign-in">Sign in</Link> to post on this profile ♱ ༻¨*:·
         </p>
       </section>
     );
