@@ -5,6 +5,8 @@ export type User = {
   name: string | null;
   handle: string;
   pfp: string | null;
+  pfp2: string | null;
+  pfp3: string | null;
   latest_status?: string | null;
   latest_status_at?: string | null;
   private: boolean;
@@ -15,6 +17,8 @@ export type PublicUserProfile = {
   name: string | null;
   handle: string;
   pfp: string | null;
+  pfp2: string | null;
+  pfp3: string | null;
   follower_count: number;
   following_count: number;
   is_following: boolean;
@@ -34,6 +38,8 @@ export type SimpleUser = {
   name: string | null;
   handle: string;
   pfp: string | null;
+  pfp2?: string | null;
+  pfp3?: string | null;
   private?: boolean;
 };
 
@@ -77,6 +83,8 @@ export async function getUserById(userId: string): Promise<User | null> {
           users.name,
           users.handle,
           users.pfp,
+          users.pfp2,
+          users.pfp3,
           users.private,
           status.latest_status,
           status.latest_status_at
@@ -113,6 +121,8 @@ export async function getUserProfileByHandle(
           users.name,
           users.handle,
           users.pfp,
+          users.pfp2,
+          users.pfp3,
           users.private,
           (SELECT COUNT(*)::int FROM followers WHERE following_id = users.id) AS follower_count,
           (SELECT COUNT(*)::int FROM followers WHERE follower_id = users.id) AS following_count,
@@ -145,6 +155,8 @@ export async function getUserByHandle(handle: string): Promise<User | null> {
           users.name,
           users.handle,
           users.pfp,
+          users.pfp2,
+          users.pfp3,
           users.private,
           status.latest_status,
           status.latest_status_at
@@ -338,6 +350,8 @@ export async function getExploreProfiles(excludeUserId?: string): Promise<Explor
           users.name,
           users.handle,
           users.pfp,
+          users.pfp2,
+          users.pfp3,
           lp.body AS latest_status,
           lp.posted_at AS latest_status_at
         FROM users
@@ -360,7 +374,7 @@ export async function getOnboardingProgress(userId: string): Promise<OnboardingP
     const result = await query<OnboardingProgress>(
       `
         SELECT
-          users.pfp IS NOT NULL AS has_pfp,
+          (users.pfp IS NOT NULL AND users.pfp2 IS NOT NULL AND users.pfp3 IS NOT NULL) AS has_pfp,
           (users.name IS NOT NULL AND length(trim(users.name)) > 0) AS has_display_name,
           EXISTS (SELECT 1 FROM links WHERE profile_id = $1) AS has_link,
           EXISTS (SELECT 1 FROM posts WHERE user_id = $1 AND profile_user_id = $1) AS has_status,
