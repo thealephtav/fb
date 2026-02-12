@@ -119,6 +119,25 @@ main {
   filter: brightness(0.85);
 }
 
+.profile-hero-image {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 320px);
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.profile-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 .invisible {
   position: absolute;
   width: 1px;
