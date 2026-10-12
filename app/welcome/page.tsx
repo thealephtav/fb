@@ -19,10 +19,7 @@ export default function WelcomePage() {
         <Link href={WAITLIST_URL} target="_blank">
           <button className="btn lifted btnLg">Apply for Membership</button>
         </Link>
-        <Link href={BLOG_URL} target="_blank">
-          <button className="btn lifted btnLg">Writing</button>
-        </Link>
-        <hr style={{ width: "100%" }} />
+        
         <p style={{ textAlign: "center", marginTop: "0" }}>
           Already have an account? <Link href="https://app.thealeph.club">Sign in</Link>
         </p>
