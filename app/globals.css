@@ -75,27 +75,98 @@ main {
   box-shadow: var(--shadow-raised);
 }
 
-.profile-avatar {
+.profile-carousel {
+  width: min(100%, 480px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.profile-carousel-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.profile-carousel-progress-segment {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text-muted) 20%, transparent);
+}
+
+.profile-carousel-progress-segment.is-active {
+  background: var(--color-link);
+}
+
+.profile-carousel-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  touch-action: pan-y;
+}
+
+.profile-carousel-frame:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+.profile-carousel-image {
+  object-fit: cover;
+}
+
+.profile-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.profile-carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.profile-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+}
+
+.profile-carousel-dot.is-active {
+  background: var(--color-link);
+}
+
+.edit-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.profile-photo-input {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
+  width: 100%;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
+  border-radius: 8px;
   border: 1px solid var(--color-border);
-  cursor: default;
 }
 
-.profile-avatar img {
-  border-radius: 50%;
-  width: 96px;
-  height: 96px;
+.profile-photo-input-image {
   object-fit: cover;
 }
 
-.profile-avatar .pfp-overlay {
+.profile-photo-input .pfp-overlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -108,14 +179,14 @@ main {
   transition: opacity 0.2s ease, background 0.2s ease;
 }
 
-.profile-avatar:hover .pfp-overlay,
-.profile-avatar:focus-within .pfp-overlay {
+.profile-photo-input:hover .pfp-overlay,
+.profile-photo-input:focus-within .pfp-overlay {
   background: rgba(0, 0, 0, 0.35);
   opacity: 1;
 }
 
-.profile-avatar:hover img,
-.profile-avatar:focus-within img {
+.profile-photo-input:hover img,
+.profile-photo-input:focus-within img {
   filter: brightness(0.85);
 }
 
@@ -353,4 +424,10 @@ main {
     contrast(0.95)
     brightness(1.03)
     var(--shadow-seal-dark);
+}
+
+@media (max-width: 640px) {
+  .edit-photo-grid {
+    grid-template-columns: 1fr;
+  }
 }

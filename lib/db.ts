@@ -44,6 +44,8 @@ async function createTables() {
       "emailVerified" TIMESTAMPTZ,
       image TEXT,
       pfp TEXT,
+      pfp2 TEXT,
+      pfp3 TEXT,
       handle TEXT UNIQUE,
       private BOOLEAN NOT NULL DEFAULT FALSE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -53,6 +55,14 @@ async function createTables() {
   await query(`
     ALTER TABLE users
     ADD COLUMN IF NOT EXISTS private BOOLEAN NOT NULL DEFAULT FALSE
+  `);
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS pfp2 TEXT
+  `);
+  await query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS pfp3 TEXT
   `);
 
   await query(`

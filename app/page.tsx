@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { auth } from "@/auth";
 import { getExploreProfiles, getOnboardingProgress, getUserById } from "@/lib/data";
 import { signOutUser, createPost } from "./actions";
@@ -12,11 +11,7 @@ import { ProfileHero } from "@/components/ProfileHero";
 
 export const dynamic = "force-dynamic";
 
-type SearchParams = {
-  algorithm?: string;
-};
-
-export default async function Home({ searchParams }: { searchParams: Promise<SearchParams> }) {
+export default async function Home() {
   const session = await auth();
   const userId = session?.user?.id ?? null;
   if (!userId) {
@@ -34,7 +29,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
   }
   const onboardingItems = activeUser && onboarding ? [
     {
-      label: "Add a profile picture",
+      label: "Add 3 profile photos",
       href: `/${activeUser.handle}/edit`,
       done: onboarding.has_pfp,
     },
@@ -93,6 +88,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           profileHandle={activeUser.handle}
           profileName={activeUser.name ?? ""}
           profilePfp={activeUser.pfp}
+          profilePfp2={activeUser.pfp2}
+          profilePfp3={activeUser.pfp3}
           statusText={activeUser.latest_status ?? "No status yet."}
           statusUpdatedAt={
             activeUser.latest_status_at
