@@ -444,3 +444,140 @@ textarea:not(:disabled) {
 .emboss {
   text-shadow: var(--text-shadow-emboss);
 }
+
+
+/* Welcome-page credibility bands */
+.welcome-page {
+  max-width: 960px;
+  min-height: 100vh;
+  padding: 3rem 1.5rem 3.375rem;
+  justify-content: flex-start;
+  gap: 0;
+  overflow: visible;
+}
+
+.welcome-page .seal {
+  margin: 0 auto 1.875rem;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: var(--size-main-max);
+  align-items: center;
+}
+
+.welcome-actions__signin {
+  margin: 0;
+  text-align: center;
+}
+
+.credentials-bands {
+  width: min(900px, calc(100vw - 48px));
+  margin: 3.5rem auto 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.credential-band {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.84375rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.03125rem 0.28125rem;
+}
+
+.credential-band + .credential-band {
+  border-top: 1px solid var(--color-border);
+}
+
+.credential-band__label,
+.credential-band__more {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 0.609375rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.1em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.credential-band__label {
+  text-align: right;
+}
+
+.credential-band__logos {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.84375rem;
+  min-width: 0;
+}
+
+.credential-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.credential-logo--new-york-times { width: 4.5rem; }
+.credential-logo--vogue { width: 2.90625rem; }
+.credential-logo--new-yorker { width: 3.65625rem; }
+.credential-logo--gq { width: 1.78125rem; }
+.credential-logo--wsj { width: 3rem; }
+.credential-logo--universal-music-group { width: 2.53125rem; }
+.credential-logo--gucci { width: 2.015625rem; }
+.credential-logo--nike { width: 2.25rem; }
+.credential-logo--renault { width: 1.453125rem; }
+.credential-logo--cash-app { width: 3rem; }
+.credential-logo--gemini { width: 3.46875rem; }
+
+:root[data-theme='dark'] .credential-logo {
+  filter: invert(1);
+}
+
+@media (max-width: 760px) {
+  .welcome-page {
+    padding: 1.625rem 0.875rem 2.625rem;
+  }
+
+  .welcome-page .seal {
+    margin-bottom: 1.5rem;
+  }
+
+  .credentials-bands {
+    width: calc(100vw - 28px);
+    margin-top: 2.5rem;
+  }
+
+  .credential-band {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    row-gap: 0.625rem;
+    padding: 0.9375rem 0.28125rem;
+  }
+
+  .credential-band__label {
+    text-align: center;
+  }
+
+  .credential-band__logos {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0 0.125rem 0.1875rem;
+    scrollbar-width: none;
+  }
+
+  .credential-band__logos::-webkit-scrollbar {
+    display: none;
+  }
+}
