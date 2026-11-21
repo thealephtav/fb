@@ -72,6 +72,10 @@ export default function WelcomePage() {
         <CredibilityBand label="OUR MEMBERS ARE FEATURED IN" logos={FEATURED_IN} />
         <CredibilityBand label="AND WORK WITH" logos={WORK_WITH} />
       </section>
+
+      <footer className="welcome-footer">
+        <Link href="/support">Support</Link>
+      </footer>
     </main>
   );
 }
