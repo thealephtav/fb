@@ -474,6 +474,31 @@ textarea:not(:disabled) {
   text-align: center;
 }
 
+.welcome-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.welcome-footer a {
+  display: inline-block;
+  padding: 0.5rem;
+  color: var(--color-text-muted);
+  text-underline-offset: 0.2em;
+}
+
+.welcome-footer a:hover,
+.welcome-footer a:focus-visible {
+  text-decoration: underline;
+}
+
+.welcome-footer a:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
 .credentials-bands {
   width: min(900px, calc(100vw - 48px));
   margin: 3.5rem auto 0;
