@@ -65,12 +65,12 @@ export default function SupportPage() {
           the web. If you need help accessing your account or completing deletion,
           contact support.
         </p>
-        <p>See our <a href="https://app.thealeph.club/privacy">Privacy Policy</a> for details about your data.</p>
+        <p>See our <Link href="/privacy">Privacy Policy</Link> for details about your data.</p>
       </section>
 
       <footer className={styles.footer}>
         <nav aria-label="Policies">
-          <a href="https://app.thealeph.club/privacy">Privacy Policy</a>
+          <Link href="/privacy">Privacy Policy</Link>
           <a href="https://app.thealeph.club/terms">Terms of Service</a>
         </nav>
         <p>The Aleph Tav Company</p>

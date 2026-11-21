@@ -75,6 +75,8 @@ export default function WelcomePage() {
 
       <footer className="welcome-footer">
         <Link href="/support">Support</Link>
+        <span aria-hidden="true">·</span>
+        <Link href="/privacy">Privacy Policy</Link>
       </footer>
     </main>
   );
