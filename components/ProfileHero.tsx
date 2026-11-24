@@ -24,11 +24,11 @@ export function ProfileHero({
 }: Props) {
   return (
     <section className="profile-hero-section">
-      <div className="profile-avatar lifted">
+      <div className="profile-hero-image lifted">
         {profilePfp ? (
-          <Image src={profilePfp} alt={`@${profileHandle} profile picture`} width={96} height={96} />
+          <Image src={profilePfp} alt={`@${profileHandle} profile picture`} width={320} height={180} />
         ) : (
-          <Image src="/default-pfp.png" alt="Default profile" width={96} height={96} />
+          <Image src="/default-pfp.png" alt="Default profile" width={320} height={180} />
         )}
       </div>
       <div>
