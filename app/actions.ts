@@ -278,7 +278,7 @@ export async function updateUserProfile(formData: FormData) {
     throw new Error("User not found");
   }
 
-  const file = formData.get("pfp");
+  const photoFields = ["pfp", "pfp2", "pfp3"] as const;
   const updates: string[] = [];
   const params: unknown[] = [];
 
@@ -311,14 +311,18 @@ export async function updateUserProfile(formData: FormData) {
     return acc;
   }, []);
 
-  if (file instanceof File && file.size > 0) {
+  for (const field of photoFields) {
+    const file = formData.get(field);
+    if (!(file instanceof File) || file.size === 0) {
+      continue;
+    }
     const buffer = await file.arrayBuffer();
-    const key = `pfp/${randomUUID()}-${file.name}`;
+    const key = `${field}/${randomUUID()}-${file.name}`;
     const blob = await put(key, buffer, {
       access: "public",
       contentType: file.type || "application/octet-stream",
     });
-    updates.push(`pfp = $${updates.length + 1}`);
+    updates.push(`${field} = $${updates.length + 1}`);
     params.push(blob.url);
   }
 

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
@@ -67,6 +66,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           profileHandle={profile.handle}
           profileName={displayName}
           profilePfp={profile.pfp}
+          profilePfp2={profile.pfp2}
+          profilePfp3={profile.pfp3}
           showStatus={false}
         />
         <p className="emboss" style={{ marginTop: "0.5rem" }}>
@@ -114,6 +115,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ ha
           profileHandle={profile.handle}
           profileName={displayName}
           profilePfp={profile.pfp}
+          profilePfp2={profile.pfp2}
+          profilePfp3={profile.pfp3}
           statusText={statusPost?.body ?? null}
           statusUpdatedAt={
             statusPost

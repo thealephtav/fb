@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProfileLinksEditor } from "@/components/ProfileLinksEditor";
@@ -11,6 +11,8 @@ type Profile = {
   handle: string;
   name: string | null;
   pfp: string | null;
+  pfp2: string | null;
+  pfp3: string | null;
   private: boolean;
 };
 
@@ -27,11 +29,17 @@ type Props = {
   action: (formData: FormData) => Promise<void>;
 };
 
+const PHOTO_FIELDS = ["pfp", "pfp2", "pfp3"] as const;
+
 export function EditProfileForm({ profile, profileLinks, action }: Props) {
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<Record<(typeof PHOTO_FIELDS)[number], string | null>>({
+    pfp: null,
+    pfp2: null,
+    pfp3: null,
+  });
 
   useEffect(() => {
     const handler = (event: BeforeUnloadEvent) => {
@@ -82,11 +90,25 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
 
   useEffect(() => {
     return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
+      Object.values(previewUrls).forEach((url) => {
+        if (url) URL.revokeObjectURL(url);
+      });
     };
-  }, [previewUrl]);
+  }, [previewUrls]);
+
+  const initialPhotos = useMemo(
+    () => ({
+      pfp: profile.pfp,
+      pfp2: profile.pfp2,
+      pfp3: profile.pfp3,
+    }),
+    [profile.pfp, profile.pfp2, profile.pfp3],
+  );
+
+  const hasAllThreePhotos = PHOTO_FIELDS.every((field) => {
+    const currentPhoto = previewUrls[field] ?? initialPhotos[field];
+    return typeof currentPhoto === "string" && currentPhoto.trim().length > 0;
+  });
 
   return (
     <form
@@ -98,9 +120,25 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         const formData = new FormData(event.currentTarget);
         setErrorMessage(null);
 
-        const file = formData.get("pfp");
-        if (file instanceof File && file.size > MAX_PFP_SIZE_BYTES) {
-          setErrorMessage("Image is too large. Please upload a photo under 10 MB.");
+        for (const field of PHOTO_FIELDS) {
+          const file = formData.get(field);
+          if (file instanceof File && file.size > MAX_PFP_SIZE_BYTES) {
+            setErrorMessage("One of your images is too large. Please upload photos under 10 MB.");
+            return;
+          }
+        }
+
+        const nextPhotosComplete = PHOTO_FIELDS.every((field) => {
+          const uploadedFile = formData.get(field);
+          if (uploadedFile instanceof File && uploadedFile.size > 0) {
+            return true;
+          }
+          const existingPhoto = previewUrls[field] ?? initialPhotos[field];
+          return typeof existingPhoto === "string" && existingPhoto.trim().length > 0;
+        });
+
+        if (!nextPhotosComplete) {
+          setErrorMessage("Please upload all 3 profile photos before saving.");
           return;
         }
 
@@ -128,36 +166,39 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
         window.location.href = `/${profile.handle}`;
       }}
     >
-      <p className="emboss" style={{ textAlign: "center" }}>Picture</p>
-      <div style={{ display: "flex", justifyContent: "center", margin: "var(--space-md) 0" }}>
-        <label htmlFor="pfp" className="profile-avatar lifted" style={{ cursor: "pointer" }}>
-          <Image
-            src={previewUrl ?? profile.pfp ?? "/default-pfp.png"}
-            alt={`@${profile.handle} profile photo`}
-            width={96}
-            height={96}
-          />
-          <span className="pfp-overlay"></span>
-        </label>
-        <input
-          id="pfp"
-          name="pfp"
-          type="file"
-          accept="image/*"
-          className="invisible"
-          onChange={(event) => {
-            const file = event.target.files?.[0] ?? null;
-            if (!file) {
-              setPreviewUrl(null);
-              return;
-            }
-            const nextUrl = URL.createObjectURL(file);
-            setPreviewUrl((current) => {
-              if (current) URL.revokeObjectURL(current);
-              return nextUrl;
-            });
-          }}
-        />
+      <p className="emboss" style={{ textAlign: "center" }}>Photos (3)</p>
+      <p style={{ textAlign: "center", margin: "0", color: "var(--color-text-muted)" }}>Upload all three photos to complete your profile.</p>
+      <div className="edit-photo-grid" style={{ margin: "var(--space-md) 0" }}>
+        {PHOTO_FIELDS.map((field, idx) => (
+          <label key={field} htmlFor={field} className="profile-photo-input lifted" style={{ cursor: "pointer" }}>
+            <Image
+              src={previewUrls[field] ?? initialPhotos[field] ?? "/default-pfp.png"}
+              alt={`@${profile.handle} profile photo ${idx + 1}`}
+              fill
+              sizes="(max-width: 768px) 33vw, 240px"
+              className="profile-photo-input-image"
+            />
+            <span className="pfp-overlay">Photo {idx + 1}</span>
+            <input
+              id={field}
+              name={field}
+              type="file"
+              accept="image/*"
+              className="invisible"
+              onChange={(event) => {
+                const file = event.target.files?.[0] ?? null;
+                if (!file) {
+                  return;
+                }
+                const nextUrl = URL.createObjectURL(file);
+                setPreviewUrls((current) => {
+                  if (current[field]) URL.revokeObjectURL(current[field]!);
+                  return { ...current, [field]: nextUrl };
+                });
+              }}
+            />
+          </label>
+        ))}
       </div>
       <p className="emboss" style={{ textAlign: "left", marginBottom: "0" }}>Display Name</p>
       <input
@@ -182,12 +223,12 @@ export function EditProfileForm({ profile, profileLinks, action }: Props) {
       <button
         type="submit"
         className={`btn btnMd ${isDirty ? "lifted" : "sunken"}`}
-        disabled={!isDirty || isSaving}
+        disabled={!isDirty || isSaving || !hasAllThreePhotos}
       >
         {isSaving ? "Saving..." : "Save"}
       </button>
       <p style={{ textAlign: "center", color: "var(--color-text-muted)" }}>
-        {errorMessage? errorMessage : isDirty ? "You have unsaved changes." : "All changes saved."}
+        {errorMessage ? errorMessage : !hasAllThreePhotos ? "Please upload all 3 profile photos." : isDirty ? "You have unsaved changes." : "All changes saved."}
       </p>
       <p style={{ textAlign: "center" }} className="emboss">
         <Link
